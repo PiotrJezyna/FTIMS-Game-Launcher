@@ -1,4 +1,4 @@
-package main.java;
+package kartaocen;
 
 import java.util.Date;
 
