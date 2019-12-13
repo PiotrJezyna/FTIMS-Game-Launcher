@@ -40,7 +40,7 @@ public class Launcher extends Application {
             System.out.println("Creating statement...");
             stmt = conn.createStatement();
             String sql;
-            sql = "SELECT id, Name, Surname FROM Users";
+            sql = "SELECT id, Name, Surname FROM Test";
             ResultSet rs = stmt.executeQuery(sql);
 
             while(rs.next()){
@@ -57,9 +57,9 @@ public class Launcher extends Application {
             stmt.close();
             conn.close();
 
-        } catch (SQLException se) {
+        } catch(SQLException se){
             se.printStackTrace();
-        } catch (Exception e) {
+        } catch(Exception e){
             e.printStackTrace();
         } finally {
             try {
