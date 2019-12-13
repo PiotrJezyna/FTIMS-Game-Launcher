@@ -18,6 +18,7 @@
         <module>KartaProduktu</module>
         <module>KartaOcenGier</module>
         <module>LokalnaBibliotekaGier</module>
+        <module>DatabaseDAO</module>
     </modules>
 
     <name>${project.artifactId}-${project.version}</name>
