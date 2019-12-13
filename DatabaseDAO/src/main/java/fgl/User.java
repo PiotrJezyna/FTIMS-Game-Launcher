@@ -43,8 +43,8 @@ public class User {
     @Column( name = "Type" )
     private UserType type;
 
-    @Column( name = "Active" )
-    private boolean active;
+    @Column( name = "IsBlocked" )
+    private boolean blocked;
 
     @OneToMany( fetch = FetchType.EAGER, mappedBy = "user"  )
     private Set<Game> games;
@@ -67,7 +67,7 @@ public class User {
         this.surname = surname;
         this.email = email;
         this.password = password;
-        this.active = active;
+        this.blocked = active;
     }
 
     public int getId() {
@@ -122,12 +122,12 @@ public class User {
         this.password = password;
     }
 
-    public boolean getActive() {
-        return active;
+    public boolean getBlocked() {
+        return blocked;
     }
 
-    public void setActive ( boolean active ) {
-        this.active = active;
+    public void setBlocked ( boolean blocked ) {
+        this.blocked = blocked;
     }
 
     public Set<Game> getGames() {
