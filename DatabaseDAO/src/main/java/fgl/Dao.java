@@ -1,22 +1,49 @@
 package fgl;
 
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.Statement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.DriverManager;
 
-public class Dao {
+import java.util.List;
 
-    private static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
-    private static final String DB_URL = "jdbc:mysql://remotemysql.com/5VexXpVWzU";
+public abstract class Dao<T> {
 
-    private static final String USER = "5VexXpVWzU";
-    private static final String PASS = "apQqybLdoW";
+     static final String DB_URL = "jdbc:mysql://remotemysql.com/5VexXpVWzU";
 
-    private Connection conn = null;
-    private Statement stmt = null;
-    private ResultSet rs = null;
+     static final String USER = "5VexXpVWzU";
+     static final String PASS = "apQqybLdoW";
 
-    public static void main(String[] args) {
+     Connection conn = null;
+     Statement stmt = null;
+     ResultSet rs = null;
 
+    /**
+     * Open connection with MySQL DB.
+     *
+     * @throws SQLException
+     */
+    public void connectSQL() throws SQLException {
+        conn = DriverManager.getConnection( DB_URL, USER, PASS );
     }
+
+    /**
+     * Close connection with MySQL DB.
+     *
+     * @throws SQLException
+     */
+    public void disconnectSQL() throws SQLException {
+        conn.close();
+    }
+
+    abstract T get(Long id);
+
+    abstract List<T> getAll();
+
+    abstract void insert(T t);
+
+    abstract void update(T t);
+
+    abstract void delete(T t);
 }
