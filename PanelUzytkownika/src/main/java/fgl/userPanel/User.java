@@ -12,6 +12,29 @@ public class User {
     private UserType type;
     private boolean isBlocked;
 
+    public User( String username, String email ) {
+
+        this.username = username;
+        this.email = email;
+    }
+
+    public User( Long id,
+                 String name,
+                 String surname,
+                 String username,
+                 String email,
+                 UserType type,
+                 boolean isBlocked ) {
+
+        this.id = id;
+        this.name = name;
+        this.surname = surname;
+        this.username = username;
+        this.email = email;
+        this.type = type;
+        this.isBlocked = isBlocked;
+    }
+
     public Long getId() {
         return id;
     }

@@ -16,7 +16,11 @@
     <name>${project.artifactId}-${project.version}</name>
 
     <dependencies>
-
+        <dependency>
+            <groupId>edu.ftims</groupId>
+            <artifactId>DatabaseDAO</artifactId>
+            <version>0.0.1</version>
+        </dependency>
     </dependencies>
 
     <build>
