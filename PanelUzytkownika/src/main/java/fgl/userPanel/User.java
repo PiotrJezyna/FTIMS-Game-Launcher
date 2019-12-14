@@ -2,8 +2,6 @@ package fgl.userPanel;
 
 public class User {
 
-    enum UserType { User, Moderator, Administrator };
-
     private Long id;
     private String name;
     private String surname;
