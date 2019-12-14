@@ -9,7 +9,7 @@ import java.util.List;
 public class UserDAO extends AbstractDao<User> {
 
     @Override
-    protected User get( Long id ) throws SQLException {
+    public User get( Long id ) throws SQLException {
 
         connectSQL();
 
@@ -53,7 +53,7 @@ public class UserDAO extends AbstractDao<User> {
     }
 
     @Override
-    protected List<User> getAll() throws SQLException {
+    public List<User> getAll() throws SQLException {
 
         connectSQL();
 
@@ -101,7 +101,7 @@ public class UserDAO extends AbstractDao<User> {
     }
 
     @Override
-    protected void insert( User user ) throws SQLException {
+    public void insert( User user ) throws SQLException {
 
         connectSQL();
 
@@ -126,7 +126,7 @@ public class UserDAO extends AbstractDao<User> {
     }
 
     @Override
-    protected void update( User user ) throws SQLException {
+    public void update( User user ) throws SQLException {
 
         connectSQL();
 
@@ -163,7 +163,7 @@ public class UserDAO extends AbstractDao<User> {
     }
 
     @Override
-    protected void delete( User user ) throws SQLException {
+    public void delete( User user ) throws SQLException {
 
         connectSQL();
 
