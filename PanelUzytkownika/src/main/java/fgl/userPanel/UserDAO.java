@@ -15,7 +15,7 @@ public class UserDAO extends AbstractDao<User> {
 
         try {
 
-            String query = "SELECT Name, Surname, Username, Email, IsBlocked FROM Users WHERE id = %s";
+            String query = "SELECT Name, Surname, Username, Email, Type, IsBlocked FROM Users WHERE id = %s";
             query = String.format(query, id);
             System.out.println(query);
             stmt = conn.createStatement();
@@ -59,7 +59,7 @@ public class UserDAO extends AbstractDao<User> {
 
         try {
 
-            String query = "SELECT id, Name, Surname, Username, Email, IsBlocked FROM Users";
+            String query = "SELECT id, Name, Surname, Username, Email, Type, IsBlocked FROM Users";
             stmt = conn.createStatement();
             rs = stmt.executeQuery( query );
 
