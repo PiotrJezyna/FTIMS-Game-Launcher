@@ -27,10 +27,18 @@ public class UserDAO extends AbstractDao<User> {
             String last = rs.getString("Surname");
             String username = rs.getString("Username");
             String email = rs.getString("Email");
-            User.UserType type = User.UserType.User;
+            String type = rs.getString( "Type" );
+            UserType userType;
+            if ( type.contentEquals(UserType.ADMINISTRATOR.name) ) {
+                userType = UserType.ADMINISTRATOR;
+            } else if ( type.contentEquals(UserType.MODERATOR.name) ) {
+                userType = UserType.MODERATOR;
+            } else {
+                userType = UserType.USER;
+            }
             boolean isBlocked = rs.getBoolean("IsBlocked");
 
-            return new User(id, first, last, username, email, type, isBlocked);
+            return new User(id, first, last, username, email, userType, isBlocked);
 
         } catch ( SQLException e ) {
 
@@ -63,10 +71,18 @@ public class UserDAO extends AbstractDao<User> {
                 String last = rs.getString( "Surname" );
                 String username = rs.getString( "Username" );
                 String email = rs.getString( "Email" );
-                User.UserType type = User.UserType.User;
+                String type = rs.getString( "Type" );
+                UserType userType;
+                if ( type.contentEquals(UserType.ADMINISTRATOR.name) ) {
+                    userType = UserType.ADMINISTRATOR;
+                } else if ( type.contentEquals(UserType.MODERATOR.name) ) {
+                    userType = UserType.MODERATOR;
+                } else {
+                    userType = UserType.USER;
+                }
                 boolean isBlocked = rs.getBoolean("IsBlocked");
 
-                User userSQL = new User(id, first, last, username, email, type, isBlocked);
+                User userSQL = new User(id, first, last, username, email, userType, isBlocked);
                 users.add( userSQL );
             }
 
