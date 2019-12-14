@@ -9,7 +9,7 @@ import java.util.List;
 public class GameDAO extends AbstractDao<Game> {
 
     @Override
-    protected Game get( Long id ) throws SQLException {
+    public Game get( Long id ) throws SQLException {
 
         connectSQL();
 
@@ -47,7 +47,7 @@ public class GameDAO extends AbstractDao<Game> {
     }
 
     @Override
-    protected List<Game> getAll() throws SQLException {
+    public List<Game> getAll() throws SQLException {
 
         connectSQL();
 
@@ -88,7 +88,7 @@ public class GameDAO extends AbstractDao<Game> {
     }
 
     @Override
-    protected void insert( Game game ) throws SQLException {
+    public void insert( Game game ) throws SQLException {
 
         connectSQL();
 
@@ -113,7 +113,7 @@ public class GameDAO extends AbstractDao<Game> {
     }
 
     @Override
-    protected void update( Game game ) throws SQLException {
+    public void update( Game game ) throws SQLException {
 
         connectSQL();
 
@@ -150,7 +150,7 @@ public class GameDAO extends AbstractDao<Game> {
     }
 
     @Override
-    protected void delete( Game game ) throws SQLException {
+    public void delete( Game game ) throws SQLException {
 
         connectSQL();
 
