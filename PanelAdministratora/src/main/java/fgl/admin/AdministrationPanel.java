@@ -7,8 +7,8 @@ import java.sql.SQLException;
 
 public class AdministrationPanel extends ModerationPanel {
 
-  private static final String title = "Admin Panel";
-  private static final String path = "/AdminPanel.fxml";
+  private static final String TITLE = "Admin Panel";
+  private static final String PATH = "/AdminPanel.fxml";
 
   public AdministrationPanel() {
     super();
@@ -16,19 +16,19 @@ public class AdministrationPanel extends ModerationPanel {
 
   @Override
   public String getTitle() {
-    return title;
+    return TITLE;
   }
 
   @Override
   public String getPath() {
-    return path;
+    return PATH;
   }
 
-  public boolean changePermissions(User user, UserType userType ) {
+  public boolean changePermissions( User user, UserType userType ) {
     try {
       user.setType( userType );
       super.getUserDAO().update( user );
-    } catch (SQLException e) {
+    } catch ( SQLException e ) {
       e.printStackTrace();
       return false;
     }

@@ -16,8 +16,11 @@ import java.io.IOException;
 import java.nio.file.AccessDeniedException;
 
 public class AdminPageController extends Application {
-  User loggedUser;
-  ModerationPanel panel;
+
+  // TODO get rid of this ID
+  public static final long ID = 4L;
+  private User loggedUser;
+  private ModerationPanel panel;
 
   public static void main( String[] args ) {
     launch( args );
@@ -27,19 +30,20 @@ public class AdminPageController extends Application {
   public void start( Stage primaryStage ) throws IOException {
 
     // TODO logged user handler
-    loggedUser = new User(4L, "Jaro", "S", "", "", UserType.MODERATOR, false);
+    loggedUser = new User(
+            ID, "Jaro", "S", "", "", UserType.MODERATOR, false );
 
     if ( loggedUser.getType() == UserType.ADMINISTRATOR ) {
       panel = new AdministrationPanel();
     } else if ( loggedUser.getType() == UserType.MODERATOR ) {
       panel = new ModerationPanel();
     } else {
-      throw new AccessDeniedException( "Users are forbidden to be in Administarion panel!" );
+      throw new AccessDeniedException( "Users are forbidden to be here!" );
     }
 
     try {
       panel.test();
-    } catch (InterruptedException e) {
+    } catch ( InterruptedException e ) {
       e.printStackTrace();
     }
 
@@ -48,6 +52,22 @@ public class AdminPageController extends Application {
     primaryStage.setTitle( panel.getTitle() );
     primaryStage.setScene( new Scene( root ) );
     primaryStage.show();
+  }
+
+  public User getLoggedUser() {
+    return loggedUser;
+  }
+
+  public void setLoggedUser( User loggedUser ) {
+    this.loggedUser = loggedUser;
+  }
+
+  public ModerationPanel getPanel() {
+    return panel;
+  }
+
+  public void setPanel( ModerationPanel panel ) {
+    this.panel = panel;
   }
 
   public void showGameCard( Game game ) {

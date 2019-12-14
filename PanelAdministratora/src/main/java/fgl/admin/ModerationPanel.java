@@ -10,8 +10,8 @@ import java.util.List;
 
 public class ModerationPanel {
   // Data
-  private static final String title = "Moderation Panel";
-  private static final String path = "/ModerationPanel.fxml";
+  private static final String TITLE = "Moderation Panel";
+  private static final String PATH = "/ModerationPanel.fxml";
   private UserDAO userDAO;
   private GameDAO gameDAO;
   private List<User> users;
@@ -24,11 +24,11 @@ public class ModerationPanel {
   }
 
   public String getTitle() {
-    return title;
+    return TITLE;
   }
 
   public String getPath() {
-    return path;
+    return PATH;
   }
 
   protected UserDAO getUserDAO() {
