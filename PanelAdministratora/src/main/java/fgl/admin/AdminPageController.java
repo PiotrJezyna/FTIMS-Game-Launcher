@@ -31,7 +31,7 @@ public class AdminPageController extends Application {
 
     // TODO logged user handler
     loggedUser = new User(
-            ID, "Jaro", "S", "", "", UserType.MODERATOR, false );
+            ID, "Jaro", "S", "", "", UserType.ADMINISTRATOR, false );
 
     if ( loggedUser.getType() == UserType.ADMINISTRATOR ) {
       panel = new AdministrationPanel();
