@@ -23,6 +23,12 @@
          </children></HBox>
       <TextArea fx:id="textAreaReview" prefHeight="37.0" prefWidth="705.0" GridPane.rowIndex="2" />
       <Button fx:id="buttonAddReview" mnemonicParsing="false" onAction="#addReview" text="Add review" GridPane.rowIndex="3" />
+      <VBox prefHeight="100.0" prefWidth="150.0" spacing="10.0" GridPane.rowIndex="4">
+         <children>
+            <Button fx:id="buttonShowReview" mnemonicParsing="false" onAction="#readReview" text="Show review" GridPane.rowIndex="4" />
+            <Label fx:id="labelReview" text="" GridPane.rowIndex="5"/>
+         </children>
+      </VBox>
    </children>
    <columnConstraints>
       <ColumnConstraints />

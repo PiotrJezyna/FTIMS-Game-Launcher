@@ -24,7 +24,7 @@ public class Launcher extends Application {
     static final String DB_URL = "jdbc:mysql://remotemysql.com/5VexXpVWzU";
 
     static final String USER = "5VexXpVWzU";
-    static final String PASS = "apQqybLdoW";
+    static final String PASS = "apQqybLdoW!";
 
     @Override
     public void start(Stage primaryStage) throws IOException {
@@ -35,7 +35,7 @@ public class Launcher extends Application {
             Class.forName(JDBC_DRIVER);
 
             System.out.println("Connecting to database...");
-            conn = DriverManager.getConnection(DB_URL,USER,PASS);
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
             System.out.println("Creating statement...");
             stmt = conn.createStatement();
@@ -43,7 +43,7 @@ public class Launcher extends Application {
             sql = "SELECT id, Name, Surname FROM Test";
             ResultSet rs = stmt.executeQuery(sql);
 
-            while(rs.next()){
+            while (rs.next()) {
                 int id  = rs.getInt("id");
                 String first = rs.getString("Name");
                 String last = rs.getString("Surname");
@@ -57,21 +57,21 @@ public class Launcher extends Application {
             stmt.close();
             conn.close();
 
-        } catch(SQLException se){
+        } catch (SQLException se) {
             se.printStackTrace();
-        } catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         } finally {
             try {
                 if (stmt != null)
                     stmt.close();
-            } catch(SQLException se2) {
+            } catch (SQLException se2) {
             }
 
             try {
-                if(conn!=null)
+                if (conn != null)
                     conn.close();
-            } catch(SQLException se){
+            } catch (SQLException se) {
                 se.printStackTrace();
             }
         }

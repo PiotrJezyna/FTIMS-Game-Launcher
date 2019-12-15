@@ -16,10 +16,9 @@ public class ReviewCard {
 
     // Database
     static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
-    static final String DB_URL = "jdbc:mysql://remotemysql.com/5VexXpVWzU";
-
-    static final String USER = "5VexXpVWzU";
-    static final String PASS = "apQqybLdoW";
+    static final String DB_URL = "jdbc:mysql://localhost:3306/games?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+    static final String USER = "root";
+    static final String PASS = "Samsung5889!";
 
     private void writeReviewToDatabase(Review review) throws IOException, ClassNotFoundException {
         Class.forName(JDBC_DRIVER);
@@ -80,6 +79,27 @@ public class ReviewCard {
 
     private void notifyAuthor() {
     }
+    @FXML
+    private void readReview() throws ClassNotFoundException, SQLException  {
+        Class.forName(JDBC_DRIVER);
+        Connection connection;
+        Statement statement;
+
+        connection = DriverManager.getConnection(DB_URL, USER, PASS);
+        statement = connection.createStatement();
+        String sql = "SELECT id, UserID, GameID, Comment from Opinions";
+        ResultSet resultSet = statement.executeQuery(sql);
+
+        while (resultSet.next()){
+            int id = resultSet.getInt("id");
+            int userID = resultSet.getInt("UserID");
+            int gameID = resultSet.getInt("GameID");
+            String comment = resultSet.getString("Comment");
+
+            labelReview.setText(" id: " + Integer.toString(id) + " UserID: " + Integer.toString(userID) + " GameID: " +  Integer.toString(gameID) + " user's comment  " + comment);
+        }
+
+    }
 
     private User loggedUser;
     private Game game;
@@ -108,4 +128,5 @@ public class ReviewCard {
     @FXML private Button buttonAddReview;
     @FXML private Label labelStatus;
     @FXML private Label labelRating;
+    @FXML private Label labelReview;
 }
