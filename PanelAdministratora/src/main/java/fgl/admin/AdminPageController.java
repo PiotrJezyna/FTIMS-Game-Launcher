@@ -7,9 +7,12 @@ import fgl.userPanel.UserType;
 import javafx.application.Application;
 //import javafx.event.ActionEvent;
 //import javafx.event.EventHandler;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ListView;
+import javafx.scene.control.MenuItem;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -22,6 +25,10 @@ public class AdminPageController extends Application {
   private User loggedUser;
   private ModerationPanel panel;
 
+  @FXML private ListView<User> usersListView;
+  @FXML private ListView<Game> reportedGamesListView;
+  @FXML private MenuItem refreshMenuItem;
+
   public static void main( String[] args ) {
     launch( args );
   }
@@ -31,7 +38,7 @@ public class AdminPageController extends Application {
 
     // TODO logged user handler
     loggedUser = new User(
-            ID, "Jaro", "S", "", "", UserType.ADMINISTRATOR, false );
+            ID, "Jaro", "S", "", "", UserType.MODERATOR, false );
 
     if ( loggedUser.getType() == UserType.ADMINISTRATOR ) {
       panel = new AdministrationPanel();
