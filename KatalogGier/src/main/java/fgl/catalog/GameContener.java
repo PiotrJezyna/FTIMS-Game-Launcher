@@ -1,7 +1,9 @@
 package fgl.catalog;
 
 import fgl.product.Game;
+import fgl.product.GameDAO;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +19,15 @@ public class GameContener {
     private static String searchPhrase = new String();
 
     public static void main( String[] args ) {
-        Long a = new Long(3);
+
+        GameDAO games = new GameDAO();
+        try {
+            allGames = games.getAll();
+            System.out.println(games.getAll().get(0).getTitle());
+        }
+        catch(SQLException e) {};
+
+        /*Long a = new Long(3);
         String s = new String();
         Game game1 = new Game(new Long(3), new String("DMC"), new String("slasher"), s);
         Game game2 = new Game(new Long(3), new String("TWAU"), new String("story"), s);
@@ -28,7 +38,7 @@ public class GameContener {
         allGames.add(game3);
 
         tags.add(new String("story"));
-        tags.add(new String("slasher"));
+        tags.add(new String("slasher"));*/
         updateDisplayedGames();
 
         for (Game game: displayedGames) {
