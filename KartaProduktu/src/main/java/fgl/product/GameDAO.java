@@ -32,7 +32,7 @@ public class GameDAO extends AbstractDao<Game> {
             Integer userCount = rs.getInt("UserCount");
             boolean isReported = rs.getBoolean("IsReported");
 
-            return new Game(id, userId, title, tags, path, userCount, isReported);
+            return new Game(id, userId, title, tags, path, null, null, userCount, isReported);
 
         } catch ( SQLException e ) {
 
@@ -57,7 +57,7 @@ public class GameDAO extends AbstractDao<Game> {
             stmt = conn.createStatement();
             rs = stmt.executeQuery( query );
 
-            List<Game> users = new ArrayList<Game>();
+            List<Game> games = new ArrayList<Game>();
 
             while ( rs.next() ) {
 
@@ -69,11 +69,11 @@ public class GameDAO extends AbstractDao<Game> {
                 Integer userCount = rs.getInt("UserCount");
                 boolean isReported = rs.getBoolean("IsReported");
 
-                Game game = new Game(gameId, userId, title, tags, path, userCount, isReported);
-                users.add( game );
+                Game game = new Game(gameId, userId, title, tags, path, null, null, userCount, isReported);
+                games.add( game );
             }
 
-            return users;
+            return games;
 
         } catch ( SQLException e ) {
 
