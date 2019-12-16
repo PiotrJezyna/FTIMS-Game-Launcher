@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.sql.*;
@@ -87,7 +88,7 @@ public class ReviewCard {
 
         connection = DriverManager.getConnection(DB_URL, USER, PASS);
         statement = connection.createStatement();
-        String sql = "SELECT id, UserID, GameID, Comment, Rate from Opinions";
+        String sql = "SELECT * from Opinions";
         ResultSet resultSet = statement.executeQuery(sql);
 
         while (resultSet.next()){
@@ -97,7 +98,10 @@ public class ReviewCard {
             int rate = resultSet.getInt("Rate");
             String comment = resultSet.getString("Comment");
 
-            labelReview.setText(" id: " + Integer.toString(id) + " UserID: " + Integer.toString(userID) + " GameID: " +  Integer.toString(gameID) + " user's rate:  " + rate + "user's comemnt:" + comment);
+            for (int i = 0; i < 1; i++){
+                boxReviews.getChildren().add(new Label("id: " + Integer.toString(id) + " UserID: " + Integer.toString(userID) + " GameID: " +  Integer.toString(gameID) + " user's rate:  " + rate + " user's commentt: " + comment));
+            }
+
         }
 
     }
@@ -130,4 +134,5 @@ public class ReviewCard {
     @FXML private Label labelStatus;
     @FXML private Label labelRating;
     @FXML private Label labelReview;
+    @FXML private VBox boxReviews;
 }

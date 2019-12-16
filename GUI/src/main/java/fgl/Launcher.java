@@ -24,7 +24,7 @@ public class Launcher extends Application {
     static final String DB_URL = "jdbc:mysql://remotemysql.com/5VexXpVWzU";
 
     static final String USER = "5VexXpVWzU";
-    static final String PASS = "apQqybLdoW!";
+    static final String PASS = "apQqybLdoW";
 
     @Override
     public void start(Stage primaryStage) throws IOException {
