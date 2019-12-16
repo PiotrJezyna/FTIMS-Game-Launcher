@@ -1,13 +1,12 @@
 package fgl.product;
 
-import java.awt.*;
 import java.sql.SQLException;
 import java.util.List;
 
 public class GameManager {
 
-    GameDAO dao;
-    List <Game> games;
+    public GameDAO dao;
+    public List <Game> games;
 
     public GameManager() throws SQLException {
 
@@ -19,11 +18,11 @@ public class GameManager {
     {
         for(int i = 0; i < games.size(); i++)
         {
-            if(games.get(i).getTitle() == title)
-            {
+            if(games.get(i).getTitle().equals(title)) {
                 return games.get(i);
             }
         }
+
         System.out.println("Game " + title + "not found");
         return null;
     }
@@ -47,45 +46,76 @@ public class GameManager {
     }
 
     public void RemoveProductCard(String title) throws SQLException {
+
         for(int i = 0; i < games.size(); i++)
         {
             if(games.get(i).getTitle().equals(title))
             {
-                games.remove(i);
                 dao.delete(games.get(i));
+                games.remove(i);
+
                 System.out.println("Game " + title + " successfully deleted.");
+                break;
             }
+
+            if (i == games.size() - 1)
+                System.out.println("Game " + title + "not found. Game wasn't deleted");
         }
-        System.out.println("Game " + title + "not found. Game wasn't deleted");
     }
 
     public void CreateProductCard(Long userId, String title, String tags, String path, String genre, String description) throws SQLException
     {
-        Game game = new Game(userId, title, tags, path, genre, description);
-        games.add(game);
-        dao.insert(game);
+        boolean canCreate = true;
+
+        for(int i = 0; i < games.size(); i++)
+            if(games.get(i).getTitle().equals(title))
+                canCreate = false;
+
+        if(canCreate)
+        {
+            Game game = new Game(userId, title, tags, path, genre, description);
+
+            games.add(game);
+
+            dao.insert(game);
+        }
+        else
+        {
+            System.out.println("Game with this title \"" + title + "\" already exists!");
+        }
     }
 
     // this should be written better, some overrides
-    public void EditProductCard(Long userId, String title, String tags, String path, String genre, String description) throws SQLException
+    public void EditProductCard(String title, String newTitle, String tags, String path, String genre, String description) throws SQLException
     {
         for(int i = 0; i < games.size(); i++)
         {
             if(games.get(i).getTitle().equals(title))
             {
-                //games.get(i).setUserCount(userId); ???
+                if(newTitle != null)
+                    games.get(i).setTitle(newTitle);
 
-                //dao.delete(games.get(i));
-                games.get(i).setTitle(title);
-                games.get(i).setTags(tags);
-                games.get(i).setPath(path);
-                games.get(i).setGenre(genre);
-                games.get(i).setDescription(description);
+                if(tags != null)
+                    games.get(i).setTags(tags);
+
+                if(path != null)
+                    games.get(i).setPath(path);
+
+                if(genre != null)
+                    games.get(i).setGenre(genre);
+
+                if(description != null)
+                    games.get(i).setDescription(description);
+
                 dao.update(games.get(i));
+
                 System.out.println("Game " + title + "successfully edited and saved.");
+                break;
             }
+
+            if(i == games.size() - 1)
+                System.out.println("Game " + title + "not found");
         }
-        System.out.println("Game " + title + "not found");
     }
 
     // ---according to the class scheme from the presentation--
