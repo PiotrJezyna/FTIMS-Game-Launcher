@@ -16,9 +16,9 @@ public class ReviewCard {
 
     // Database
     static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
-    static final String DB_URL = "jdbc:mysql://localhost:3306/games?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
-    static final String USER = "root";
-    static final String PASS = "Samsung5889!";
+    static final String DB_URL = "jdbc:mysql://remotemysql.com/5VexXpVWzU";
+    static final String USER = "5VexXpVWzU";
+    static final String PASS = "apQqybLdoW";
 
     private void writeReviewToDatabase(Review review) throws IOException, ClassNotFoundException {
         Class.forName(JDBC_DRIVER);
