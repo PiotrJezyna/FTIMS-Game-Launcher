@@ -14,7 +14,9 @@ public class UserContener  implements Cloneable {
     private static List<User> displayedUsers= new ArrayList<User>();
 
     public void updateDisplayedUsers() throws SQLException {
-        for (User user: allUsers.getAll()) {
+        List<User> users = allUsers.getAll();
+
+        for (User user: users) {
 
 
             boolean searchnameFlag =false;
@@ -24,11 +26,10 @@ public class UserContener  implements Cloneable {
 
             if (!searchPhrase.isEmpty())
             {
-                searchnameFlag = (user.getName().equals(searchPhrase));
-                searchUsernameFlag = (user.getUsername().equals(searchPhrase));
-                searchSurnameFlag = (user.getSurname().equals(searchPhrase));
-                searchEmailFlag = (user.getEmail().equals(searchPhrase));
-
+                searchnameFlag = (user.getName() != null) && (user.getName().equals(searchPhrase));
+                searchUsernameFlag = (user.getUsername() != null) && (user.getUsername().equals(searchPhrase));
+                searchSurnameFlag = (user.getSurname() != null) && (user.getSurname().equals(searchPhrase));
+                searchEmailFlag = (user.getEmail() != null) && (user.getEmail().equals(searchPhrase));
             }
 
 
@@ -57,7 +58,7 @@ public class UserContener  implements Cloneable {
     public static void main(String[] args ) throws SQLException, CloneNotSupportedException {
 
         UserContener k1= new UserContener();
-        k1.setSearchPhrase(new String("Jakub"));
+        k1.setSearchPhrase(new String("Piotr"));
 
 
         k1.updateDisplayedUsers();
