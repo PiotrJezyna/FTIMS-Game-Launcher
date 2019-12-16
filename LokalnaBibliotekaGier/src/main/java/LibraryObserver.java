@@ -1,4 +1,4 @@
 public interface LibraryObserver {
     void onGameStart();
-    void onGameClosed();
+    void onGameClosed(int userID) throws ClassNotFoundException;
 }
