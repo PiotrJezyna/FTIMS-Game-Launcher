@@ -1,14 +1,19 @@
 package fgl.product;
-package fgl.userPanel;
+
 import java.awt.*;
 import java.sql.SQLException;
 import java.util.List;
 
-
 public class GameManager {
 
-    GameDAO dao = new GameDAO();
-    List <Game> games = dao.getAll();
+    GameDAO dao;
+    List <Game> games;
+
+    public GameManager() throws SQLException {
+
+        dao = new GameDAO();
+        games = dao.getAll();
+    }
 
     public Game GetProductCard(String title)
     {
@@ -27,23 +32,24 @@ public class GameManager {
     {
         for(int i = 0; i < games.size(); i++)
         {
-            if(games.get(i).getTitle() == title)
+            if(games.get(i).getTitle().equals(title))
             {
                 System.out.println("Game: " + games.get(i).getTitle());
                 System.out.println("Author: " + games.get(i).getUserId());
                 System.out.println("Tags: " + games.get(i).getTags());
                 System.out.println("Path: " + games.get(i).getPath());
-                System.out.println("Genre: " + games.get(i).getGenre());
-                System.out.println("Description: " + games.get(i).getDescription());
+                //System.out.println("Genre: " + games.get(i).getGenre());
+                //System.out.println("Description: " + games.get(i).getDescription());
+
+                break;
             }
         }
     }
 
-    public void RemoveProductCard(String title, User user)
-    {
+    public void RemoveProductCard(String title) throws SQLException {
         for(int i = 0; i < games.size(); i++)
         {
-            if(games.get(i).getTitle() == title)
+            if(games.get(i).getTitle().equals(title))
             {
                 games.remove(i);
                 dao.delete(games.get(i));
@@ -53,7 +59,7 @@ public class GameManager {
         System.out.println("Game " + title + "not found. Game wasn't deleted");
     }
 
-    public void CreateProductCard(Long userId, String title, String tags, String path, String genre, String description)
+    public void CreateProductCard(Long userId, String title, String tags, String path, String genre, String description) throws SQLException
     {
         Game game = new Game(userId, title, tags, path, genre, description);
         games.add(game);
@@ -61,15 +67,15 @@ public class GameManager {
     }
 
     // this should be written better, some overrides
-    public void EditProductCard(Long userId, String title, String tags, String path, String genre, String description)
+    public void EditProductCard(Long userId, String title, String tags, String path, String genre, String description) throws SQLException
     {
         for(int i = 0; i < games.size(); i++)
         {
-            if(games.get(i).getTitle() == title)
+            if(games.get(i).getTitle().equals(title))
             {
                 //games.get(i).setUserCount(userId); ???
 
-                dao.delete(games.get(i));
+                //dao.delete(games.get(i));
                 games.get(i).setTitle(title);
                 games.get(i).setTags(tags);
                 games.get(i).setPath(path);
