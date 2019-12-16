@@ -87,16 +87,17 @@ public class ReviewCard {
 
         connection = DriverManager.getConnection(DB_URL, USER, PASS);
         statement = connection.createStatement();
-        String sql = "SELECT id, UserID, GameID, Comment from Opinions";
+        String sql = "SELECT id, UserID, GameID, Comment, Rate from Opinions";
         ResultSet resultSet = statement.executeQuery(sql);
 
         while (resultSet.next()){
             int id = resultSet.getInt("id");
             int userID = resultSet.getInt("UserID");
             int gameID = resultSet.getInt("GameID");
+            int rate = resultSet.getInt("Rate");
             String comment = resultSet.getString("Comment");
 
-            labelReview.setText(" id: " + Integer.toString(id) + " UserID: " + Integer.toString(userID) + " GameID: " +  Integer.toString(gameID) + " user's comment  " + comment);
+            labelReview.setText(" id: " + Integer.toString(id) + " UserID: " + Integer.toString(userID) + " GameID: " +  Integer.toString(gameID) + " user's rate:  " + rate + "user's comemnt:" + comment);
         }
 
     }
