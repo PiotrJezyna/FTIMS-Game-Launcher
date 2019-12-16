@@ -14,35 +14,28 @@ public class UserDAO extends AbstractDao<User> {
         connectSQL();
 
         try {
+            String query = "SELECT Name, Surname, Username, Email, Type, " +
+                    "IsBlocked FROM Users WHERE id = %s";
 
-            String query = "SELECT Name, Surname, Username, Email, Type, IsBlocked FROM Users WHERE id = %s";
-            query = String.format(query, id);
-            System.out.println(query);
+            query = String.format( query, id );
+            System.out.println( query );
             stmt = conn.createStatement();
             rs = stmt.executeQuery( query );
 
             rs.next();
 
-            String first = rs.getString("Name");
-            String last = rs.getString("Surname");
-            String username = rs.getString("Username");
-            String email = rs.getString("Email");
-            String type = rs.getString( "Type" );
-            UserType userType;
-            if ( type.contentEquals(UserType.ADMINISTRATOR.name) ) {
-                userType = UserType.ADMINISTRATOR;
-            } else if ( type.contentEquals(UserType.MODERATOR.name) ) {
-                userType = UserType.MODERATOR;
-            } else {
-                userType = UserType.USER;
-            }
-            boolean isBlocked = rs.getBoolean("IsBlocked");
+            String first = rs.getString( "Name" );
+            String last = rs.getString( "Surname" );
+            String username = rs.getString( "Username" );
+            String email = rs.getString( "Email" );
+            UserType userType = UserType.valueOf( rs.getString( "Type" ) );
+            boolean isBlocked = rs.getBoolean( "IsBlocked" );
 
-            return new User(id, first, last, username, email, userType, isBlocked);
+            return new User( id, first, last, username, email, userType, isBlocked );
 
         } catch ( SQLException e ) {
 
-            throw new SQLException(e.getMessage());
+            throw new SQLException( e.getMessage() );
 
         } finally {
 
@@ -58,12 +51,12 @@ public class UserDAO extends AbstractDao<User> {
         connectSQL();
 
         try {
-
-            String query = "SELECT id, Name, Surname, Username, Email, Type, IsBlocked FROM Users";
+            String query = "SELECT id, Name, Surname, Username, Email, " +
+                    "Type, IsBlocked FROM Users";
             stmt = conn.createStatement();
             rs = stmt.executeQuery( query );
 
-            List<User> users = new ArrayList<User>();
+            List<User> users = new ArrayList<>();
 
             while ( rs.next() ) {
                 Long id  = rs.getLong( "id" );
@@ -71,29 +64,19 @@ public class UserDAO extends AbstractDao<User> {
                 String last = rs.getString( "Surname" );
                 String username = rs.getString( "Username" );
                 String email = rs.getString( "Email" );
-                String type = rs.getString( "Type" );
-                UserType userType;
-                if ( type.contentEquals(UserType.ADMINISTRATOR.name) ) {
-                    userType = UserType.ADMINISTRATOR;
-                } else if ( type.contentEquals(UserType.MODERATOR.name) ) {
-                    userType = UserType.MODERATOR;
-                } else {
-                    userType = UserType.USER;
-                }
-                boolean isBlocked = rs.getBoolean("IsBlocked");
+                UserType userType = UserType.valueOf( rs.getString( "Type" ) );
+                boolean isBlocked = rs.getBoolean( "IsBlocked" );
 
-                User userSQL = new User(id, first, last, username, email, userType, isBlocked);
+                User userSQL = new User( id, first, last, username,
+                        email, userType, isBlocked );
                 users.add( userSQL );
             }
 
             return users;
 
         } catch ( SQLException e ) {
-
-            throw new SQLException(e.getMessage());
-
+            throw new SQLException( e.getMessage() );
         } finally {
-
             rs.close();
             stmt.close();
             disconnectSQL();
@@ -105,22 +88,17 @@ public class UserDAO extends AbstractDao<User> {
 
         connectSQL();
 
-        String query = "INSERT INTO Users(Username, Email) VALUES ('%s', '%s')";
-        query = String.format(query, user.getUsername(), user.getEmail());
+        String query = "INSERT INTO Users(Username, Email) VALUES ( '%s', '%s' )";
+        query = String.format( query, user.getUsername(), user.getEmail() );
 
         System.out.println( query );
 
         try {
-
             stmt = conn.createStatement();
             stmt.executeUpdate( query );
-
         } catch ( SQLException e ) {
-
-            throw new SQLException(e.getMessage());
-
+            throw new SQLException( e.getMessage() );
         } finally {
-
             disconnectSQL();
         }
     }
@@ -141,23 +119,19 @@ public class UserDAO extends AbstractDao<User> {
                 "IsBlocked = '%s' " +
                 "WHERE ID = " + user.getId();
 
-        query = String.format(query, user.getName(), user.getSurname(), user.getUsername(), user.getEmail(), user.getType(), user.isBlocked());
-        query = query.replace("false", "0");
-        query = query.replace("true", "1");
+        query = String.format( query, user.getName(), user.getSurname(),
+                user.getUsername(), user.getEmail(), user.getType(), user.isBlocked() );
+        query = query.replace( "false", "0" );
+        query = query.replace( "true", "1" );
 
         System.out.println( query );
 
         try {
-
             stmt = conn.createStatement();
             stmt.executeUpdate( query );
-
         } catch ( SQLException e ) {
-
-            throw new SQLException(e.getMessage());
-
+            throw new SQLException( e.getMessage() );
         } finally {
-
             disconnectSQL();
         }
     }
@@ -168,21 +142,16 @@ public class UserDAO extends AbstractDao<User> {
         connectSQL();
 
         String query = "DELETE FROM Users WHERE ID = %s";
-        query = String.format(query, user.getId());
+        query = String.format( query, user.getId() );
 
         System.out.println( query );
 
         try {
-
             stmt = conn.createStatement();
             stmt.executeUpdate( query );
-
         } catch ( SQLException e ) {
-
-            throw new SQLException(e.getMessage());
-
+            throw new SQLException( e.getMessage() );
         } finally {
-
             disconnectSQL();
         }
     }

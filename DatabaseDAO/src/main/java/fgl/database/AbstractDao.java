@@ -11,6 +11,7 @@ import java.util.List;
 public abstract class AbstractDao<T> {
 
     static final String DB_URL = "jdbc:mysql://remotemysql.com/5VexXpVWzU";
+    static final String DRIVER = "com.mysql.cj.jdbc.Driver";
 
     static final String USER = "5VexXpVWzU";
     static final String PASS = "apQqybLdoW";
@@ -25,6 +26,13 @@ public abstract class AbstractDao<T> {
      * @throws SQLException
      */
     public void connectSQL() throws SQLException {
+
+        try {
+            Class.forName( DRIVER );
+        } catch ( ClassNotFoundException e ) {
+            e.printStackTrace();
+        }
+
         conn = DriverManager.getConnection( DB_URL, USER, PASS );
     }
 

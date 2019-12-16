@@ -5,9 +5,13 @@ public enum UserType {
   MODERATOR( "MODERATOR" ),
   USER( "USER" );
 
-  String name;
+  private String name;
 
-  private UserType(String name) {
+  UserType( String name ) {
     this.name = name;
+  }
+
+  public String getName() {
+    return name;
   }
 }
