@@ -1,49 +1,62 @@
 package fgl.catalog;
 
+import com.sun.media.sound.SF2GlobalRegion;
 import fgl.product.Game;
 import fgl.product.GameDAO;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
+import javax.swing.*;
+import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.ResourceBundle;
 
 public class GameContener {
 
-    private static List<Game> allGames = new ArrayList<Game>();
-    private static List<Game> displayedGames = new ArrayList<Game>();
+    private List<Game> allGames = new ArrayList<Game>();
+    private List<Game> displayedGames = new ArrayList<Game>();
 
 
-    private static List<String> tags = new ArrayList<String>();
-    private static int category;   // 0 - no category (display all)
-    private static int typeOfSort; // 0 - no sort
-    private static String searchPhrase = new String();
+    private List<String> tags = new ArrayList<String>();
+    private int category;   // 0 - no category (display all)
+    private int typeOfSort; // 0 - no sort
+    private String searchPhrase = new String();
 
-    public static void main( String[] args ) {
+    @FXML private ScrollPane scrollPane;
+    @FXML private VBox gamesBox;
+
+    @FXML private TextField phaseField;
+    @FXML private TextField tagsField;
+
+    public void initialize() {
+        scrollPane.setContent(gamesBox);
+        main(null);
+    }
+
+    public void main( String[] args ) {
 
         GameDAO games = new GameDAO();
         try {
             allGames = games.getAll();
-            System.out.println(games.getAll().get(0).getTitle());
         }
         catch(SQLException e) {};
 
-        /*Long a = new Long(3);
-        String s = new String();
-        Game game1 = new Game(new Long(3), new String("DMC"), new String("slasher"), s);
-        Game game2 = new Game(new Long(3), new String("TWAU"), new String("story"), s);
-        Game game3 = new Game(new Long(3), new String("GOW"), new String(), s);
-
-        allGames.add(game1);
-        allGames.add(game2);
-        allGames.add(game3);
-
-        tags.add(new String("story"));
-        tags.add(new String("slasher"));*/
         updateDisplayedGames();
-
-        for (Game game: displayedGames) {
-            System.out.println(game.getTitle());
-        }
     }
 
     public List<Game> getDisplayedGames() {
@@ -61,12 +74,14 @@ public class GameContener {
         this.typeOfSort = typeOfSort;
     }
 
-    public void setSearchPhrase(String searchPhrase) {
+    @FXML public void setSearchPhrase(String searchPhrase) {
         this.searchPhrase = searchPhrase;
     }
 
-    public static void updateDisplayedGames()
+    public void updateDisplayedGames()
     {
+        displayedGames.clear();
+
         for (Game game: allGames) {
 
             boolean categoryFlag = true;
@@ -77,13 +92,13 @@ public class GameContener {
                 categoryFlag = (game.getCategory() == category);*/
 
             if (!searchPhrase.isEmpty())
-                searchPhraseFlag = (game.getTitle().equals(searchPhrase));
+                searchPhraseFlag = (game.getTitle().contains(searchPhrase));
 
             if (!tags.isEmpty())
             {
                 tagsFlag = false;
                 for (String tag: tags) {
-                    if (game.getTags().equals(tag))
+                    if (game.getTags().contains(tag))
                     {
                         tagsFlag = true;
                         break;
@@ -93,10 +108,49 @@ public class GameContener {
 
             if (categoryFlag && searchPhraseFlag && tagsFlag)
                 displayedGames.add(game);
-
         }
-            
 
+        gamesBox.getChildren().clear();
+        System.out.println(displayedGames.size());
+        for (Game game: displayedGames) {
+
+            HBox gameBox = new HBox();
+
+            Label label = new Label(game.getTitle());
+            Button button = new Button("Open Card");
+
+            button.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    System.out.println(game.getTitle());
+                }
+            });
+
+            gameBox.getChildren().add(button);
+            gameBox.getChildren().add(label);
+
+            HBox.setMargin(button, new Insets(0, 10, 0, 10));
+            HBox.setMargin(label, new Insets(0, 10, 0, 10));
+            VBox.setMargin(gameBox, new Insets(10, 0, 5, 0));
+
+            gamesBox.getChildren().add(gameBox);
+        }
     }
 
+    @FXML void buttonOnAction(ActionEvent event) {
+
+        setSearchPhrase(phaseField.getText());
+
+        if (tagsField.getText().isEmpty() == false)
+        {
+            String[] tags = tagsField.getText().split(",");
+            setTags(Arrays.asList(tags));
+        }
+        else
+        {
+            setTags(new ArrayList<String>());
+        }
+
+        updateDisplayedGames();
+    }
 }
