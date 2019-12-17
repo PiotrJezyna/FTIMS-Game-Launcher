@@ -7,23 +7,29 @@ public class Game {
     private String title;
     private String tags;
     private String path;
+    private String genre;
+    private String description;
     private Integer userCount;
     private boolean isReported;
 
-    public Game(Long userId, String title, String tags, String path) {
+    public Game(Long userId, String title, String tags, String path, String genre, String description) {
         this.userId = userId;
         this.title = title;
         this.tags = tags;
         this.path = path;
+        this.genre = genre;
+        this.description = description;
     }
 
-    public Game(Long id, Long userId, String title, String tags, String path, Integer userCount, boolean isReported) {
+    public Game(Long id, Long userId, String title, String tags, String path, String genre, String description, Integer userCount, boolean isReported) {
 
         this.id = id;
         this.userId = userId;
         this.title = title;
         this.tags = tags;
         this.path = path;
+        this.genre = genre;
+        this.description = description;
         this.userCount = userCount;
         this.isReported = isReported;
     }
@@ -53,6 +59,16 @@ public class Game {
         return path;
     }
 
+    public String getGenre() {
+
+        return path;
+    }
+
+    public String getDescription() {
+
+        return description;
+    }
+
     public Integer getUserCount() {
 
         return userCount;
@@ -64,6 +80,7 @@ public class Game {
     }
 
     public void setTitle(String title) {
+
         this.title = title;
     }
 
@@ -77,9 +94,19 @@ public class Game {
         this.path = path;
     }
 
+    public void setDescription(String description) {
+
+        this.description = description;
+    }
+
     public void setUserCount(Integer userCount) {
 
         this.userCount = userCount;
+    }
+
+    public void setGenre(String genre) {
+
+        this.genre = genre;
     }
 
     public void setReported(boolean reported) {
