@@ -31,9 +31,9 @@ public class LauncherController {
 
     public void initialize() {
         try {
-            AnchorPane pain = FXMLLoader.load(getClass().getResource("/LoginView.fxml"));
-            loginPanel.getChildren().add(pain);
-        } catch (IOException e) {
+            AnchorPane pain = FXMLLoader.load( getClass().getResource( "/LoginView.fxml" ) );
+            loginPanel.getChildren().add( pain );
+        } catch ( IOException e ) {
             e.printStackTrace();
         }
 
@@ -42,14 +42,14 @@ public class LauncherController {
 
     public void adminButton() {
         if ( userSession.getCurrentUser() == null ) {
-            showAlert("Information", "You have to login first!");
+            showAlert( "Information", "You have to login first!" );
         } else {
 
             try {
-                adminPageController.start(paneChanger);
-            } catch (AccessDeniedException e) {
-                showAlert("Warning", "You are not prepared to enter this page!");
-            } catch (IOException e) {
+                adminPageController.start( paneChanger, userSession );
+            } catch ( AccessDeniedException e ) {
+                showAlert( "Warning", "You are not prepared to enter this page!" );
+            } catch ( IOException e ) {
                 e.printStackTrace();
             }
         }
@@ -65,13 +65,12 @@ public class LauncherController {
         } else {
             try {
                 loadedFxml = FXMLLoader.load( getClass().getResource("/CatalogCard.fxml") );
-            } catch (
-                    IOException e) {
+            } catch ( IOException e ) {
                 e.printStackTrace();
             }
 
             paneChanger.getChildren().clear();
-            paneChanger.getChildren().add(loadedFxml);
+            paneChanger.getChildren().add( loadedFxml );
         }
 
     }
@@ -82,21 +81,20 @@ public class LauncherController {
         } else {
             try {
                 loadedFxml = FXMLLoader.load( getClass().getResource("/LibraryCard.fxml") );
-            } catch (
-                    IOException e) {
+            } catch ( IOException e ) {
                 e.printStackTrace();
             }
 
             paneChanger.getChildren().clear();
-            paneChanger.getChildren().add(loadedFxml);
+            paneChanger.getChildren().add( loadedFxml );
         }
     }
 
-    private void showAlert(String title, String content) {
-        Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(content);
+    private void showAlert( String title, String content ) {
+        Alert alert = new Alert( Alert.AlertType.WARNING );
+        alert.setTitle( title );
+        alert.setHeaderText( null );
+        alert.setContentText( content );
         alert.showAndWait();
     }
 }

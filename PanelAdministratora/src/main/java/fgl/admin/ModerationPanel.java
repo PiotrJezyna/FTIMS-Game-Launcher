@@ -108,23 +108,6 @@ public class ModerationPanel {
     }
   }
 
-  // TODO JUNK move to test folder or sth
-  void test() throws InterruptedException {
-    System.out.println( "test" );
-
-//    discardReport(reportedGames.get(0));
-//    System.out.println( "zgloszenie" );
-
-//    deleteGame(reportedGames.get(0));
-//    System.out.println( "usuniecie" );
-
-//    blockUser(users.get(2));
-//    System.out.println( "zablokuj" );
-
-//    unblockUser(users.get(2));
-//    System.out.println( "odblokuj" );
-  }
-
   /**
    * Load information about all users from DB into list in this class
    *
