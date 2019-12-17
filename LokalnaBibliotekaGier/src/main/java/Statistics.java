@@ -59,7 +59,7 @@ public class Statistics implements LibraryObserver{
         stopWatch.start();
     }
 
-    public void onGameClosed(int userID) throws ClassNotFoundException {
+    public void onGameClosed(int userID, int gameID) throws ClassNotFoundException {
         stopWatch.stop();
         setGameTime(((double)stopWatch.getTime()) / 60000.0);
         Class.forName(JDBC_DRIVER);
@@ -77,5 +77,6 @@ public class Statistics implements LibraryObserver{
             e.printStackTrace();
         }
         System.out.println(((double)stopWatch.getTime()) / 60000.0);
+        stopWatch.reset();
     }
 }
