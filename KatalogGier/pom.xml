@@ -16,7 +16,16 @@
     <name>${project.artifactId}-${project.version}</name>
 
     <dependencies>
-
+        <dependency>
+            <groupId>edu.ftims</groupId>
+            <artifactId>KartaProduktu</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.ftims</groupId>
+            <artifactId>PanelUzytkownika</artifactId>
+            <version>0.0.1</version>
+        </dependency>
     </dependencies>
 
     <build>

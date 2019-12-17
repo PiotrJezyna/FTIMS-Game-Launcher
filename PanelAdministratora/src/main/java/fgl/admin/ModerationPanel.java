@@ -5,10 +5,64 @@ import fgl.product.GameDAO;
 import fgl.userPanel.User;
 import fgl.userPanel.UserDAO;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
+
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ModerationPanel {
+
+  public class UserBox extends HBox {
+    User user;
+    Label label = new Label();
+    Button button = new Button();
+
+    UserBox( User user ) {
+      super();
+
+      this.user = user;
+      label.setText( user.getUsername() );
+      label.setMaxWidth(Double.MAX_VALUE);
+      HBox.setHgrow(label, Priority.ALWAYS);
+
+      if ( user.isBlocked() ) {
+        button = new Button( "Unblock user" );
+      } else {
+        button = new Button( "Block user" );
+      }
+
+      button.setOnAction(new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+          if ( user.isBlocked() ) {
+            //TODO fix text changing after click
+            ((Button)event.getSource()).setText("Unblock user");
+            unblockUser(user);
+          } else {
+            //TODO fix text changing after click
+            ((Button)event.getSource()).setText("Block user");
+            blockUser(user);
+          }
+        }
+      });
+
+      this.getChildren().addAll(label, button);
+    }
+  }
+
   // Data
   private static final String TITLE = "Moderation Panel";
   private static final String PATH = "/ModerationPanel.fxml";
@@ -17,9 +71,16 @@ public class ModerationPanel {
   private List<User> users;
   private List<Game> reportedGames;
 
+  @FXML
+  private ListView<UserBox> usersListView;
+
   public ModerationPanel() {
     userDAO = new UserDAO();
     gameDAO = new GameDAO();
+  }
+
+  @FXML
+  void initialize(){
     refresh();
   }
 
@@ -79,6 +140,16 @@ public class ModerationPanel {
       e.printStackTrace();
       return false;
     }
+
+    List<UserBox> list = new ArrayList<>();
+
+    for (User user: users) {
+      list.add(new UserBox( user ));
+    }
+
+    ObservableList<UserBox> myObservableList = FXCollections.observableList( list );
+    usersListView.setItems( myObservableList );
+
     return true;
   }
 

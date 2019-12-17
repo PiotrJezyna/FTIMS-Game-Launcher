@@ -7,31 +7,40 @@ import fgl.userPanel.UserType;
 import javafx.application.Application;
 //import javafx.event.ActionEvent;
 //import javafx.event.EventHandler;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ListView;
+import javafx.scene.control.MenuItem;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.nio.file.AccessDeniedException;
 
-public class AdminPageController extends Application {
+public class AdminPageController {
 
   // TODO get rid of this ID
   public static final long ID = 4L;
   private User loggedUser;
   private ModerationPanel panel;
 
-  public static void main( String[] args ) {
-    launch( args );
-  }
+  @FXML private ListView<User> usersListView;
+  @FXML private ListView<Game> reportedGamesListView;
+  @FXML private MenuItem refreshMenuItem;
 
-  @Override
-  public void start( Stage primaryStage ) throws IOException {
+  /*public static void main( String[] args ) {
+    launch( args );
+  }*/
+
+  //@Override
+  public void start( AnchorPane stage ) throws IOException {
 
     // TODO logged user handler
     loggedUser = new User(
-            ID, "Jaro", "S", "", "", UserType.ADMINISTRATOR, false );
+            ID, "Jaro", "S", "", "", UserType.MODERATOR, false );
 
     if ( loggedUser.getType() == UserType.ADMINISTRATOR ) {
       panel = new AdministrationPanel();
@@ -47,11 +56,9 @@ public class AdminPageController extends Application {
       e.printStackTrace();
     }
 
-    Parent root = FXMLLoader.load( getClass().getResource( panel.getPath() ) );
-
-    primaryStage.setTitle( panel.getTitle() );
-    primaryStage.setScene( new Scene( root ) );
-    primaryStage.show();
+    AnchorPane test = FXMLLoader.load( getClass().getResource( panel.getPath() ) );
+    stage.getChildren().clear();
+    stage.getChildren().add(test);
   }
 
   public User getLoggedUser() {

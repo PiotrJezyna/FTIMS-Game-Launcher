@@ -1,16 +1,30 @@
 package fgl.product;
 
+import javafx.fxml.FXML;
+import javafx.scene.control.Label;
+
+import java.awt.dnd.DragGestureEvent;
 import java.sql.SQLException;
 import java.util.List;
+
+import fgl.userPanel.UserDAO;
 
 public class GameManager {
 
     public GameDAO dao;
+    public UserDAO userDAO;
     public List <Game> games;
+
+    @FXML private Label gameTitle;
+    @FXML private Label gameAuthor;
+    @FXML private Label gameTags;
+    @FXML private Label gameUserCount;
 
     public GameManager() throws SQLException {
 
         dao = new GameDAO();
+        userDAO = new UserDAO();
+
         games = dao.getAll();
     }
 
@@ -27,12 +41,19 @@ public class GameManager {
         return null;
     }
 
-    public void ShowProductCard(String title)
-    {
+    public void ShowProductCard(String title) throws SQLException {
+
         for(int i = 0; i < games.size(); i++)
         {
             if(games.get(i).getTitle().equals(title))
             {
+                String author = userDAO.get(games.get(i).getUserId()).getName();
+
+                gameTitle.setText(games.get(i).getTitle());
+                gameTags.setText(games.get(i).getTags());
+                gameAuthor.setText(author);
+                gameUserCount.setText(games.get(i).getUserCount().toString());
+
                 System.out.println("Game: " + games.get(i).getTitle());
                 System.out.println("Author: " + games.get(i).getUserId());
                 System.out.println("Tags: " + games.get(i).getTags());
