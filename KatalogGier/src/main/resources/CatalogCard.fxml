@@ -20,6 +20,5 @@
       <Button layoutX="489.0" layoutY="30.0" mnemonicParsing="false" onAction="#buttonOnAction" text="Search" />
       <Label layoutX="25.0" layoutY="34.0" text="Title:" />
       <Label layoutX="247.0" layoutY="34.0" text="Tags:" />
-      <AnchorPane fx:id="productCard" disable="true" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: white;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
    </children>
 </AnchorPane>

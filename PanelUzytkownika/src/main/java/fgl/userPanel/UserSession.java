@@ -3,16 +3,17 @@ package fgl.userPanel;
 public class UserSession {
     private User currentUser;
 
-    public UserSession(User currentUser) {
+    UserSession() {
+
+    }
+
+    UserSession(User currentUser) {
         this.currentUser = currentUser;
     }
 
-    private void startUserSession(String userName) {
 
-    }
-
-    private void closeUserSession() {
-
+    void setCurrentUser(User user) {
+        currentUser = user;
     }
 
     public User getCurrentUser() {

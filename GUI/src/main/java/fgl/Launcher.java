@@ -21,6 +21,5 @@ public class Launcher extends Application {
         primaryStage.setTitle("FTIMS Game Launcher");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
-
     }
 }

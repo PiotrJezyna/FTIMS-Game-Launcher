@@ -34,7 +34,6 @@ public class GameContener {
     private int typeOfSort; // 0 - no sort
     private String searchPhrase = new String();
 
-    @FXML private AnchorPane productCard;
     @FXML private AnchorPane root;
 
     @FXML private ScrollPane scrollPane;

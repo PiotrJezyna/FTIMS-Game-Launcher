@@ -7,7 +7,7 @@ public class Login {
     private String email;
     private String password;
     private UserDAO dao = new UserDAO();
-    private static UserSession userSession;
+    public static UserSession userSession = new UserSession();
 
     public boolean validate(String email, String username) throws SQLException {
         List<User> allUsers = dao.getAll();
@@ -15,8 +15,7 @@ public class Login {
         boolean checkFlag = false;
         for (int i = 0; i < allUsers.size(); i++) {
             if (email.equals(allUsers.get(i).getEmail()) && username.equals(allUsers.get(i).getUsername())) {
-                UserSession userSessionBegan = new UserSession(allUsers.get(i));
-                userSession = userSessionBegan;
+                userSession.setCurrentUser(allUsers.get(i));
                 System.out.println("Successfully logged in");
                 checkFlag = true;
             }
