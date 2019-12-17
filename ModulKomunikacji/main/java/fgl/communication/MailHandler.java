@@ -15,7 +15,7 @@ import java.util.Scanner;
 public class MailHandler {
     private static final Long ID = 4L;
 
-    public static void sendMail(User to, String pathToTemplate) {
+    public static void sendMail(User to, String type) {
         Properties props = new Properties();
         props.put("mail.smtp.host", "smtp.gmail.com");
         props.put("mail.smtp.socketFactory.port", "465");
@@ -27,8 +27,8 @@ public class MailHandler {
         Session session = Session.getDefaultInstance(props,
                 new javax.mail.Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
-                        String email = "", password = "";
-                        File file = new File(getClass().getClassLoader().getResource("password.txt").getFile());
+                        String email = "ftims.game.launcher@gmail.com", password = "W6j8Vm$nx@";
+                        /*File file = new File(getClass().getClassLoader().getResource("password.txt").getFile());
                         try {
                             Scanner sc = new Scanner(file);
                             sc.useDelimiter("\n");
@@ -37,7 +37,7 @@ public class MailHandler {
 
                         } catch (FileNotFoundException e) {
                             e.printStackTrace();
-                        }
+                        }*/
 
                         return new PasswordAuthentication(email,password);
                     }
@@ -49,9 +49,31 @@ public class MailHandler {
             message.setFrom(new InternetAddress("ftims.game.launcher@gmail.com"));
             message.setRecipients(Message.RecipientType.TO,
                     InternetAddress.parse(to.getEmail()));
-            message.setSubject("Testing Subject");
-            message.setText("Hello this is not spam," +
-                    "\n\n This is a JavaMail test...!");
+
+            if(type.compareTo("block") == 0)
+            {
+                message.setSubject( "Account Blocked" );
+                message.setText( "Hello " + to.getUsername() + "," +
+                        "\n\n Your accont on Ftims Game Luncher has been blocked." +
+                        "\n For further informations please contact us via email adress: ftims.game.launcher@gmail.com" +
+                        "\n\n Sincerly," +
+                        "\n Ftims Game Luncher Team" );
+            }
+            else if(type.compareTo("unblock") == 0)
+            {
+                message.setSubject( "Account Unblocked" );
+                message.setText( "Hello " + to.getUsername() + "," +
+                        "\n\n Your accont on Ftims Game Luncher has been unblocked." +
+                        "\n For further informations please contact us via email adress: ftims.game.launcher@gmail.com" +
+                        "\n\n Sincerly," +
+                        "\n Ftims Game Luncher Team" );
+            }
+            else
+            {
+                message.setSubject("Testing Subject");
+                message.setText("Hello this is not spam," +
+                        "\n\n This is a JavaMail test...!");
+            }
 
             Transport.send(message);
 
@@ -62,7 +84,7 @@ public class MailHandler {
     }
 
     public static void main(String[] args) {
-        MailHandler.sendMail(new User (ID, "Jaro", "S", "sucharek69", "jedrak32@gmail.com", UserType.ADMINISTRATOR, false ), "empty path");
+        MailHandler.sendMail(new User (ID, "Bożena", "Borowska", "bb", "bozena.borowska@p.lodz.pl", UserType.USER, false ), "empty path");
     }
 }
 

@@ -1,5 +1,6 @@
 package fgl.admin;
 
+import fgl.communication.MailHandler;
 import fgl.product.Game;
 import fgl.product.GameDAO;
 import fgl.userPanel.User;
@@ -41,17 +42,17 @@ public class ModerationPanel {
         button = new Button( "Block user" );
       }
 
-      button.setOnAction(new EventHandler<ActionEvent>() {
+      button.setOnAction( new EventHandler<ActionEvent>() {
         @Override
-        public void handle(ActionEvent event) {
+        public void handle( ActionEvent event ) {
           if ( user.isBlocked() ) {
-            //TODO fix text changing after click
-            ((Button)event.getSource()).setText("Unblock user");
-            unblockUser(user);
+            unblockUser( user );
+            button.setText( "Block user" );
+            MailHandler.sendMail( user, "unblock" );
           } else {
-            //TODO fix text changing after click
-            ((Button)event.getSource()).setText("Block user");
-            blockUser(user);
+            blockUser( user );
+            button.setText( "Unblock user" );
+            MailHandler.sendMail( user, "block" );
           }
         }
       });
