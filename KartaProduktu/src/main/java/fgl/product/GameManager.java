@@ -19,6 +19,8 @@ public class GameManager {
     public UserDAO userDAO;
     public List <Game> games;
 
+    private Game currentGame;
+
     @FXML private AnchorPane root;
 
     @FXML private Label gameTitle;
@@ -49,6 +51,8 @@ public class GameManager {
 
     public void ShowProductCard(Game game) throws SQLException {
 
+        currentGame = game;
+
         String author = userDAO.get(game.getUserId()).getName();
 
         gameTitle.setText(game.getTitle());
@@ -70,6 +74,8 @@ public class GameManager {
         {
             if(games.get(i).getTitle().equals(title))
             {
+                currentGame = games.get(i);
+
                 String author = userDAO.get(games.get(i).getUserId()).getName();
 
                 gameTitle.setText(games.get(i).getTitle());
@@ -94,6 +100,7 @@ public class GameManager {
 
         root.getChildren().clear();
         root.getChildren().add(loader.load());
+        ((ReviewCard)loader.getController()).setGame(currentGame.getId());
     }
 
     public void RemoveProductCard(String title) throws SQLException {

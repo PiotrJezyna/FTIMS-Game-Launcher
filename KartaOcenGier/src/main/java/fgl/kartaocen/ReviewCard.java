@@ -21,10 +21,14 @@ public class ReviewCard {
     static final String USER = "5VexXpVWzU";
     static final String PASS = "apQqybLdoW";
 
-    private User loggedUser;
-    private Game game;
+    private Long loggedUser = 1L;
+    private Long game;
     private List<Review> reviews;
     private int rating;
+
+    public void setGame(Long id) {
+        this.game = id;
+    }
 
     private void writeReviewToDatabase(Review review) throws IOException, ClassNotFoundException {
         Class.forName(JDBC_DRIVER);
@@ -35,8 +39,8 @@ public class ReviewCard {
                              "VALUES (?, ?, ?, ?, ?, ?)")) {
 
             // Construct insert statement
-            statement.setInt(1, review.getUser().id);
-            statement.setInt(2, review.getGame().id);
+            statement.setLong(1, loggedUser);
+            statement.setLong(2, game);
             statement.setDate(3, new java.sql.Date(Calendar.getInstance().getTime().getTime()));
             statement.setString(4, textAreaReview.getText());
             statement.setObject(5, null);
@@ -61,22 +65,15 @@ public class ReviewCard {
     public void handleEvents() {
     }
 
-    public double getAverageRating(Game game) {
-        return 0.0;
-    }
+    //public double getAverageRating(Game game) {
+    //    return 0.0;
+    //}
 
     @FXML
     private void addReview() throws IOException, ClassNotFoundException {
-        // TODO: Change this to actual User and Game passed from the app
-        // Prepare test objects
-        User testUser = new User();
-        testUser.id = 1;
-        Game testGame = new Game();
-        testGame.id = 2;
-
         // Create review
         Review review = new Review(textAreaReview.getText(),
-                rating, null, null, testGame, testUser);
+                rating, null, null, game, loggedUser);
         writeReviewToDatabase(review);
     }
 
@@ -104,7 +101,9 @@ public class ReviewCard {
             String comment = resultSet.getString("Comment");
 
             for (int i = 0; i < 1; i++){
-                boxReviews.getChildren().add(new Label("id: " + Integer.toString(id) + " UserID: " + Integer.toString(userID) + " GameID: " +  Integer.toString(gameID) + " user's rate:  " + rate + " user's commentt: " + comment));
+                if ((long)gameID == game) {
+                    boxReviews.getChildren().add(new Label("id: " + Integer.toString(id) + " UserID: " + Integer.toString(userID) + " GameID: " +  Integer.toString(gameID) + " user's rate:  " + rate + " user's commentt: " + comment));
+                }
             }
 
         }
