@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<GridPane alignment="center" hgap="10" vgap="10" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kartaocen.ReviewCard">
+   <children>
+      <Label fx:id="labelGameTitle" text="Game title" />
+       <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.rowIndex="1">
+         <children>
+            <Button fx:id="buttonRating1" mnemonicParsing="false" onAction="#setRating1" text="1" />
+            <Button fx:id="buttonRating2" mnemonicParsing="false" onAction="#setRating2" text="2" />
+            <Button fx:id="buttonRating3" mnemonicParsing="false" onAction="#setRating3" text="3" />
+            <Button fx:id="buttonRating4" mnemonicParsing="false" onAction="#setRating4" text="4" />
+            <Button fx:id="buttonRating5" mnemonicParsing="false" onAction="#setRating5" text="5" />
+            <Button fx:id="buttonRating6" mnemonicParsing="false" onAction="#setRating6" text="6" />
+            <Button fx:id="buttonRating7" mnemonicParsing="false" onAction="#setRating7" text="7" />
+            <Button fx:id="buttonRating8" mnemonicParsing="false" onAction="#setRating8" text="8" />
+            <Button fx:id="buttonRating9" mnemonicParsing="false" onAction="#setRating9" text="9" />
+            <Button fx:id="buttonRating10" mnemonicParsing="false" onAction="#setRating10" text="10" />
+            <Label fx:id="labelRating" text="0/10" />
+            <Label fx:id="labelStatus" text="Status" />
+         </children></HBox>
+      <TextArea fx:id="textAreaReview" prefHeight="37.0" prefWidth="705.0" GridPane.rowIndex="2" />
+      <Button fx:id="buttonAddReview" mnemonicParsing="false" onAction="#addReview" text="Add review" GridPane.rowIndex="3" />
+      <VBox fx:id="boxReviews" prefHeight="100.0" prefWidth="150.0" spacing="10.0" GridPane.rowIndex="4">
+         <children>
+            <Button fx:id="buttonShowReview" mnemonicParsing="false" onAction="#readReview" text="Show review" GridPane.rowIndex="4" />
+            <Label fx:id="labelReview" text="" GridPane.rowIndex="5"/>
+         </children>
+      </VBox>
+   </children>
+   <columnConstraints>
+      <ColumnConstraints />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" />
+   </rowConstraints>
+</GridPane>
