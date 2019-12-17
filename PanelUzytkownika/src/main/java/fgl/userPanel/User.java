@@ -33,6 +33,17 @@ public class User {
         this.isBlocked = isBlocked;
     }
 
+    public User( String name,
+                 String surname,
+                 String username,
+                 String email ) {
+
+        this.name = name;
+        this.surname = surname;
+        this.username = username;
+        this.email = email;
+    }
+
     public Long getId() {
         return id;
     }
