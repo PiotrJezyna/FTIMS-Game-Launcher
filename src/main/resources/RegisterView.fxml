@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="282.0" prefWidth="419.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="RegisterViewControl">
+   <children>
+      <TextField fx:id="name" layoutX="135.0" layoutY="53.0" promptText="Name" />
+      <TextField fx:id="surname" layoutX="135.0" layoutY="87.0" promptText="Surname" />
+      <TextField fx:id="userName" layoutX="135.0" layoutY="122.0" promptText="Username" />
+      <TextField fx:id="email" layoutX="135.0" layoutY="159.0" promptText="Email" />
+      <Button layoutX="175.0" layoutY="192.0" mnemonicParsing="false" onAction="#registerUser" prefHeight="25.0" prefWidth="69.0" text="Register" />
+      <Button layoutX="116.0" layoutY="225.0" mnemonicParsing="false" onAction="#openLoginScene" prefHeight="0.0" prefWidth="187.0" text="Already have an account? Login" />
+   </children>
+</AnchorPane>
