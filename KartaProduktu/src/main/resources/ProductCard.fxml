@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fgl.product.GameManager">
+<AnchorPane fx:id="root" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fgl.product.GameManager">
    <children>
       <Label fx:id="gameTitle" layoutX="50.0" layoutY="50.0" prefHeight="70.0" text="Title">
          <font>
@@ -22,6 +23,6 @@
          </font>
       </Label>
       <Label layoutX="162.0" layoutY="165.0" text="users." />
-      <Button layoutX="56.0" layoutY="334.0" mnemonicParsing="false" text="Show Reviews" />
+      <Button layoutX="56.0" layoutY="334.0" mnemonicParsing="false" onAction="#showReviews" text="Show Reviews" />
    </children>
 </AnchorPane>

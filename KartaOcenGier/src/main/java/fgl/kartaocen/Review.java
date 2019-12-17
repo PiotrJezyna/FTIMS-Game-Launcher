@@ -1,4 +1,4 @@
-package kartaocen;
+package fgl.kartaocen;
 
 import java.util.Date;
 

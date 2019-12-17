@@ -124,10 +124,9 @@ public class GameContener {
                 public void handle(ActionEvent event) {
                     try {
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("/ProductCard.fxml"));
-                        AnchorPane loadedFxml = loader.load();
 
                         root.getChildren().clear();
-                        root.getChildren().add(loadedFxml);
+                        root.getChildren().add(loader.load());
 
                         GameManager gm = loader.getController();
                         gm.ShowProductCard(game);

@@ -1,18 +1,25 @@
 package fgl.product;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
 import fgl.userPanel.UserDAO;
+import javafx.scene.layout.AnchorPane;
+
+import fgl.kartaocen.ReviewCard;
 
 public class GameManager {
 
     public GameDAO dao;
     public UserDAO userDAO;
     public List <Game> games;
+
+    @FXML private AnchorPane root;
 
     @FXML private Label gameTitle;
     @FXML private Label gameAuthor;
@@ -80,6 +87,13 @@ public class GameManager {
                 break;
             }
         }
+    }
+
+    public void showReviews() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/RatingsCard.fxml"));
+
+        root.getChildren().clear();
+        root.getChildren().add(loader.load());
     }
 
     public void RemoveProductCard(String title) throws SQLException {

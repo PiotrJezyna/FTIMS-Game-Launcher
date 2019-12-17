@@ -1,5 +1,5 @@
 // ////////////////////////////////////////////////////////////////// Package //
-package kartaocen;
+package fgl.kartaocen;
 
 // ////////////////////////////////////////////////////////////////// Imports //
 import javafx.fxml.FXML;
@@ -20,6 +20,11 @@ public class ReviewCard {
     static final String DB_URL = "jdbc:mysql://remotemysql.com/5VexXpVWzU";
     static final String USER = "5VexXpVWzU";
     static final String PASS = "apQqybLdoW";
+
+    private User loggedUser;
+    private Game game;
+    private List<Review> reviews;
+    private int rating;
 
     private void writeReviewToDatabase(Review review) throws IOException, ClassNotFoundException {
         Class.forName(JDBC_DRIVER);
@@ -106,10 +111,6 @@ public class ReviewCard {
 
     }
 
-    private User loggedUser;
-    private Game game;
-    private List<Review> reviews;
-    private int rating;
 
     // TODO: Definitely refactor this!
     private void setRating(int r) {
