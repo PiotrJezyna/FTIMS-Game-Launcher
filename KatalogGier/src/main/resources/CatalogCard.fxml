@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fgl.catalog.GameContener">
+<AnchorPane fx:id="root" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fgl.catalog.GameContener">
    <children>
       <VBox fx:id="gamesBox" layoutX="25.0" layoutY="75.0" />
       <ScrollPane fx:id="scrollPane" layoutX="25.0" layoutY="75.0" prefHeight="300.0" prefWidth="550.0">
@@ -16,5 +20,6 @@
       <Button layoutX="489.0" layoutY="30.0" mnemonicParsing="false" onAction="#buttonOnAction" text="Search" />
       <Label layoutX="25.0" layoutY="34.0" text="Title:" />
       <Label layoutX="247.0" layoutY="34.0" text="Tags:" />
+      <AnchorPane fx:id="productCard" disable="true" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: white;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
    </children>
 </AnchorPane>

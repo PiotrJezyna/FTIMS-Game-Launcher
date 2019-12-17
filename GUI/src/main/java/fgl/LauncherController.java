@@ -1,7 +1,10 @@
 package fgl;
 
 import fgl.admin.AdminPageController;
+
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Alert;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
@@ -22,11 +25,21 @@ public class LauncherController {
 
     public void adminButton() {
         try {
+
             adminPageController.start(paneChanger);
+
         } catch (AccessDeniedException e) {
-            e.printStackTrace();
+
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning");
+            alert.setHeaderText(null);
+            alert.setContentText("You are not prepared to enter this page!");
+            alert.showAndWait();
+
         } catch (IOException e) {
+
             e.printStackTrace();
+
         }
     }
 
@@ -35,7 +48,14 @@ public class LauncherController {
     }
 
     public void catalogButton() {
-
+        try {
+            loadedFxml = FXMLLoader.load( getClass().getResource("/CatalogCard.fxml") );
+        } catch (
+                IOException e) {
+            e.printStackTrace();
+        }
+        paneChanger.getChildren().clear();
+        paneChanger.getChildren().add(loadedFxml);
     }
 
     public void libraryButton() {

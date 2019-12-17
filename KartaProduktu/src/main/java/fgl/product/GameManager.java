@@ -3,7 +3,6 @@ package fgl.product;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
-import java.awt.dnd.DragGestureEvent;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -39,6 +38,23 @@ public class GameManager {
 
         System.out.println("Game " + title + "not found");
         return null;
+    }
+
+    public void ShowProductCard(Game game) throws SQLException {
+
+        String author = userDAO.get(game.getUserId()).getName();
+
+        gameTitle.setText(game.getTitle());
+        gameTags.setText(game.getTags());
+        gameAuthor.setText(author);
+        gameUserCount.setText(game.getUserCount().toString());
+
+        System.out.println("Game: " + game.getTitle());
+        System.out.println("Author: " + game.getUserId());
+        System.out.println("Tags: " + game.getTags());
+        System.out.println("Path: " + game.getPath());
+        //System.out.println("Genre: " + games.get(i).getGenre());
+        //System.out.println("Description: " + games.get(i).getDescription());
     }
 
     public void ShowProductCard(String title) throws SQLException {

@@ -1,41 +1,41 @@
 package fgl.catalog;
 
-import com.sun.media.sound.SF2GlobalRegion;
 import fgl.product.Game;
 import fgl.product.GameDAO;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-import javax.swing.*;
-import java.net.URL;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.ResourceBundle;
+
+import fgl.product.GameManager;
 
 public class GameContener {
 
-    private List<Game> allGames = new ArrayList<Game>();
-    private List<Game> displayedGames = new ArrayList<Game>();
-
+    private List<Game> allGames = new ArrayList<>();
+    private List<Game> displayedGames = new ArrayList<>();
 
     private List<String> tags = new ArrayList<String>();
     private int category;   // 0 - no category (display all)
     private int typeOfSort; // 0 - no sort
     private String searchPhrase = new String();
+
+    @FXML private AnchorPane productCard;
+    @FXML private AnchorPane root;
 
     @FXML private ScrollPane scrollPane;
     @FXML private VBox gamesBox;
@@ -122,7 +122,20 @@ public class GameContener {
             button.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
-                    System.out.println(game.getTitle());
+                    try {
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ProductCard.fxml"));
+                        AnchorPane loadedFxml = loader.load();
+
+                        root.getChildren().clear();
+                        root.getChildren().add(loadedFxml);
+
+                        GameManager gm = loader.getController();
+                        gm.ShowProductCard(game);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             });
 
