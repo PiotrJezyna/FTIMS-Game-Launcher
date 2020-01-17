@@ -5,10 +5,7 @@ import fgl.userPanel.User;
 import fgl.userPanel.UserSession;
 import fgl.userPanel.UserType;
 
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.ListView;
-import javafx.scene.control.MenuItem;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
@@ -39,7 +36,7 @@ public class AdminPageController {
     return userSession.getCurrentUser();
   }
 
-  public void setUserSession(UserSession userSession) {
+  public void setUserSession( UserSession userSession ) {
     this.userSession = userSession;
   }
 
