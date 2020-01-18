@@ -113,7 +113,7 @@ public class LocalLibrary {
             preparedStatement.setInt(1, this.userID);
             final ResultSet resultSet = preparedStatement.executeQuery();
             while(resultSet.next()){
-                Statistics statistics = new Statistics(resultSet.getInt(2), resultSet.getInt(3));
+                Statistics statistics = new Statistics(resultSet.getInt(2), resultSet.getDouble(3));
                 gameList.add(statistics);
             }
         }catch (SQLException e){

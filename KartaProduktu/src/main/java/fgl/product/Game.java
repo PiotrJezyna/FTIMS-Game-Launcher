@@ -5,8 +5,8 @@ public class Game {
     private Long id;
     private Long userId;
     private String title;
+    private Integer version;
     private String tags;
-    private String path;
     private String genre;
     private String description;
     private Integer userCount;
@@ -16,7 +16,6 @@ public class Game {
         this.userId = userId;
         this.title = title;
         this.tags = tags;
-        this.path = path;
         this.genre = genre;
         this.description = description;
     }
@@ -27,7 +26,6 @@ public class Game {
         this.userId = userId;
         this.title = title;
         this.tags = tags;
-        this.path = path;
         this.genre = genre;
         this.description = description;
         this.userCount = userCount;
@@ -52,16 +50,6 @@ public class Game {
     public String getTags() {
 
         return tags;
-    }
-
-    public String getPath() {
-
-        return path;
-    }
-
-    public String getGenre() {
-
-        return path;
     }
 
     public String getDescription() {
@@ -89,11 +77,6 @@ public class Game {
         this.tags = tags;
     }
 
-    public void setPath(String path) {
-
-        this.path = path;
-    }
-
     public void setDescription(String description) {
 
         this.description = description;
@@ -112,5 +95,15 @@ public class Game {
     public void setReported(boolean reported) {
 
         isReported = reported;
+    }
+
+    public Integer getVersion()
+    {
+        return version;
+    }
+
+    public void setVersion(Integer version)
+    {
+        this.version = version;
     }
 }

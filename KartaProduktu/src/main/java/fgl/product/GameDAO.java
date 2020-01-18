@@ -15,7 +15,7 @@ public class GameDAO extends AbstractDao<Game> {
 
         try {
 
-            String query = "SELECT UserID, Title, Tags, Path, UserCount, IsReported " +
+            String query = "SELECT UserID, Title, Version, Tags, Path, UserCount, IsReported " +
                            "FROM Games WHERE ID = %s";
             query = String.format(query, id);
 
@@ -27,6 +27,7 @@ public class GameDAO extends AbstractDao<Game> {
 
             Long userId = rs.getLong("UserID");
             String title = rs.getString("Title");
+            Integer version = rs.getInt("Version");
             String tags = rs.getString("Tags");
             String path = rs.getString("Path");
             Integer userCount = rs.getInt("UserCount");
@@ -92,8 +93,8 @@ public class GameDAO extends AbstractDao<Game> {
 
         connectSQL();
 
-        String query = "INSERT INTO Games(UserID, Title, Tags, Path) VALUES (%s, '%s', '%s', '%s')";
-        query = String.format(query, game.getUserId(), game.getTitle(), game.getTags(), game.getPath());
+        String query = "INSERT INTO Games(UserID, Title, Tags) VALUES (%s, '%s', '%s', '%s')";
+        query = String.format(query, game.getUserId(), game.getTitle(), game.getTags());
 
         System.out.println( query );
 
@@ -122,13 +123,13 @@ public class GameDAO extends AbstractDao<Game> {
                         "SET " +
                         "UserID = %s, " +
                         "Title = '%s', " +
+                        "Version = %s" +
                         "Tags = '%s', " +
-                        "Path = '%s', " +
                         "UserCount = %s, " +
                         "IsReported = %s " +
                         "WHERE ID = " + game.getId();
 
-        query = String.format(query, game.getUserId(), game.getTitle(), game.getTags(), game.getPath(), game.getUserCount(), game.isReported());
+        query = String.format(query, game.getUserId(), game.getTitle(), game.getVersion(), game.getTags(), game.getUserCount(), game.isReported());
         query = query.replace("false", "0");
         query = query.replace("true", "1");
 
