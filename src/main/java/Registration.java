@@ -18,7 +18,7 @@ public class Registration {
         UserDAO dao = new UserDAO();
 
         if (checkForMailAndUsername(username, email)){
-            String confirmationString = generateRandomString();
+            String confirmationString = generateRandomString(); //Tego Stringa nalezaloby wyslac na maila uzytkownika i on go sobie skopiuje i wklei zeby weryfikowac konto
             User user = new User(name, surname, username, email, password, confirmationString);
             userSession = new UserSession(user);
             System.out.println(userSession.getCurrentUser().getConfirmationString());
