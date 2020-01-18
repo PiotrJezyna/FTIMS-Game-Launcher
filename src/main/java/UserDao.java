@@ -1,3 +1,4 @@
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +11,6 @@ class UserDAO extends AbstractDao<User> {
         connectSQL();
 
         try {
-
             String query = "SELECT Name, Surname, Username, Email, Type, IsBlocked FROM Users WHERE id = %s";
             query = String.format(query, id);
             System.out.println(query);
@@ -55,7 +55,7 @@ class UserDAO extends AbstractDao<User> {
 
         try {
 
-            String query = "SELECT id, Name, Surname, Username, Email, Type, IsBlocked FROM Users";
+            String query = "SELECT id, Name, Surname, Username, Email, Type, IsBlocked, Password FROM Users";
             stmt = conn.createStatement();
             rs = stmt.executeQuery( query );
 
@@ -77,14 +77,15 @@ class UserDAO extends AbstractDao<User> {
                     userType = UserType.USER;
                 }
                 boolean isBlocked = rs.getBoolean("IsBlocked");
+                String password = rs.getString("Password");
 
-                User userSQL = new User(id, first, last, username, email, userType, isBlocked);
+                User userSQL = new User(id, first, last, username, email, userType, isBlocked, password);
                 users.add( userSQL );
             }
 
             return users;
 
-        } catch ( SQLException e ) {
+        } catch (SQLException e ) {
 
             throw new SQLException(e.getMessage());
 
@@ -101,8 +102,8 @@ class UserDAO extends AbstractDao<User> {
 
         connectSQL();
 
-        String query = "INSERT INTO Users(Username, Email) VALUES ('%s', '%s')";
-        query = String.format(query, user.getUsername(), user.getEmail());
+        String query = "INSERT INTO Users(Username, Email, Name, Surname, Password) VALUES ('%s', '%s', '%s','%s','%s')";
+        query = String.format(query, user.getUsername(), user.getEmail(), user.getName(), user.getSurname(), user.getPassword());
 
         System.out.println( query );
 
