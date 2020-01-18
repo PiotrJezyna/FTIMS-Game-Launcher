@@ -7,7 +7,6 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -26,34 +25,47 @@ import fgl.product.GameManager;
 
 public class GameContener {
 
-    private List<Game> allGames = new ArrayList<>();
+    private List<Game> games = new ArrayList<>();
     private List<Game> displayedGames = new ArrayList<>();
 
     private List<String> tags = new ArrayList<String>();
-    private int category;   // 0 - no category (display all)
+    private int category = 0;   // 0 - no category (display all)
     private int typeOfSort; // 0 - no sort
     private String searchPhrase = new String();
 
-    @FXML private AnchorPane root;
+    public Button wszystkie;
+    public Button naCzasie;
+    public Button polecane;
+    public Button historia;
+    public Button panelAkt;
 
-    @FXML private ScrollPane scrollPane;
-    @FXML private VBox gamesBox;
 
-    @FXML private TextField phaseField;
-    @FXML private TextField tagsField;
+    @FXML
+    private AnchorPane root;
+
+    @FXML
+    private ScrollPane scrollPane;
+    @FXML
+    private VBox gamesBox;
+
+    @FXML
+    private TextField phaseField;
+    @FXML
+    private TextField tagsField;
 
     public void initialize() {
         scrollPane.setContent(gamesBox);
         main(null);
     }
 
-    public void main( String[] args ) {
+    public void main(String[] args) {
 
-        GameDAO games = new GameDAO();
+        /*GameDAO games = new GameDAO();
         try {
-            allGames = games.getAll();
-        }
-        catch(SQLException e) {};
+            this.games = games.getAll();
+        } catch (SQLException e) {
+        }*/
+
 
         updateDisplayedGames();
     }
@@ -61,6 +73,7 @@ public class GameContener {
     public List<Game> getDisplayedGames() {
         return displayedGames;
     }
+
     public void setTags(List<String> tags) {
         this.tags = tags;
     }
@@ -73,32 +86,30 @@ public class GameContener {
         this.typeOfSort = typeOfSort;
     }
 
-    @FXML public void setSearchPhrase(String searchPhrase) {
+    @FXML
+    public void setSearchPhrase(String searchPhrase) {
         this.searchPhrase = searchPhrase;
     }
 
-    public void updateDisplayedGames()
-    {
+    public void updateDisplayedGames() {
         displayedGames.clear();
 
-        for (Game game: allGames) {
+        for (Game game : games) {
 
             boolean categoryFlag = true;
             boolean searchPhraseFlag = true;
             boolean tagsFlag = true;
 
-            /*if (category != 0)
-                categoryFlag = (game.getCategory() == category);*/
+            if (category != 0)
+                categoryFlag = false;
 
             if (!searchPhrase.isEmpty())
                 searchPhraseFlag = (game.getTitle().contains(searchPhrase));
 
-            if (!tags.isEmpty())
-            {
+            if (!tags.isEmpty()) {
                 tagsFlag = false;
-                for (String tag: tags) {
-                    if (game.getTags().contains(tag))
-                    {
+                for (String tag : tags) {
+                    if (game.getTags().contains(tag)) {
                         tagsFlag = true;
                         break;
                     }
@@ -111,7 +122,7 @@ public class GameContener {
 
         gamesBox.getChildren().clear();
         System.out.println(displayedGames.size());
-        for (Game game: displayedGames) {
+        for (Game game : displayedGames) {
 
             HBox gameBox = new HBox();
 
@@ -148,20 +159,51 @@ public class GameContener {
         }
     }
 
-    @FXML void buttonOnAction(ActionEvent event) {
+    @FXML
+    void buttonOnAction(ActionEvent event) {
 
         setSearchPhrase(phaseField.getText());
 
-        if (tagsField.getText().isEmpty() == false)
-        {
+        if (tagsField.getText().isEmpty() == false) {
             String[] tags = tagsField.getText().split(",");
             setTags(Arrays.asList(tags));
-        }
-        else
-        {
+        } else {
             setTags(new ArrayList<String>());
         }
 
         updateDisplayedGames();
     }
+
+    @FXML
+    void handleCategoryButton(ActionEvent event) {
+
+        phaseField.clear();
+        setSearchPhrase(phaseField.getText());
+
+        if (wszystkie.isHover()) {
+            category = 0;
+
+            GameDAO games = new GameDAO();
+            try {
+                this.games = games.getAll();
+            } catch (SQLException e) {
+            }
+        }
+        if (naCzasie.isHover()) {
+            category = 1;
+        }
+        if (polecane.isHover()) {
+            category = 2;
+        }
+        if (historia.isHover()) {
+            category = 3;
+        }
+        if (panelAkt.isHover()) {
+            category = 4;
+        }
+
+        updateDisplayedGames();
+
+    }
 }
+
