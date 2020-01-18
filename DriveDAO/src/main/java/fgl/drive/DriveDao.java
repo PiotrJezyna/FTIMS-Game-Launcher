@@ -29,6 +29,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.io.FileOutputStream;
+import java.security.DigestInputStream;
+import java.security.GeneralSecurityException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -44,104 +48,105 @@ public class DriveDao {
 
     private static final List<String> SCOPES = Collections.singletonList( DriveScopes.DRIVE );
 
-    private static FileDataStoreFactory DATA_STORE_FACTORY;
+    private static FileDataStoreFactory dataStoreFactory;
 
-    private static HttpTransport HTTP_TRANSPORT;
+    private static HttpTransport httpTransport;
 
-    private static Drive _driveService;
+    private static Drive driveService;
 
     private static String gamesFolderID = "1SHMY6ACYActf-07-SUD3pU10WC8yeKJ4";
     private static String usersFolderID = "1mbGOIGO1FW1jo2UI9cqgNYmE27DnK2G0";
 
     static {
         try {
-            HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
-            DATA_STORE_FACTORY = new FileDataStoreFactory( CREDENTIALS_PATH );
-        } catch ( Throwable t ) {
-            t.printStackTrace();
-            System.exit( 1 );
+            httpTransport = GoogleNetHttpTransport.newTrustedTransport();
+            dataStoreFactory = new FileDataStoreFactory( CREDENTIALS_PATH );
+        } catch ( GeneralSecurityException e ) {
+            e.printStackTrace();
+        } catch ( IOException e ) {
+            e.printStackTrace();
         }
     }
 
     public DriveDao() {
-        String userDir = System.getProperty("user.dir");
+        String userDir = System.getProperty( "user.dir" );
 
-        java.io.File folder = new java.io.File( userDir, "Data");
-        if (!folder.exists()) {
+        java.io.File folder = new java.io.File( userDir, "Data" );
+        if ( !folder.exists() ) {
             folder.mkdir();
         }
 
         folder = new java.io.File( userDir, "Data/Avatars" );
-        if (!folder.exists()) {
+        if ( !folder.exists() ) {
             folder.mkdir();
         }
 
-        folder = new java.io.File( userDir, "Data/Games");
-        if (!folder.exists()) {
+        folder = new java.io.File( userDir, "Data/Games" );
+        if ( !folder.exists() ) {
             folder.mkdir();
         }
 
-        folder = new java.io.File( userDir, "Data/Temp");
-        if (!folder.exists()) {
+        folder = new java.io.File( userDir, "Data/Temp" );
+        if ( !folder.exists() ) {
             folder.mkdir();
         }
 
         try {
             getDriveService();
-        } catch (IOException e) {
+        } catch ( IOException e ) {
             e.printStackTrace();
         }
     }
 
     public Credential getCredentials() throws IOException {
 
-        java.io.File clientSecretFilePath = new java.io.File(CREDENTIALS_PATH, CLIENT_SECRET_FILE_NAME);
+        java.io.File clientSecretFilePath = new java.io.File( CREDENTIALS_PATH, CLIENT_SECRET_FILE_NAME );
 
-        if (!clientSecretFilePath.exists()) {
-            throw new FileNotFoundException("Please copy " + CLIENT_SECRET_FILE_NAME //
-                    + " to folder: " + CREDENTIALS_PATH.getAbsolutePath());
+        if ( !clientSecretFilePath.exists() ) {
+            throw new FileNotFoundException( "Please copy " + CLIENT_SECRET_FILE_NAME  +
+                    " to folder: " + CREDENTIALS_PATH.getAbsolutePath() );
         }
 
-        InputStream in = new FileInputStream(clientSecretFilePath);
+        InputStream in = new FileInputStream( clientSecretFilePath );
 
-        GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(in));
+        GoogleClientSecrets clientSecrets = GoogleClientSecrets.load( JSON_FACTORY, new InputStreamReader( in ) );
 
         // Build flow and trigger user authorization request.
-        GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(HTTP_TRANSPORT, JSON_FACTORY,
-                clientSecrets, SCOPES).setDataStoreFactory(DATA_STORE_FACTORY).setAccessType("offline").build();
-        Credential credential = new AuthorizationCodeInstalledApp(flow, new LocalServerReceiver()).authorize("user");
+        GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder( httpTransport, JSON_FACTORY,
+                clientSecrets, SCOPES ).setDataStoreFactory( dataStoreFactory ).setAccessType( "offline" ).build();
+        Credential credential = new AuthorizationCodeInstalledApp( flow, new LocalServerReceiver() ).authorize( "user" );
 
         return credential;
     }
 
     public void getDriveService() throws IOException {
 
-        if (_driveService != null) {
+        if ( driveService != null ) {
             return;
         }
 
         Credential credential = getCredentials();
 
-        _driveService = new Drive.Builder(HTTP_TRANSPORT, JSON_FACTORY, credential)
-                .setApplicationName(APPLICATION_NAME).build();
+        driveService = new Drive.Builder( httpTransport, JSON_FACTORY, credential ).setApplicationName( APPLICATION_NAME ).build();
     }
 
-    public void uploadGame( Game game, String path ) throws IOException {
+    public boolean uploadGame( Game game, String path ) throws IOException {
 
-        File folder = createFolderOnDisk(game.getTitle(), gamesFolderID);
+        File folder = createFolderOnDisk( game.getTitle(), gamesFolderID );
 
-        createFileOnDisk(game.getTitle() + "Zip.zip", "aplication/zip", path, folder.getId());
+        return createFileOnDisk( game.getTitle() + "Zip.zip", "aplication/zip", path, folder.getId() ) != null;
     }
 
-    public void updateGame( Game game, String path ) throws IOException {
+    public boolean updateGame( Game game, String path ) throws IOException {
 
         File folder = findFileOnDisk( game.getTitle() );
         File file = findFileOnDisk( game.getTitle() + "Zip.zip" );
 
-        _driveService.files().delete( file.getId() ).execute();
+        if ( file != null ) {
+            driveService.files().delete( file.getId() ).execute();
+        }
 
-        createFileOnDisk(game.getTitle() + "Zip.zip", "aplication/zip", path, folder.getId());
-
+        return createFileOnDisk( game.getTitle() + "Zip.zip", "aplication/zip", path, folder.getId() ) != null;
     }
 
     public boolean downloadGame( Game game ) throws IOException {
@@ -149,19 +154,19 @@ public class DriveDao {
         File file = findFileOnDisk( game.getTitle() + "Zip.zip" );
 
         ByteArrayOutputStream downloadedData = new ByteArrayOutputStream();
-        _driveService.files().get( file.getId() ).executeMediaAndDownloadTo( downloadedData );
+        driveService.files().get( file.getId() ).executeMediaAndDownloadTo( downloadedData );
 
-        try( FileOutputStream newFile = new FileOutputStream( "Data/Temp/" + game.getTitle() + ".zip" ) ) {
-            downloadedData.writeTo(newFile);
+        try ( FileOutputStream newFile = new FileOutputStream( "Data/Temp/" + game.getTitle() + ".zip" ) ) {
+            downloadedData.writeTo( newFile );
         }
 
-        java.io.File archive = new java.io.File("Data/Temp/" + game.getTitle() + ".zip");
+        java.io.File archive = new java.io.File( "Data/Temp/" + game.getTitle() + ".zip" );
         String destination = "Data/Games/";
 
         try {
-            ZipFile zipFile = new ZipFile(archive);
-            zipFile.extractAll(destination);
-        } catch (ZipException e) {
+            ZipFile zipFile = new ZipFile( archive );
+            zipFile.extractAll( destination );
+        } catch ( ZipException e ) {
             e.printStackTrace();
             return false;
         }
@@ -171,7 +176,7 @@ public class DriveDao {
         return true;
     }
 
-    public void uploadAvatar( User user, String path ) throws IOException {
+    public boolean uploadAvatar( User user, String path ) throws IOException {
 
         File folder;
         if ( ( folder = findFileOnDisk( user.getUsername() ) ) == null ) {
@@ -179,11 +184,11 @@ public class DriveDao {
         } else {
             File file;
             if ( ( file = findFileOnDisk( user.getUsername() + "Avatar.png" ) ) != null ) {
-                _driveService.files().delete( file.getId() ).execute();
+                driveService.files().delete( file.getId() ).execute();
             }
         }
 
-        createFileOnDisk(user.getUsername() + "Avatar.png", "image/png", path, folder.getId() );
+        return createFileOnDisk( user.getUsername() + "Avatar.png", "image/png", path, folder.getId() ) != null;
     }
 
     public java.io.File downloadAvatar( User user ) throws IOException {
@@ -194,13 +199,13 @@ public class DriveDao {
         }
 
         ByteArrayOutputStream downloadedData = new ByteArrayOutputStream();
-        _driveService.files().get(file.getId()).executeMediaAndDownloadTo(downloadedData);
+        driveService.files().get( file.getId() ).executeMediaAndDownloadTo( downloadedData );
 
-        try(FileOutputStream newFile = new FileOutputStream("Data/Avatars/" + user.getUsername() + "Avatar.png")) {
-            downloadedData.writeTo(newFile);
+        try ( FileOutputStream newFile = new FileOutputStream( "Data/Avatars/" + user.getUsername() + "Avatar.png" ) ) {
+            downloadedData.writeTo( newFile );
         }
 
-        java.io.File avatar = new java.io.File("Data/Avatars/" + user.getUsername() + "Avatar.png");
+        java.io.File avatar = new java.io.File( "Data/Avatars/" + user.getUsername() + "Avatar.png" );
 
         return avatar;
     }
@@ -208,7 +213,7 @@ public class DriveDao {
     private File findFileOnDisk( String name ) throws IOException {
         String query = " name = '" + name + "' ";
 
-        FileList result = _driveService.files().list().setQ( query ).setFields( "nextPageToken, files(id, name)" ).execute();
+        FileList result = driveService.files().list().setQ( query ).setFields( "nextPageToken, files(id, name)" ).execute();
 
         List<File> files = result.getFiles();
         if ( files == null || files.isEmpty() ) {
@@ -227,7 +232,7 @@ public class DriveDao {
         List<String> folderParents = Arrays.asList( parentID );
         folderMetadata.setParents( folderParents );
 
-        return _driveService.files().create( folderMetadata ).setFields( "id, name" ).execute();
+        return driveService.files().create( folderMetadata ).setFields( "id, name" ).execute();
     }
 
     private File createFileOnDisk( String name, String type, String path, String parentID ) throws IOException {
@@ -240,9 +245,47 @@ public class DriveDao {
         fileMetadata.setName( name );
 
         List<String> fileParents = Arrays.asList( parentID );
-        fileMetadata.setParents(fileParents);
+        fileMetadata.setParents( fileParents );
 
-        return _driveService.files().create( fileMetadata, uploadStreamContent )
-                .setFields( "id, webContentLink, webViewLink, parents" ).execute();
+        File file = driveService.files().create( fileMetadata, uploadStreamContent ).setFields( "id, webContentLink, webViewLink, parents, md5Checksum" ).execute();
+
+        if ( calculateChecksum( uploadFile ).equals( file.getMd5Checksum() ) ) {
+            System.out.println( "Equals" );
+        } else {
+            System.out.println( "Something went wrong, try again" );
+            driveService.files().delete( file.getId() ).execute();
+            return null;
+        }
+
+        return file;
+    }
+
+    private String calculateChecksum( java.io.File file ) {
+        try {
+            MessageDigest messageDigest = MessageDigest.getInstance( "MD5" );
+            DigestInputStream digestInputStream = new DigestInputStream( new FileInputStream( file ), messageDigest );
+
+            byte[] buffer = new byte[2048];
+            while ( digestInputStream.read( buffer ) > -1 ) {
+            }
+
+            digestInputStream.close();
+            byte[] md5 = messageDigest.digest();
+
+            StringBuilder md5String = new StringBuilder();
+            for ( byte b : md5 ) {
+                md5String.append( String.format( "%02X", b ) );
+            }
+
+            return md5String.toString().toLowerCase();
+        } catch ( NoSuchAlgorithmException e ) {
+            e.printStackTrace();
+        } catch ( FileNotFoundException e ) {
+            e.printStackTrace();
+        } catch ( IOException e ) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 }
