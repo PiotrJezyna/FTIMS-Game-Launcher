@@ -44,7 +44,7 @@ public class LocalGamesDAO extends AbstractDao<Game> {
                     Integer userCount = rs.getInt("UserCount");
                     boolean isReported = rs.getBoolean("IsReported");
 
-                    localGames.add(new Game(gameId, userId, pathname, tags, path, null, null, userCount, isReported));
+                    localGames.add(new Game(gameId, userId, tags, path, null, null, userCount, isReported));
                 }
 
                 disconnectSQL();

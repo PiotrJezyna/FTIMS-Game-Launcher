@@ -129,7 +129,7 @@ public class GameManager {
 
         if(canCreate)
         {
-            Game game = new Game(userId, title, tags, path, genre, description);
+            Game game = new Game(userId, title, tags, genre, description);
 
             games.add(game);
 
