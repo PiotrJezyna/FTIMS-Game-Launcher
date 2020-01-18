@@ -1,3 +1,7 @@
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 public class User {
 
     private Long id;
@@ -8,6 +12,7 @@ public class User {
     private String password;
     private UserType type;
     private boolean isBlocked;
+    private String confirmationString;
 
     public User( String username, String email ) {
 
@@ -21,7 +26,26 @@ public class User {
                  String username,
                  String email,
                  UserType type,
-                 boolean isBlocked ) {
+                 boolean isBlocked,
+                 String password) {
+
+        this.id = id;
+        this.name = name;
+        this.surname = surname;
+        this.username = username;
+        this.email = email;
+        this.type = type;
+        this.isBlocked = isBlocked;
+        this.password = password;
+    }
+
+    public User( Long id,
+                 String name,
+                 String surname,
+                 String username,
+                 String email,
+                 UserType type,
+                 boolean isBlocked){
 
         this.id = id;
         this.name = name;
@@ -32,10 +56,40 @@ public class User {
         this.isBlocked = isBlocked;
     }
 
+
     public User(String name,
-                 String surname,
-                 String username,
-                 String email ) {
+                    String surname,
+                    String username,
+                    String email,
+                    String password) throws NoSuchAlgorithmException {
+
+        this.name = name;
+        this.surname = surname;
+        this.username = username;
+        this.email = email;
+        this.password = encryptPassword(password);
+    }
+
+    public User(String name,
+                String surname,
+                String username,
+                String email,
+                String password,
+                String confirmationString) throws NoSuchAlgorithmException {
+
+        this.name = name;
+        this.surname = surname;
+        this.username = username;
+        this.email = email;
+        this.password = encryptPassword(password);
+        this.confirmationString = confirmationString;
+    }
+
+
+    public User(String name,
+                String surname,
+                String username,
+                String email) {
 
         this.name = name;
         this.surname = surname;
@@ -102,5 +156,33 @@ public class User {
 
     public void setBlocked( boolean blocked ) {
         isBlocked = blocked;
+    }
+
+    public String getConfirmationString() {
+        return confirmationString;
+    }
+
+    public void setConfirmationString(String confirmationString) {
+        this.confirmationString = confirmationString;
+    }
+
+    public String encryptPassword(String plainPassword) throws NoSuchAlgorithmException {
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        byte[] encodedhash = digest.digest(
+                plainPassword.getBytes(StandardCharsets.UTF_8));
+
+        String codedPassword = bytesToHex(encodedhash);
+
+        return codedPassword;
+    }
+
+    private static String bytesToHex(byte[] hash) {
+        StringBuffer hexString = new StringBuffer();
+        for (int i = 0; i < hash.length; i++) {
+            String hex = Integer.toHexString(0xff & hash[i]);
+            if(hex.length() == 1) hexString.append('0');
+            hexString.append(hex);
+        }
+        return hexString.toString();
     }
 }

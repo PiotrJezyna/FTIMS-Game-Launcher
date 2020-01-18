@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="209.0" prefWidth="279.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="EditUserProfileViewControl">
+
+    <TextField fx:id="nameEditField" editable="true" layoutX="71.0" layoutY="30.0" promptText="Name" />
+    <TextField fx:id="surnameEditField" editable="true" layoutX="71.0" layoutY="60.0" promptText="Surname" />
+    <TextField fx:id="usernameEditField" editable="true" layoutX="71.0" layoutY="90.0" promptText="Username" />
+    <TextField fx:id="emailEditField" editable="true" layoutX="71.0" layoutY="120.0" promptText="Email" />
+    <Button fx:id="buttonSaveChanges" layoutX="132.0" layoutY="159.0" mnemonicParsing="false" onAction="#updateUserData" text="Save changes" />
+   <Button layoutX="71.0" layoutY="159.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="52.0" text="Back" onAction="#backToUserProfile" />
+</AnchorPane>
