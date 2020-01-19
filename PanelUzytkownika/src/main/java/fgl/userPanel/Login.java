@@ -6,7 +6,6 @@ import java.util.List;
 public class Login {
 
     private UserDAO dao = new UserDAO();
-    public static UserSession userSession;
 
     public boolean validate(String username, String password) throws SQLException {
         List<User> allUsers = dao.getAll();
@@ -14,8 +13,7 @@ public class Login {
         boolean checkFlag = false;
         for (int i = 0; i < allUsers.size(); i++) {
             if ( password.equals(allUsers.get(i).getPassword()) && username.equals(allUsers.get(i).getUsername())) {
-                UserSession userSessionBegan = new UserSession(allUsers.get(i) );
-                userSession = userSessionBegan;
+                UserSession.getUserSession().setCurrentUser( allUsers.get(i) );
                 System.out.println("Successfully logged in");
                 System.out.println(password);
                 System.out.println(allUsers.get(i).getUsername());
@@ -26,10 +24,4 @@ public class Login {
 
         return checkFlag;
     }
-
-    public UserSession getUserSession() {
-        return this.userSession;
-    }
-
-
 }

@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -17,13 +18,24 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class EditUserProfileViewControl {
-    public TextField nameEditField;
-    public TextField usernameEditField;
-    public TextField emailEditField;
-    public TextField surnameEditField;
-    public Button buttonSaveChanges;
 
-    private Login loggedIn = new Login();
+    @FXML
+    private AnchorPane root;
+
+    @FXML
+    public TextField nameEditField;
+
+    @FXML
+    public TextField surnameEditField;
+
+    @FXML
+    public TextField usernameEditField;
+
+    @FXML
+    public TextField emailEditField;
+
+    @FXML
+    public Button buttonSaveChanges;
 
     @FXML
     protected void initialize() {
@@ -34,19 +46,19 @@ public class EditUserProfileViewControl {
     }
 
     private String getLoggedInUserName(){
-        String name = loggedIn.getUserSession().getCurrentUser().getName();
+        String name = UserSession.getUserSession().getCurrentUser().getName();
         return name;
     }
     private String getLoggedInUserSurname(){
-        String surname = loggedIn.getUserSession().getCurrentUser().getSurname();
+        String surname = UserSession.getUserSession().getCurrentUser().getSurname();
         return surname;
     }
     private String getLoggedInUserUsername(){
-        String username = loggedIn.getUserSession().getCurrentUser().getUsername();
+        String username = UserSession.getUserSession().getCurrentUser().getUsername();
         return username;
     }
     private String getLoggedInUserEmail(){
-        String email = loggedIn.getUserSession().getCurrentUser().getEmail();
+        String email = UserSession.getUserSession().getCurrentUser().getEmail();
         return email;
     }
 
@@ -58,8 +70,7 @@ public class EditUserProfileViewControl {
         String username = usernameEditField.getText();
         String email = emailEditField.getText();
 
-        Login login = new Login();
-        User user = login.getUserSession().getCurrentUser();
+        User user = UserSession.getUserSession().getCurrentUser();
         //user = new User(name, surname, username, email);
         user.setName(name);
         user.setSurname(surname);
@@ -67,30 +78,26 @@ public class EditUserProfileViewControl {
         user.setEmail(email);
         if (checkForMailAndUsername(username, email)) {
             dao.update(user);
-            Parent root = FXMLLoader.load(getClass().getResource("/UserProfileView.fxml"));
-            Scene scene = new Scene(root);
-            scene.setFill(Color.TRANSPARENT);
-            Stage window = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
-            window.setScene(scene);
-            //window.initStyle(StageStyle.TRANSPARENT);
-            window.show();
+
+            backToUserProfile(null);
         } else {
             warningWindow("Warning", "User with this email/username already exists");
         }
-
-
-
-
     }
 
     public void backToUserProfile(javafx.event.ActionEvent actionEvent) throws IOException {
+        AnchorPane pain = FXMLLoader.load( getClass().getResource( "/UserProfileView.fxml" ) );
+
+        root.getChildren().clear();
+        root.getChildren().add( pain );
+        /*
         Parent root = FXMLLoader.load(getClass().getResource("/UserProfileView.fxml"));
         Scene scene = new Scene(root);
         scene.setFill(Color.TRANSPARENT);
         Stage window = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
         window.setScene(scene);
         //window.initStyle(StageStyle.TRANSPARENT);
-        window.show();
+        window.show();*/
     }
 
     private boolean checkForMailAndUsername(String uUserName, String uEmail) throws SQLException {

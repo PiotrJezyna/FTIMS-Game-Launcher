@@ -37,7 +37,7 @@ public class LauncherController {
             e.printStackTrace();
         }
 
-        userSession = Login.userSession;
+        userSession = UserSession.getUserSession();
     }
 
     public void adminButton() {
@@ -56,7 +56,19 @@ public class LauncherController {
     }
 
     public void userButton() {
+        if ( userSession.getCurrentUser() == null ) {
+            showAlert( "Information", "You have to login first!" );
+        } else {
 
+            try {
+                loadedFxml = FXMLLoader.load( getClass().getResource("/UserProfileView.fxml") );
+            } catch ( IOException e ) {
+                e.printStackTrace();
+            }
+
+            paneChanger.getChildren().clear();
+            paneChanger.getChildren().add( loadedFxml );
+        }
     }
 
     public void catalogButton() {

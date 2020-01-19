@@ -27,7 +27,7 @@ public class Main extends Application {
         }
         catch (Exception e) {}
 
-        System.out.println(login.getUserSession().getCurrentUser().getName());
+        System.out.println(UserSession.getUserSession().getCurrentUser().getName());
         launch(args);
     }
 }

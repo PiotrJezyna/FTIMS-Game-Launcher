@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="119.0" prefWidth="349.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fgl.userPanel.ConfirmationViewControl">
+<AnchorPane fx:id="root" prefHeight="119.0" prefWidth="349.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fgl.userPanel.ConfirmationViewControl">
    <children>
       <Button layoutX="145.0" layoutY="75.0" mnemonicParsing="false" onAction="#checkConfirmationString" text="Confirm" />
       <TextField fx:id="confirmationTextField" layoutX="83.0" layoutY="44.0" prefWidth="183.0" promptText="Put the number from email" />

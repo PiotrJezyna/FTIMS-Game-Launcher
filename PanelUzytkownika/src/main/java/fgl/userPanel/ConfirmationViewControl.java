@@ -24,11 +24,9 @@ public class ConfirmationViewControl {
     public TextField confirmationTextField;
     public TextField usernameTextField;
 
-    private Registration registration = new Registration();
-
     public void checkConfirmationString(ActionEvent actionEvent) throws IOException, SQLException {
 
-        String userConfirmationNumber = registration.getUserSession().getCurrentUser().getConfirmationString();
+        String userConfirmationNumber = UserSession.getUserSession().getCurrentUser().getConfirmationString();
 
         String inputString = confirmationTextField.getText();
         System.out.println(inputString);

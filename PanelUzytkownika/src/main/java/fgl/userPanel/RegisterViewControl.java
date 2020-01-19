@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -23,14 +24,22 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class RegisterViewControl {
+
+    @FXML
+    private AnchorPane root;
+
     @FXML
     private TextField name, surname, userName, email, password, repeatPassword;
+
     @FXML
     private Label label;
 
     public void openLoginScene(ActionEvent actionEvent) throws IOException {
+        AnchorPane pain = FXMLLoader.load(getClass().getResource("/LoginView.fxml"));
 
-        Parent root = FXMLLoader.load(getClass().getResource("/LoginView.fxml"));
+        root.getChildren().clear();
+        root.getChildren().add(pain);
+        /*Parent root = FXMLLoader.load(getClass().getResource("/LoginView.fxml"));
 
         Scene scene = new Scene(root);
         scene.setFill(Color.TRANSPARENT);
@@ -39,7 +48,7 @@ public class RegisterViewControl {
 
         window.setScene(scene);
         //window.initStyle(StageStyle.TRANSPARENT);
-        window.show();
+        window.show();*/
     }
 
     public void registerUser(ActionEvent actionEvent) throws SQLException, NoSuchAlgorithmException, IOException {

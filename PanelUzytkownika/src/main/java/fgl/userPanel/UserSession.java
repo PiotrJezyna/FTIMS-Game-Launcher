@@ -1,21 +1,25 @@
 package fgl.userPanel;
 
 public class UserSession {
+    private static UserSession userSession;
+
     private User currentUser;
 
-    public UserSession(User currentUser) {
-        this.currentUser = currentUser;
+    private UserSession() {
     }
 
-    private void startUserSession(String userName) {
+    public static UserSession getUserSession() {
+        if (userSession == null)
+            userSession = new UserSession();
 
-    }
-
-    private void closeUserSession() {
-
+        return userSession;
     }
 
     public User getCurrentUser() {
         return this.currentUser;
+    }
+
+    void setCurrentUser( User user ) {
+        this.currentUser = user;
     }
 }
