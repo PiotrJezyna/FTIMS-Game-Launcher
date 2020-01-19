@@ -86,6 +86,45 @@ public class GameDAO extends AbstractDao<Game> {
         }
     }
 
+    public List<Game> getAllWithQuery(String query) throws SQLException {
+
+        connectSQL();
+
+        try {
+
+            //String query = new String(query_);
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery( query );
+
+            List<Game> games = new ArrayList<Game>();
+
+            while ( rs.next() ) {
+
+                Long gameId = rs.getLong("ID");
+                Long userId = rs.getLong("UserID");
+                String title = rs.getString("Title");
+                String tags = rs.getString("Tags");
+                Integer userCount = rs.getInt("UserCount");
+                boolean isReported = rs.getBoolean("IsReported");
+
+                Game game = new Game(gameId, userId, title, tags, null, null, userCount, isReported);
+                games.add( game );
+            }
+
+            return games;
+
+        } catch ( SQLException e ) {
+
+            throw new SQLException(e.getMessage());
+
+        } finally {
+
+            rs.close();
+            stmt.close();
+            disconnectSQL();
+        }
+    }
+
     @Override
     public void insert( Game game ) throws SQLException {
 

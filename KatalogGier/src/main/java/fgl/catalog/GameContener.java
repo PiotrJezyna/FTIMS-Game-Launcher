@@ -100,13 +100,13 @@ public class GameContener {
             boolean searchPhraseFlag = true;
             boolean tagsFlag = true;
 
-            if (category != 0)
+            if (category != 0 && category != 3)
                 categoryFlag = false;
 
             if (!searchPhrase.isEmpty())
                 searchPhraseFlag = (game.getTitle().contains(searchPhrase));
 
-            if (!tags.isEmpty()) {
+            if (!tags.isEmpty() && game.getTags() != null) {
                 tagsFlag = false;
                 for (String tag : tags) {
                     if (game.getTags().contains(tag)) {
@@ -197,6 +197,12 @@ public class GameContener {
         }
         if (historia.isHover()) {
             category = 3;
+
+            GameDAO games = new GameDAO();
+            try {
+                this.games = games.getAllWithQuery("SELECT ID, UserID, Title, Tags, UserCount, IsReported FROM Games");
+            } catch (SQLException e) {
+            }
         }
         if (panelAkt.isHover()) {
             category = 4;
