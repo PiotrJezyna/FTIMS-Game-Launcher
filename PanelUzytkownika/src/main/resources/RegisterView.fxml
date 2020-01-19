@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="331.0" prefWidth="257.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="RegisterViewControl">
+<AnchorPane prefHeight="331.0" prefWidth="257.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fgl.userPanel.RegisterViewControl">
    <children>
       <TextField fx:id="name" layoutX="50.0" layoutY="50.0" promptText="Name" />
       <TextField fx:id="surname" layoutX="50.0" layoutY="80.0" promptText="Surname" />

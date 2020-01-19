@@ -36,12 +36,12 @@ public class ConfirmationViewControl {
         if (userConfirmationNumber.equals(inputString)) {
             informationWindow("Information", "Your account is confirmed");
 
-            Parent root = FXMLLoader.load(getClass().getResource("LoginView.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("/LoginView.fxml"));
             Scene scene = new Scene(root);
             scene.setFill(Color.TRANSPARENT);
             Stage window = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
             window.setScene(scene);
-            window.initStyle(StageStyle.TRANSPARENT);
+            //window.initStyle(StageStyle.TRANSPARENT);
             window.show();
         } else {
             informationWindow("Information", "Wrong confirmation code");

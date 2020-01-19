@@ -67,12 +67,12 @@ public class EditUserProfileViewControl {
         user.setEmail(email);
         if (checkForMailAndUsername(username, email)) {
             dao.update(user);
-            Parent root = FXMLLoader.load(getClass().getResource("UserProfileView.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("/UserProfileView.fxml"));
             Scene scene = new Scene(root);
             scene.setFill(Color.TRANSPARENT);
             Stage window = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
             window.setScene(scene);
-            window.initStyle(StageStyle.TRANSPARENT);
+            //window.initStyle(StageStyle.TRANSPARENT);
             window.show();
         } else {
             warningWindow("Warning", "User with this email/username already exists");
@@ -84,12 +84,12 @@ public class EditUserProfileViewControl {
     }
 
     public void backToUserProfile(javafx.event.ActionEvent actionEvent) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("UserProfileView.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/UserProfileView.fxml"));
         Scene scene = new Scene(root);
         scene.setFill(Color.TRANSPARENT);
         Stage window = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
         window.setScene(scene);
-        window.initStyle(StageStyle.TRANSPARENT);
+        //window.initStyle(StageStyle.TRANSPARENT);
         window.show();
     }
 

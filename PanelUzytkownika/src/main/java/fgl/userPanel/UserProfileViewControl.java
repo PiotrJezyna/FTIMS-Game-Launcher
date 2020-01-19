@@ -54,23 +54,23 @@ public class UserProfileViewControl {
     }
 
     public void goToEditProfile(ActionEvent actionEvent) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("EditUserProfileView.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/EditUserProfileView.fxml"));
         Scene scene = new Scene(root);
         scene.setFill(Color.TRANSPARENT);
         Stage window = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
         window.setScene(scene);
-        window.initStyle(StageStyle.TRANSPARENT);
+        //window.initStyle(StageStyle.TRANSPARENT);
         window.show();
     }
 
     public void logoutUser(ActionEvent actionEvent) throws IOException {
 
-        Parent root = FXMLLoader.load(getClass().getResource("LoginView.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/LoginView.fxml"));
         Scene scene = new Scene(root);
         scene.setFill(Color.TRANSPARENT);
         Stage window = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
         window.setScene(scene);
-        window.initStyle(StageStyle.TRANSPARENT);
+        //window.initStyle(StageStyle.TRANSPARENT);
         window.show();
     }
 }

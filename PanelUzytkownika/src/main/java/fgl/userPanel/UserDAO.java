@@ -15,7 +15,8 @@ public class UserDAO extends AbstractDao<User> {
         connectSQL();
 
         try {
-            String query = "SELECT Name, Surname, Username, Email, Type, IsActivated, IsBlocked FROM Users WHERE id = %s";
+            //String query = "SELECT Name, Surname, Username, Email, Type, IsActivated, IsBlocked FROM Users WHERE id = %s";
+            String query = "SELECT Name, Surname, Username, Email, Type, IsBlocked FROM Users WHERE id = %s";
             query = String.format(query, id);
             System.out.println(query);
             stmt = conn.createStatement();
@@ -37,7 +38,8 @@ public class UserDAO extends AbstractDao<User> {
                 userType = UserType.USER;
             }
             boolean isBlocked = rs.getBoolean("IsBlocked");
-            boolean isActivated = rs.getBoolean("IsActivated");
+            //boolean isActivated = rs.getBoolean("IsActivated");
+            boolean isActivated = rs.getBoolean("IsBlocked");
 
             return new User(id, first, last, username, email, userType, isActivated, isBlocked);
 
@@ -60,7 +62,8 @@ public class UserDAO extends AbstractDao<User> {
 
         try {
 
-            String query = "SELECT id, Name, Surname, Username, Email, Type, IsActivated, IsBlocked, Password FROM Users";
+            //String query = "SELECT id, Name, Surname, Username, Email, Type, IsActivated, IsBlocked, Password FROM Users";
+            String query = "SELECT id, Name, Surname, Username, Email, Type, IsBlocked, Password FROM Users";
             stmt = conn.createStatement();
             rs = stmt.executeQuery( query );
 
@@ -81,7 +84,8 @@ public class UserDAO extends AbstractDao<User> {
                 } else {
                     userType = UserType.USER;
                 }
-                boolean isActivated = rs.getBoolean("IsActivated");
+                //boolean isActivated = rs.getBoolean("IsActivated");
+                boolean isActivated = rs.getBoolean("IsBlocked");
                 boolean isBlocked = rs.getBoolean("IsBlocked");
                 String password = rs.getString("Password");
 
@@ -141,11 +145,12 @@ public class UserDAO extends AbstractDao<User> {
                         "Username = '%s', " +
                         "Email = '%s', " +
                         "Type = '%s', " +
-                        "IsActivated = '%s' " +
+                        //"IsActivated = '%s' " +
                         "IsBlocked = '%s' " +
                         "WHERE ID = " + user.getId();
 
-        query = String.format(query, user.getName(), user.getSurname(), user.getUsername(), user.getEmail(), user.getType(), user.isActivated(), user.isBlocked());
+        //query = String.format(query, user.getName(), user.getSurname(), user.getUsername(), user.getEmail(), user.getType(), user.isActivated(), user.isBlocked());
+        query = String.format(query, user.getName(), user.getSurname(), user.getUsername(), user.getEmail(), user.getType(), user.isBlocked());
         query = query.replace("false", "0");
         query = query.replace("true", "1");
 

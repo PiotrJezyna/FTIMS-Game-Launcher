@@ -25,7 +25,7 @@ public class LoginViewControl {
     String uUsername, uPassword;
 
     public void openRegisterScene(ActionEvent actionEvent) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("RegisterView.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/RegisterView.fxml"));
 
         Scene scene = new Scene(root);
         scene.setFill(Color.TRANSPARENT);
@@ -33,7 +33,7 @@ public class LoginViewControl {
         Stage window = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
 
         window.setScene(scene);
-        window.initStyle(StageStyle.TRANSPARENT);
+        //window.initStyle(StageStyle.TRANSPARENT);
         window.show();
     }
 
@@ -44,12 +44,12 @@ public class LoginViewControl {
         Login login = new Login();
         if(login.validate(uUsername, uPassword)){
 
-            Parent root = FXMLLoader.load(getClass().getResource("UserProfileView.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("/UserProfileView.fxml"));
             Scene scene = new Scene(root);
             scene.setFill(Color.TRANSPARENT);
             Stage window = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
             window.setScene(scene);
-            window.initStyle(StageStyle.TRANSPARENT);
+            //window.initStyle(StageStyle.TRANSPARENT);
             window.show();
         } else {
             warningWindow("Warning", "Wrong credentials. Please try again");

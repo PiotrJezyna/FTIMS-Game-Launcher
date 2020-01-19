@@ -30,7 +30,7 @@ public class RegisterViewControl {
 
     public void openLoginScene(ActionEvent actionEvent) throws IOException {
 
-        Parent root = FXMLLoader.load(getClass().getResource("LoginView.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/LoginView.fxml"));
 
         Scene scene = new Scene(root);
         scene.setFill(Color.TRANSPARENT);
@@ -38,7 +38,7 @@ public class RegisterViewControl {
         Stage window = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
 
         window.setScene(scene);
-        window.initStyle(StageStyle.TRANSPARENT);
+        //window.initStyle(StageStyle.TRANSPARENT);
         window.show();
     }
 
@@ -63,12 +63,12 @@ public class RegisterViewControl {
             if (registration.createUser(uUserName, uName, uSurname, uEmail, uPassword)) {
                 informationWindow("Successfully registered", "Please confirm your account");
 
-                Parent root = FXMLLoader.load(getClass().getResource("ConfirmationView.fxml"));
+                Parent root = FXMLLoader.load(getClass().getResource("/ConfirmationView.fxml"));
                 Scene scene = new Scene(root);
                 scene.setFill(Color.TRANSPARENT);
                 Stage window = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
                 window.setScene(scene);
-                window.initStyle(StageStyle.TRANSPARENT);
+                //window.initStyle(StageStyle.TRANSPARENT);
                 window.show();
             } else
                 warningWindow("Warning", "User with this email/username already exists" );
