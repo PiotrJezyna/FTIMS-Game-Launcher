@@ -104,11 +104,12 @@ public class GameDAO extends AbstractDao<Game> {
                 Long gameId = rs.getLong("ID");
                 Long userId = rs.getLong("UserID");
                 String title = rs.getString("Title");
+                Integer version = rs.getInt("Version");
                 String tags = rs.getString("Tags");
                 Integer userCount = rs.getInt("UserCount");
                 boolean isReported = rs.getBoolean("IsReported");
 
-                Game game = new Game(gameId, userId, title, tags, null, null, userCount, isReported);
+                Game game = new Game(gameId, userId, title, version, tags, null, null, userCount, isReported);
                 games.add( game );
             }
 
