@@ -19,6 +19,12 @@ public class Review {
     public Review() {
     }
 
+    public Review(Game game, User user, int rating) {
+        this.game = game;
+        this.user = user;
+        this.rating = rating;
+    }
+
     public Review(Long id, Game game, User user, int rating) {
         this.id = id;
         this.game = game;

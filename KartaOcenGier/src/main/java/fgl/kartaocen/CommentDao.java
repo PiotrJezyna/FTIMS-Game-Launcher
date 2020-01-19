@@ -8,6 +8,7 @@ import fgl.product.GameDAO;
 import fgl.userPanel.UserDAO;
 
 // ================================================================= Other == //
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -97,7 +98,7 @@ public class CommentDao
             PreparedStatement statement = conn.prepareStatement("INSERT INTO Comments(ReviewID, Content, SubmissionDate, IsReply) VALUES (?, ?, ?, ?)");
             statement.setLong(1, comment.getReview().getId());
             statement.setString(2, comment.getContent());
-            statement.setDate(3, comment.getSubmissionDate());
+            statement.setDate(3, (Date) comment.getSubmissionDate());
             statement.setBoolean(4, comment.isReply());
             statement.executeUpdate();
 

@@ -3,6 +3,8 @@ package fgl.kartaocen;
 
 // ////////////////////////////////////////////////////////////////// Imports //
 // ================================================================ JavaFX == //
+import fgl.product.Game;
+import fgl.userPanel.User;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -19,23 +21,31 @@ import java.util.List;
 public class ReviewCard {
 
     // ============================================================== Data == //
-    private Long loggedUser = 1L;
-    private Long game = 2L;
+    private User loggedUser;
+    private Game game;
     private Long ID;
-    public ReviewDao dao;
+    public ReviewDao reviewDao;
+    public CommentDao commentDao;
     public List<Review> reviews;
+    public List<Comment> comments;
     Review review;
     private int rating;
 
     // ========================================================= Behaviour == //
     public void setGame(Long id) {
-        this.game = id;
+//        this.game = id;
     }
 
-    public ReviewCard(Game game, User user) throws SQLException {
-        dao = new ReviewDao();
+    public ReviewCard(/*Game game, User user*/) throws SQLException {
+        reviewDao = new ReviewDao();
+        commentDao = new CommentDao();
 
-        reviews = dao.getAll();
+        reviews = reviewDao.getAll();
+        comments = commentDao.getAll();
+
+        // todo: remove this
+        loggedUser = new User("tmwitczak", "mailmailmail@mail");
+        game = new Game(2L, 1L, "Test", "tags", "path", "genre", "description", 4, false);
     }
     //Now we use test1()
    /* private void writeReviewToDatabase(Review review) throws IOException, ClassNotFoundException {
@@ -80,9 +90,13 @@ public class ReviewCard {
     @FXML
     private void addReview() throws IOException, ClassNotFoundException, SQLException {
         // Create review
-        Review review = new Review(ID, textAreaReview.getText(),
-                rating, null, null, game, loggedUser);
-        test1(review);
+        Review review = new Review(0L, game, loggedUser, rating);
+        Comment comment = new Comment(0L, review, textAreaReview.getText(),
+                new java.sql.Date(Calendar.getInstance().getTime().getTime()), false);
+
+        reviewDao.insert(review);
+        commentDao.insert(comment);
+        labelStatus.setText("written correctly");
     }
 
     private void editReview(Review review) {
@@ -120,30 +134,28 @@ public class ReviewCard {
     @FXML
     private void test() throws ClassNotFoundException, SQLException {
 
-        for (int i = 1; i < reviews.size(); i++) {
-            review = reviews.get(i);
-            for (int j = 0; j < 1; j++) {
-                boxReviews.getChildren().add(new Label("ID: " + review.getId() + " " + "date: " + new java.sql.Date(Calendar.getInstance().getTime().getTime()) + " UserID: " + review.getUser() + " GameID: " + review.getGame() + " user's rate:  " + review.getRating() + " user's commentt: " + review.getComment()));
-            }
-        }
+//        for (int i = 1; i < reviews.size(); i++) {
+//            review = reviews.get(i);
+//            for (int j = 0; j < 1; j++) {
+//                boxReviews.getChildren().add(new Label("ID: " + review.getId() + " " + "date: " + new java.sql.Date(Calendar.getInstance().getTime().getTime()) + " UserID: " + review.getUser() + " GameID: " + review.getGame() + " user's rate:  " + review.getRating() + " user's commentt: " + review.getComment()));
+//            }
+//        }
     }
 
     @FXML
     private void test1(Review review) throws SQLException {
-        dao.insert(review);
-        labelStatus.setText("written correctly");
     }
 
     @FXML
     private void authorsReply() throws SQLException {
-        Long ID = Long.parseLong(textAreaID.getText());
-
-        for (int i = 0; i < reviews.size(); i++) {
-            if (reviews.get(i).getId().equals(ID)) {
-                reviews.get(i).setAuthorsReply(textAreaReply.getText());
-                dao.update(reviews.get(i));
-            }
-        }
+//        Long ID = Long.parseLong(textAreaID.getText());
+//
+//        for (int i = 0; i < reviews.size(); i++) {
+//            if (reviews.get(i).getId().equals(ID)) {
+//                reviews.get(i).setAuthorsReply(textAreaReply.getText());
+//                reviewDao.update(reviews.get(i));
+//            }
+//        }
     }
 
 
