@@ -1,5 +1,4 @@
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -12,28 +11,23 @@ import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.List;
-import java.util.Random;
 
-public class ConfirmationViewControl {
+public class ConfirmChangingPasswordViewControl {
 
-
-    @FXML
     public TextField confirmationTextField;
-
-    private Registration registration = new Registration();
+    private LoginViewControl login = new LoginViewControl();
 
     public void checkConfirmationString(ActionEvent actionEvent) throws IOException, SQLException {
 
-        String userConfirmationNumber = registration.getUserSession().getCurrentUser().getConfirmationString();
+        String userConfirmationNumber = login.getUserSession().getCurrentUser().getConfirmationString();
 
         String inputString = confirmationTextField.getText();
 
 
         if (userConfirmationNumber.equals(inputString)) {
-            informationWindow("Information", "Your account is confirmed");
+            informationWindow("Information", "You can now change your password");
 
-            Parent root = FXMLLoader.load(getClass().getResource("LoginView.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("ChangePasswordView.fxml"));
             Scene scene = new Scene(root);
             scene.setFill(Color.TRANSPARENT);
             Stage window = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
