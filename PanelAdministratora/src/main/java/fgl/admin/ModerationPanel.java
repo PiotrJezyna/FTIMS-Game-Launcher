@@ -107,6 +107,8 @@ public class ModerationPanel {
    */
   public boolean loadReportedGamesFromDB() {
     try {
+      reportedGames = new ArrayList<>();
+
       List<Game> allGames = gameDAO.getAll();
       reportedGames = new ArrayList<>();
       for ( Game g : allGames ) {

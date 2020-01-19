@@ -1,10 +1,13 @@
 package fgl.catalog;
 
+import fgl.userPanel.LoginAndRegister;
+import fgl.userPanel.UserSession;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import fgl.userPanel.Login;
 
 public class Main extends Application {
 
@@ -18,6 +21,13 @@ public class Main extends Application {
 
 
     public static void main(String[] args) {
+        Login login = new Login();
+        try {
+            login.validate("js", "js");
+        }
+        catch (Exception e) {}
+
+        System.out.println(login.getUserSession().getCurrentUser().getName());
         launch(args);
     }
 }
