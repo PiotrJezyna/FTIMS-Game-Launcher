@@ -37,6 +37,9 @@ public class ModerationPanel {
   @FXML
   protected ListView<UserBox> usersListView;
 
+  @FXML
+  protected ListView<ReportedGameBox> reportedGamesListView;
+
   public ModerationPanel() {
   }
 
@@ -75,7 +78,7 @@ public class ModerationPanel {
   /**
    * Load information about all users from DB into list in this class
    *
-   * @return if loading has succeed or not
+   * @return if loading has succeed
    */
   public boolean loadAllUsersFromDB() {
     try {
@@ -100,7 +103,7 @@ public class ModerationPanel {
   /**
    * Load information about reported games from DB into list in this class
    *
-   * @return if loading has succeed or not
+   * @return if loading has succeed
    */
   public boolean loadReportedGamesFromDB() {
     try {
@@ -116,10 +119,20 @@ public class ModerationPanel {
       e.printStackTrace();
       return false;
     }
+
+    List<ReportedGameBox> list = new ArrayList<>();
+
+    for ( Game game : reportedGames ) {
+      list.add( new ReportedGameBox( game ) );
+    }
+
+    ObservableList<ReportedGameBox> myObservableList = FXCollections.observableList( list );
+    reportedGamesListView.setItems( myObservableList );
+
     return true;
   }
 
-  public boolean discardReport( Game game ) {
+  public static boolean discardReport( Game game ) {
     try {
       game.setReported( false );
       gameDAO.update( game );
@@ -130,7 +143,7 @@ public class ModerationPanel {
     return true;
   }
 
-  public boolean deleteGame( Game game ) {
+  public static boolean deleteGame( Game game ) {
     try {
       gameDAO.delete( game );
     } catch ( SQLException e ) {
