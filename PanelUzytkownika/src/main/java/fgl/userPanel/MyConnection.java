@@ -1,5 +1,3 @@
-package fgl.userPanel;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 

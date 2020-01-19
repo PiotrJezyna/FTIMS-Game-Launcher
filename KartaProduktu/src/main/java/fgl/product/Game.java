@@ -12,7 +12,7 @@ public class Game {
     private Integer userCount;
     private boolean isReported;
 
-    public Game(Long userId, String title, String tags, String path, String genre, String description) {
+    public Game(Long userId, String title, String tags, String genre, String description) {
         this.userId = userId;
         this.title = title;
         this.tags = tags;
@@ -20,11 +20,12 @@ public class Game {
         this.description = description;
     }
 
-    public Game(Long id, Long userId, String title, String tags, String path, String genre, String description, Integer userCount, boolean isReported) {
+    public Game(Long id, Long userId, String title, Integer version, String tags, String genre, String description, Integer userCount, boolean isReported) {
 
         this.id = id;
         this.userId = userId;
         this.title = title;
+        this.version = version;
         this.tags = tags;
         this.genre = genre;
         this.description = description;

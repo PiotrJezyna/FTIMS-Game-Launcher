@@ -19,6 +19,7 @@
         <module>KartaOcenGier</module>
         <module>LokalnaBibliotekaGier</module>
         <module>DatabaseDAO</module>
+        <module>DriveDAO</module>
     </modules>
 
     <name>${project.artifactId}-${project.version}</name>

@@ -63,7 +63,6 @@ public class GameManager {
         System.out.println("Game: " + game.getTitle());
         System.out.println("Author: " + game.getUserId());
         System.out.println("Tags: " + game.getTags());
-        //System.out.println("Path: " + game.getPath());
         //System.out.println("Genre: " + games.get(i).getGenre());
         //System.out.println("Description: " + games.get(i).getDescription());
     }
@@ -86,7 +85,6 @@ public class GameManager {
                 System.out.println("Game: " + games.get(i).getTitle());
                 System.out.println("Author: " + games.get(i).getUserId());
                 System.out.println("Tags: " + games.get(i).getTags());
-                //System.out.println("Path: " + games.get(i).getPath());
                 //System.out.println("Genre: " + games.get(i).getGenre());
                 //System.out.println("Description: " + games.get(i).getDescription());
 
@@ -131,7 +129,7 @@ public class GameManager {
 
         if(canCreate)
         {
-            Game game = new Game(userId, title, tags, path, genre, description);
+            Game game = new Game(userId, title, tags, genre, description);
 
             games.add(game);
 
@@ -155,9 +153,6 @@ public class GameManager {
 
                 if(tags != null)
                     games.get(i).setTags(tags);
-
-               // if(path != null)
-                    //games.get(i).setPath(path);
 
                 if(genre != null)
                     games.get(i).setGenre(genre);

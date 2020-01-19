@@ -1,24 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="root" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fgl.catalog.GameContener">
-   <children>
-      <VBox fx:id="gamesBox" layoutX="25.0" layoutY="75.0" />
-      <ScrollPane fx:id="scrollPane" layoutX="25.0" layoutY="75.0" prefHeight="300.0" prefWidth="550.0">
-        <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
-        </content>
-      </ScrollPane>
-      <TextField fx:id="phaseField" layoutX="60.0" layoutY="30.0" />
-      <TextField fx:id="tagsField" layoutX="282.0" layoutY="30.0" />
-      <Button layoutX="489.0" layoutY="30.0" mnemonicParsing="false" onAction="#buttonOnAction" text="Search" />
-      <Label layoutX="25.0" layoutY="34.0" text="Title:" />
-      <Label layoutX="247.0" layoutY="34.0" text="Tags:" />
-   </children>
+<AnchorPane fx:id="root" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="fgl.catalog.GameContener">
+  <children>
+    <VBox fx:id="gamesBox" layoutX="25.0" layoutY="75.0" />
+    <ScrollPane fx:id="scrollPane" layoutX="25.0" layoutY="96.0" prefHeight="280.0" prefWidth="550.0">
+      <content>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
+      </content>
+    </ScrollPane>
+    <TextField fx:id="phaseField" layoutX="60.0" layoutY="30.0" />
+    <TextField fx:id="tagsField" layoutX="282.0" layoutY="30.0" />
+    <Button layoutX="489.0" layoutY="30.0" mnemonicParsing="false" onAction="#buttonOnAction" text="Szukaj" />
+    <Label layoutX="25.0" layoutY="34.0" text="Title:" />
+    <Label layoutX="247.0" layoutY="34.0" text="Tags:" />
+    <Button fx:id="naCzasie" layoutX="146.0" layoutY="65.0" mnemonicParsing="false" onAction="#handleCategoryButton" prefWidth="115.0" text="Na Czasie" />
+    <Button fx:id="polecane" layoutX="262.0" layoutY="65.0" mnemonicParsing="false" onAction="#handleCategoryButton" prefWidth="101.0" text="Polecane" />
+    <Button fx:id="historia" layoutX="363.0" layoutY="65.0" mnemonicParsing="false" onAction="#handleCategoryButton" prefWidth="92.0" text="Historia" />
+    <Button fx:id="panelAkt" layoutX="455.0" layoutY="65.0" mnemonicParsing="false" onAction="#handleCategoryButton" prefWidth="120.0" text="Panel Aktualności" />
+    <Button id="naCzasie" fx:id="wszystkie" layoutX="26.0" layoutY="65.0" mnemonicParsing="false" onAction="#handleCategoryButton" prefWidth="120.0" text="Wszystkie" />
+  </children>
 </AnchorPane>
