@@ -24,11 +24,13 @@
       <TextArea fx:id="textAreaReview" prefHeight="37.0" prefWidth="705.0" GridPane.rowIndex="2" />
       <Button fx:id="buttonAddReview" mnemonicParsing="false" onAction="#addReview" text="Add review" GridPane.rowIndex="3" />
       <VBox fx:id="boxReviews" prefHeight="100.0" prefWidth="150.0" spacing="10.0" GridPane.rowIndex="4">
-         <children>
-            <Button fx:id="buttonShowReview" mnemonicParsing="false" onAction="#test" text="Show review" GridPane.rowIndex="4" />
-            <Label fx:id="labelReview" text="Authors Reply" GridPane.rowIndex="5"/>
-            <TextArea fx:id="textAreaReply" prefHeight="20.0" prefWidth="705" GridPane.rowIndex="6" ></TextArea>
-         </children>
+         <Button fx:id="buttonShowReview" mnemonicParsing="false" onAction="#test" text="Show review"
+                 GridPane.rowIndex="4"/>
+         <Label fx:id="labelReview" text="Authors Reply" GridPane.rowIndex="5"/>
+         <TextArea fx:id="textAreaReply" prefHeight="20.0" prefWidth="705" GridPane.rowIndex="7"/>
+         <TextArea fx:id="textAreaID" prefHeight="15" prefWidth="30" GridPane.rowIndex="6"/>
+         <Button fx:id="buttonAddReply" mnemonicParsing="false" onAction="#authorsReply" text="Add Reply"
+                 GridPane.rowIndex="8"/>
       </VBox>
    </children>
    <columnConstraints>

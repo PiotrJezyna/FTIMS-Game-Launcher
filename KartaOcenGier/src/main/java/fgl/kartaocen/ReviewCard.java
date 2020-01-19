@@ -23,6 +23,7 @@ public class ReviewCard {
 
     private Long loggedUser = 1L;
     private Long game = 2L;
+    private Long ID;
     public ReviewDao dao;
     public List<Review> reviews;
     Review review;
@@ -80,7 +81,7 @@ public class ReviewCard {
     @FXML
     private void addReview() throws IOException, ClassNotFoundException, SQLException {
         // Create review
-        Review review = new Review(textAreaReview.getText(),
+        Review review = new Review(ID,textAreaReview.getText(),
                 rating, null, null, game, loggedUser);
         test1(review);
     }
@@ -122,7 +123,7 @@ public class ReviewCard {
         for (int i = 1; i < reviews.size(); i ++){
             review = reviews.get(i);
            for (int j = 0; j < 1; j++ ){
-               boxReviews.getChildren().add(new Label(" UserID: " + review.getUser() + " GameID: " +  review.getGame() + " user's rate:  " + review.getRating() + " user's commentt: " + review.getComment()));
+               boxReviews.getChildren().add(new Label("ID: " + review.getID() + " " + "date: "+  new java.sql.Date(Calendar.getInstance().getTime().getTime()) + " UserID: " + review.getUser() + " GameID: " +  review.getGame() + " user's rate:  " + review.getRating() + " user's commentt: " + review.getComment()));
            }
         }
     }
@@ -130,6 +131,17 @@ public class ReviewCard {
     private void test1(Review review) throws SQLException {
         dao.insert(review);
         labelStatus.setText("written correctly");
+    }
+    @FXML
+    private void authorsReply() throws SQLException{
+       String ID = textAreaID.getText();
+
+        for (int i = 0; i < reviews.size(); i++){
+            if (reviews.get(i).getID().equals(ID)){
+                reviews.get(i).setAuthorsReply(textAreaReply.getText());
+            }
+            dao.update(reviews.get(i));
+        }
     }
 
 
@@ -153,9 +165,12 @@ public class ReviewCard {
     @FXML private Label labelGameTitle;
     @FXML private TextArea textAreaReview;
     @FXML private Button buttonAddReview;
+    @FXML private Button buttonAddReply;
+    @FXML private Button buttonShowReview;
     @FXML private Label labelStatus;
     @FXML private Label labelRating;
     @FXML private Label labelReview;
     @FXML private TextArea textAreaReply;
+    @FXML private TextArea textAreaID;
     @FXML private VBox boxReviews;
 }

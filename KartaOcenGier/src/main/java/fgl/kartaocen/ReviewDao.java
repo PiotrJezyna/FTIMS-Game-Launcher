@@ -21,13 +21,14 @@ public class ReviewDao extends AbstractDao<Review> {
             rs = stmt.executeQuery(query);
 
             rs.next();
+                Long ID = rs.getLong("ID");
                 Long user = rs.getLong("UserID");
                 Long game = rs.getLong("GameID");
                 int rate = rs.getInt("Rate");
                 java.util.Date date = rs.getDate("date");
                 String comment = rs.getString("Comment");
 
-            return new Review(comment, rate,comment,date,game,user );
+            return new Review(ID,comment, rate,comment,date,game,user );
         }
          catch ( SQLException e ) {
 
@@ -54,14 +55,16 @@ public class ReviewDao extends AbstractDao<Review> {
             rs = stmt.executeQuery(query);
 
             while (rs.next()) {
+                Long ID = rs.getLong("ID");
                 Long user = rs.getLong("UserID");
                 Long game = rs.getLong("GameID");
                 int rate = rs.getInt("Rate");
                 java.util.Date date = rs.getDate("date");
                 int opinion = rs.getInt("opinion");
                 String comment = rs.getString("Comment");
+                String authorsReply = rs.getString("Reply");
 
-                reviews.add(new Review(comment,rate,comment,date,game,user));
+                reviews.add(new Review(ID,comment,rate,authorsReply,date,game,user));
 
             }
             return reviews;
@@ -101,10 +104,7 @@ public class ReviewDao extends AbstractDao<Review> {
     protected void update(Review review) throws SQLException {
         connectSQL();
 
-        String query =
-                "UPDATE Games " +
-                        "SET " +
-                        "Reply = %s";
+        String query ="UPDATE Opinions SET Reply = %s";
 
         query = String.format(query, review.getAuthorsReply());
         query = query.replace("false", "0");

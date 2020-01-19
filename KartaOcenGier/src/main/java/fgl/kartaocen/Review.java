@@ -3,6 +3,7 @@ package fgl.kartaocen;
 import java.util.Date;
 
 public class Review {
+    private Long ID;
     private String comment;
     private int rating;
     private String authorsReply;
@@ -10,7 +11,8 @@ public class Review {
     private Long game;
     private Long user;
 
-    public Review(String comment, int rating, String authorsReply, Date date, Long game, Long user) {
+    public Review(Long ID ,String comment, int rating, String authorsReply, Date date, Long game, Long user) {
+        this.ID = ID;
         this.comment = comment;
         this.rating = rating;
         this.authorsReply = authorsReply;
@@ -18,6 +20,15 @@ public class Review {
         this.game = game;
         this.user = user;
     }
+
+    public Long getID() {
+        return ID;
+    }
+
+    public void setID(Long ID){
+        this.ID = ID;
+    }
+
     public String getComment() {
         return comment;
     }
