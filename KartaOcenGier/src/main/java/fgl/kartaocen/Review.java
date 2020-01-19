@@ -50,7 +50,8 @@ public class Review {
     }
 
     public void setAuthorsReply(String authorsReply) {
-        this.authorsReply = authorsReply;
+        this.authorsReply = String.copyValueOf(authorsReply.toCharArray());
+        System.out.print(this.authorsReply);
     }
 
     public Date getDate() {

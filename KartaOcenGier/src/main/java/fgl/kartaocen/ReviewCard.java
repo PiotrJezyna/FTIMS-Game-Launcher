@@ -134,13 +134,13 @@ public class ReviewCard {
     }
     @FXML
     private void authorsReply() throws SQLException{
-       String ID = textAreaID.getText();
+       Long ID = Long.parseLong(textAreaID.getText());
 
         for (int i = 0; i < reviews.size(); i++){
             if (reviews.get(i).getID().equals(ID)){
                 reviews.get(i).setAuthorsReply(textAreaReply.getText());
+                dao.update(reviews.get(i));
             }
-            dao.update(reviews.get(i));
         }
     }
 

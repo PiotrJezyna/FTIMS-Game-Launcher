@@ -104,11 +104,11 @@ public class ReviewDao extends AbstractDao<Review> {
     protected void update(Review review) throws SQLException {
         connectSQL();
 
-        String query ="UPDATE Opinions SET Reply = %s";
+        String query ="UPDATE Opinions SET Reply = '%s' WHERE Opinions.ID = %d";
 
-        query = String.format(query, review.getAuthorsReply());
-        query = query.replace("false", "0");
-        query = query.replace("true", "1");
+        query = String.format(query, review.getAuthorsReply(), review.getID());
+//        query = query.replace("false", "0");
+//        query = query.replace("true", "1");
 
         System.out.println( query );
 
