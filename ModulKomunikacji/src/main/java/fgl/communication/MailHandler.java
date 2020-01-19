@@ -84,7 +84,7 @@ public final class MailHandler {
   }
 
   public static void main( String[] args ) {
-    User u = new User ( ID, "x", "x", "x", "216894@edu.p.lodz.pl", UserType.USER, false );
+    User u = new User ( ID, "x", "x", "x", "216894@edu.p.lodz.pl", UserType.USER, true, false );
     MailHandler.sendMail( u, "empty path" );
   }
 }

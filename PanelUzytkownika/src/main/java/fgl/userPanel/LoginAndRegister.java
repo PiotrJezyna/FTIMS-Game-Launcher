@@ -23,7 +23,7 @@ public class LoginAndRegister extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("Registration Form JavaFX Application");
-        Parent root = FXMLLoader.load(getClass().getResource("/LoginView.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("LoginView.fxml"));
 
         Scene scene = new Scene(root);
 
