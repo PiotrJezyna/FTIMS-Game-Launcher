@@ -2,6 +2,7 @@ package fgl.catalog;
 
 import fgl.product.Game;
 import fgl.product.GameDAO;
+import fgl.userPanel.Login;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -32,6 +33,7 @@ public class GameContener {
     private int category = 0;   // 0 - no category (display all)
     private int typeOfSort; // 0 - no sort
     private String searchPhrase = new String();
+    private Login login;
 
     public Button wszystkie;
     public Button naCzasie;
@@ -59,6 +61,14 @@ public class GameContener {
     }
 
     public void main(String[] args) {
+
+        login = new Login();
+        try {
+            login.validate("js", "js");
+        }
+        catch (Exception e) {}
+
+        System.out.println(login.getUserSession().getCurrentUser().getId());
 
         /*GameDAO games = new GameDAO();
         try {
@@ -100,7 +110,7 @@ public class GameContener {
             boolean searchPhraseFlag = true;
             boolean tagsFlag = true;
 
-            if (category != 0 && category != 3)
+            if (category != 0 && category != 3 && category != 1)
                 categoryFlag = false;
 
             if (!searchPhrase.isEmpty())
@@ -191,6 +201,12 @@ public class GameContener {
         }
         if (naCzasie.isHover()) {
             category = 1;
+
+            GameDAO games = new GameDAO();
+            try {
+                this.games = games.getAllWithQuery("SELECT A.ID, A.UserID, A.Title, A.Tags, A.UserCount, A.IsReported FROM Games A, Users_Games B WHERE A.ID = B.GameID and B.LastInstallation >= curdate() - INTERVAL DAYOFWEEK(curdate())+6 DAY GROUP BY A.ID ORDER BY COUNT(*) DESC LIMIT 2");
+            } catch (SQLException e) {
+            }
         }
         if (polecane.isHover()) {
             category = 2;
@@ -200,7 +216,7 @@ public class GameContener {
 
             GameDAO games = new GameDAO();
             try {
-                this.games = games.getAllWithQuery("SELECT ID, UserID, Title, Tags, UserCount, IsReported FROM Games");
+                this.games = games.getAllWithQuery("SELECT ID, UserID, Title, Tags, UserCount, IsReported FROM Games WHERE (Games.ID IN (SELECT GameID FROM Users_Games WHERE (Users_Games.UserID = " + login.getUserSession().getCurrentUser().getId() + ")))");
             } catch (SQLException e) {
             }
         }
