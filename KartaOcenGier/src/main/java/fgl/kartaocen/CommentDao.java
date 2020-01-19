@@ -9,41 +9,40 @@ import fgl.userPanel.UserDAO;
 
 // ================================================================= Other == //
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-// ///////////////////////////////////////////////////////// Class: ReviewDao //
-public class ReviewDao
-        extends AbstractDao<Review> {
+// //////////////////////////////////////////////////////// Class: CommentDao //
+public class CommentDao
+        extends AbstractDao<Comment> {
 
     // ========================================================= Behaviour == //
     @Override
-    public Review get(Long id)
+    public Comment get(Long id)
             throws SQLException {
         connectSQL();
 
         try {
-            List<Review> reviews = new ArrayList<>();
+            List<Comment> comments = new ArrayList<>();
 
-            PreparedStatement statement = conn.prepareStatement("SELECT * FROM Reviews WHERE ID = ?");
+            PreparedStatement statement = conn.prepareStatement("SELECT * FROM Comments WHERE ID = ?");
             statement.setLong(1, id);
             rs = statement.executeQuery();
 
-            GameDAO gameDao = new GameDAO();
-            UserDAO userDao = new UserDAO();
+            ReviewDao reviewDao = new ReviewDao();
             while (rs.next()) {
-                reviews.add(new Review(
-                        rs.getLong("ID"),
-                        gameDao.get(rs.getLong("GameID")),
-                        userDao.get(rs.getLong("UserID")),
-                        rs.getInt("Rating")
-                ));
+                comments.add(
+                        new Comment(
+                                rs.getLong("ID"),
+                                reviewDao.get(rs.getLong("ReviewID")),
+                                rs.getString("Content"),
+                                rs.getDate("SubmissionDate"),
+                                rs.getBoolean("IsReply")));
             }
 
-            return reviews.get(0);
+            return comments.get(0);
 
         } catch (SQLException e) {
             throw new SQLException(e.getMessage());
@@ -56,28 +55,28 @@ public class ReviewDao
     }
 
     @Override
-    public List<Review> getAll()
+    public List<Comment> getAll()
             throws SQLException {
         connectSQL();
 
         try {
-            List<Review> reviews = new ArrayList<>();
+            List<Comment> comments = new ArrayList<>();
 
-            PreparedStatement statement = conn.prepareStatement("SELECT * FROM Reviews");
+            PreparedStatement statement = conn.prepareStatement("SELECT * FROM Comments");
             rs = statement.executeQuery();
 
-            GameDAO gameDao = new GameDAO();
-            UserDAO userDao = new UserDAO();
+            ReviewDao reviewDao = new ReviewDao();
             while (rs.next()) {
-                reviews.add(new Review(
-                        rs.getLong("ID"),
-                        gameDao.get(rs.getLong("GameID")),
-                        userDao.get(rs.getLong("UserID")),
-                        rs.getInt("Rating")
-                ));
+                comments.add(
+                        new Comment(
+                                rs.getLong("ID"),
+                                reviewDao.get(rs.getLong("ReviewID")),
+                                rs.getString("Content"),
+                                rs.getDate("SubmissionDate"),
+                                rs.getBoolean("IsReply")));
             }
 
-            return reviews;
+            return comments;
 
         } catch (SQLException e) {
             throw new SQLException(e.getMessage());
@@ -90,15 +89,16 @@ public class ReviewDao
     }
 
     @Override
-    protected void insert(Review review)
+    protected void insert(Comment comment)
             throws SQLException {
         connectSQL();
 
         try {
-            PreparedStatement statement = conn.prepareStatement("INSERT INTO Reviews(GameID, UserID, Rating) VALUES (?, ?, ?)");
-            statement.setLong(1, review.getGame().getId());
-            statement.setLong(2, review.getUser().getId());
-            statement.setInt(3, review.getRating());
+            PreparedStatement statement = conn.prepareStatement("INSERT INTO Comments(ReviewID, Content, SubmissionDate, IsReply) VALUES (?, ?, ?, ?)");
+            statement.setLong(1, comment.getReview().getId());
+            statement.setString(2, comment.getContent());
+            statement.setDate(3, comment.getSubmissionDate());
+            statement.setBoolean(4, comment.isReply());
             statement.executeUpdate();
 
         } catch (SQLException e) {
@@ -110,7 +110,8 @@ public class ReviewDao
     }
 
     @Override
-    protected void update(Review review) throws SQLException {
+    protected void update(Comment comment)
+            throws SQLException {
         // TODO: Write this function
 //        connectSQL();
 //
@@ -138,7 +139,7 @@ public class ReviewDao
     }
 
     @Override
-    protected void delete(Review review)
+    protected void delete(Comment comment)
             throws SQLException {
         // TODO: Write this function
     }
