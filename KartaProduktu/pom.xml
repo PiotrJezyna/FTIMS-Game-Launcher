@@ -16,8 +16,32 @@
     <name>${project.artifactId}-${project.version}</name>
 
     <dependencies>
-
+        <dependency>
+            <groupId>edu.ftims</groupId>
+            <artifactId>DatabaseDAO</artifactId>
+            <version>0.0.1</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>edu.ftims</groupId>
+            <artifactId>PanelUzytkownika</artifactId>
+            <version>0.0.1</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>edu.ftims</groupId>
+            <artifactId>KartaOcenGier</artifactId>
+            <version>0.0.1</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <exec.mainClass>fgl.product.Application</exec.mainClass>
+    </properties>
 
     <build>
         <plugins>

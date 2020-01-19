@@ -1,5 +1,5 @@
 // ////////////////////////////////////////////////////////////////// Package //
-package kartaocen;
+package fgl.kartaocen;
 
 // ////////////////////////////////////////////////////////////////// Imports //
 import javafx.fxml.FXML;
@@ -21,7 +21,24 @@ public class ReviewCard {
     static final String USER = "5VexXpVWzU";
     static final String PASS = "apQqybLdoW";
 
-    private void writeReviewToDatabase(Review review) throws IOException, ClassNotFoundException {
+    private Long loggedUser = 1L;
+    private Long game = 2L;
+    public ReviewDao dao;
+    public List<Review> reviews;
+    Review review;
+    private int rating;
+
+    public void setGame(Long id) {
+        this.game = id;
+    }
+
+    public ReviewCard() throws SQLException{
+        dao = new ReviewDao();
+
+        reviews = dao.getAll();
+    }
+    //Now we use test1()
+   /* private void writeReviewToDatabase(Review review) throws IOException, ClassNotFoundException {
         Class.forName(JDBC_DRIVER);
         try (Connection connection = DriverManager.getConnection(DB_URL, USER, PASS);
              PreparedStatement statement = connection.prepareStatement(
@@ -30,8 +47,8 @@ public class ReviewCard {
                              "VALUES (?, ?, ?, ?, ?, ?)")) {
 
             // Construct insert statement
-            statement.setInt(1, review.getUser().id);
-            statement.setInt(2, review.getGame().id);
+            statement.setLong(1, loggedUser);
+            statement.setLong(2, game);
             statement.setDate(3, new java.sql.Date(Calendar.getInstance().getTime().getTime()));
             statement.setString(4, textAreaReview.getText());
             statement.setObject(5, null);
@@ -48,7 +65,7 @@ public class ReviewCard {
             e.printStackTrace();
         }
 
-    }
+    }*/
 
     public void render() {
     }
@@ -56,23 +73,16 @@ public class ReviewCard {
     public void handleEvents() {
     }
 
-    public double getAverageRating(Game game) {
-        return 0.0;
-    }
+    //public double getAverageRating(Game game) {
+    //    return 0.0;
+    //}
 
     @FXML
-    private void addReview() throws IOException, ClassNotFoundException {
-        // TODO: Change this to actual User and Game passed from the app
-        // Prepare test objects
-        User testUser = new User();
-        testUser.id = 1;
-        Game testGame = new Game();
-        testGame.id = 2;
-
+    private void addReview() throws IOException, ClassNotFoundException, SQLException {
         // Create review
         Review review = new Review(textAreaReview.getText(),
-                rating, null, null, testGame, testUser);
-        writeReviewToDatabase(review);
+                rating, null, null, game, loggedUser);
+        test1(review);
     }
 
     private void editReview(Review review) {
@@ -80,7 +90,8 @@ public class ReviewCard {
 
     private void notifyAuthor() {
     }
-    @FXML
+    //Now we use test()
+   /* @FXML
     private void readReview() throws ClassNotFoundException, SQLException  {
         Class.forName(JDBC_DRIVER);
         Connection connection;
@@ -99,17 +110,28 @@ public class ReviewCard {
             String comment = resultSet.getString("Comment");
 
             for (int i = 0; i < 1; i++){
-                boxReviews.getChildren().add(new Label("id: " + Integer.toString(id) + " UserID: " + Integer.toString(userID) + " GameID: " +  Integer.toString(gameID) + " user's rate:  " + rate + " user's commentt: " + comment));
+                if ((long)gameID == game) {
+                    boxReviews.getChildren().add(new Label("id: " + Integer.toString(id) + " UserID: " + Integer.toString(userID) + " GameID: " +  Integer.toString(gameID) + " user's rate:  " + rate + " user's commentt: " + comment));
+                }
             }
-
         }
+    }*/
+    @FXML
+    private void test() throws ClassNotFoundException,SQLException{
 
+        for (int i = 1; i < reviews.size(); i ++){
+            review = reviews.get(i);
+           for (int j = 0; j < 1; j++ ){
+               boxReviews.getChildren().add(new Label(" UserID: " + review.getUser() + " GameID: " +  review.getGame() + " user's rate:  " + review.getRating() + " user's commentt: " + review.getComment()));
+           }
+        }
+    }
+    @FXML
+    private void test1(Review review) throws SQLException {
+        dao.insert(review);
+        labelStatus.setText("written correctly");
     }
 
-    private User loggedUser;
-    private Game game;
-    private List<Review> reviews;
-    private int rating;
 
     // TODO: Definitely refactor this!
     private void setRating(int r) {
@@ -134,5 +156,6 @@ public class ReviewCard {
     @FXML private Label labelStatus;
     @FXML private Label labelRating;
     @FXML private Label labelReview;
+    @FXML private TextArea textAreaReply;
     @FXML private VBox boxReviews;
 }

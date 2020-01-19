@@ -1,4 +1,4 @@
-package kartaocen;
+package fgl.kartaocen;
 
 import java.util.Date;
 
@@ -7,10 +7,10 @@ public class Review {
     private int rating;
     private String authorsReply;
     private Date date;
-    private Game game;
-    private User user;
+    private Long game;
+    private Long user;
 
-    public Review(String comment, int rating, String authorsReply, Date date, Game game, User user) {
+    public Review(String comment, int rating, String authorsReply, Date date, Long game, Long user) {
         this.comment = comment;
         this.rating = rating;
         this.authorsReply = authorsReply;
@@ -18,7 +18,6 @@ public class Review {
         this.game = game;
         this.user = user;
     }
-
     public String getComment() {
         return comment;
     }
@@ -51,19 +50,19 @@ public class Review {
         this.date = date;
     }
 
-    public Game getGame() {
+    public Long getGame() {
         return game;
     }
 
-    public void setGame(Game game) {
+    public void setGame(Long game) {
         this.game = game;
     }
 
-    public User getUser() {
+    public Long getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(Long user) {
         this.user = user;
     }
 }
