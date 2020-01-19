@@ -2,35 +2,53 @@
 package fgl.kartaocen;
 
 // ////////////////////////////////////////////////////////////////// Imports //
+// ================================================================ JavaFX == //
+import fgl.product.Game;
+import fgl.userPanel.User;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.VBox;
 
+// ================================================================= Other == //
 import java.io.IOException;
 import java.sql.*;
 import java.util.Calendar;
 import java.util.List;
 
+// //////////////////////////////////////////////////////// Class: ReviewCard //
 public class ReviewCard {
 
-    // Database
-    static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
-    static final String DB_URL = "jdbc:mysql://remotemysql.com/5VexXpVWzU";
-    static final String USER = "5VexXpVWzU";
-    static final String PASS = "apQqybLdoW";
-
-    private Long loggedUser = 1L;
-    private Long game;
-    private List<Review> reviews;
+    // ============================================================== Data == //
+    private User loggedUser;
+    private Game game;
+    private Long ID;
+    public ReviewDao reviewDao;
+    public CommentDao commentDao;
+    public List<Review> reviews;
+    public List<Comment> comments;
+    Review review;
     private int rating;
 
+    // ========================================================= Behaviour == //
     public void setGame(Long id) {
-        this.game = id;
+//        this.game = id;
     }
 
-    private void writeReviewToDatabase(Review review) throws IOException, ClassNotFoundException {
+    public ReviewCard(/*Game game, User user*/) throws SQLException {
+        reviewDao = new ReviewDao();
+        commentDao = new CommentDao();
+
+        reviews = reviewDao.getAll();
+        comments = commentDao.getAll();
+
+        // todo: remove this
+        loggedUser = new User("tmwitczak", "mailmailmail@mail");
+        game = new Game(2L, 1L, "Test", "tags", "path", "genre", "description", 4, false);
+    }
+    //Now we use test1()
+   /* private void writeReviewToDatabase(Review review) throws IOException, ClassNotFoundException {
         Class.forName(JDBC_DRIVER);
         try (Connection connection = DriverManager.getConnection(DB_URL, USER, PASS);
              PreparedStatement statement = connection.prepareStatement(
@@ -57,7 +75,7 @@ public class ReviewCard {
             e.printStackTrace();
         }
 
-    }
+    }*/
 
     public void render() {
     }
@@ -70,11 +88,15 @@ public class ReviewCard {
     //}
 
     @FXML
-    private void addReview() throws IOException, ClassNotFoundException {
+    private void addReview() throws IOException, ClassNotFoundException, SQLException {
         // Create review
-        Review review = new Review(textAreaReview.getText(),
-                rating, null, null, game, loggedUser);
-        writeReviewToDatabase(review);
+        Review review = new Review(0L, game, loggedUser, rating);
+        Comment comment = new Comment(0L, review, textAreaReview.getText(),
+                new java.sql.Date(Calendar.getInstance().getTime().getTime()), false);
+
+        reviewDao.insert(review);
+        commentDao.insert(comment);
+        labelStatus.setText("written correctly");
     }
 
     private void editReview(Review review) {
@@ -82,7 +104,9 @@ public class ReviewCard {
 
     private void notifyAuthor() {
     }
-    @FXML
+
+    //Now we use test()
+   /* @FXML
     private void readReview() throws ClassNotFoundException, SQLException  {
         Class.forName(JDBC_DRIVER);
         Connection connection;
@@ -105,9 +129,33 @@ public class ReviewCard {
                     boxReviews.getChildren().add(new Label("id: " + Integer.toString(id) + " UserID: " + Integer.toString(userID) + " GameID: " +  Integer.toString(gameID) + " user's rate:  " + rate + " user's commentt: " + comment));
                 }
             }
-
         }
+    }*/
+    @FXML
+    private void test() throws ClassNotFoundException, SQLException {
 
+//        for (int i = 1; i < reviews.size(); i++) {
+//            review = reviews.get(i);
+//            for (int j = 0; j < 1; j++) {
+//                boxReviews.getChildren().add(new Label("ID: " + review.getId() + " " + "date: " + new java.sql.Date(Calendar.getInstance().getTime().getTime()) + " UserID: " + review.getUser() + " GameID: " + review.getGame() + " user's rate:  " + review.getRating() + " user's commentt: " + review.getComment()));
+//            }
+//        }
+    }
+
+    @FXML
+    private void test1(Review review) throws SQLException {
+    }
+
+    @FXML
+    private void authorsReply() throws SQLException {
+//        Long ID = Long.parseLong(textAreaID.getText());
+//
+//        for (int i = 0; i < reviews.size(); i++) {
+//            if (reviews.get(i).getId().equals(ID)) {
+//                reviews.get(i).setAuthorsReply(textAreaReply.getText());
+//                reviewDao.update(reviews.get(i));
+//            }
+//        }
     }
 
 
@@ -116,23 +164,78 @@ public class ReviewCard {
         rating = r;
         labelRating.setText(Integer.toString(rating) + "/10");
     }
-    @FXML private void setRating1() { setRating(1); }
-    @FXML private void setRating2() { setRating(2); }
-    @FXML private void setRating3() { setRating(3); }
-    @FXML private void setRating4() { setRating(4); }
-    @FXML private void setRating5() { setRating(5); }
-    @FXML private void setRating6() { setRating(6); }
-    @FXML private void setRating7() { setRating(7); }
-    @FXML private void setRating8() { setRating(8); }
-    @FXML private void setRating9() { setRating(9); }
-    @FXML private void setRating10() { setRating(10); }
+
+    @FXML
+    private void setRating1() {
+        setRating(1);
+    }
+
+    @FXML
+    private void setRating2() {
+        setRating(2);
+    }
+
+    @FXML
+    private void setRating3() {
+        setRating(3);
+    }
+
+    @FXML
+    private void setRating4() {
+        setRating(4);
+    }
+
+    @FXML
+    private void setRating5() {
+        setRating(5);
+    }
+
+    @FXML
+    private void setRating6() {
+        setRating(6);
+    }
+
+    @FXML
+    private void setRating7() {
+        setRating(7);
+    }
+
+    @FXML
+    private void setRating8() {
+        setRating(8);
+    }
+
+    @FXML
+    private void setRating9() {
+        setRating(9);
+    }
+
+    @FXML
+    private void setRating10() {
+        setRating(10);
+    }
 
 
-    @FXML private Label labelGameTitle;
-    @FXML private TextArea textAreaReview;
-    @FXML private Button buttonAddReview;
-    @FXML private Label labelStatus;
-    @FXML private Label labelRating;
-    @FXML private Label labelReview;
-    @FXML private VBox boxReviews;
+    @FXML
+    private Label labelGameTitle;
+    @FXML
+    private TextArea textAreaReview;
+    @FXML
+    private Button buttonAddReview;
+    @FXML
+    private Button buttonAddReply;
+    @FXML
+    private Button buttonShowReview;
+    @FXML
+    private Label labelStatus;
+    @FXML
+    private Label labelRating;
+    @FXML
+    private Label labelReview;
+    @FXML
+    private TextArea textAreaReply;
+    @FXML
+    private TextArea textAreaID;
+    @FXML
+    private VBox boxReviews;
 }
