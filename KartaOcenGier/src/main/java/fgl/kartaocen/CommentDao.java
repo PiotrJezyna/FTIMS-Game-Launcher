@@ -25,10 +25,9 @@ public class CommentDao
             throws SQLException {
         connectSQL();
 
-        try {
+        try (PreparedStatement statement = conn.prepareStatement("SELECT * FROM Comments WHERE ID = ?")) {
             List<Comment> comments = new ArrayList<>();
 
-            PreparedStatement statement = conn.prepareStatement("SELECT * FROM Comments WHERE ID = ?");
             statement.setLong(1, id);
             rs = statement.executeQuery();
 
@@ -39,7 +38,7 @@ public class CommentDao
                                 rs.getLong("ID"),
                                 reviewDao.get(rs.getLong("ReviewID")),
                                 rs.getString("Content"),
-                                rs.getDate("SubmissionDate"),
+                                rs.getTimestamp("SubmissionDate"),
                                 rs.getBoolean("IsReply")));
             }
 
@@ -50,7 +49,6 @@ public class CommentDao
 
         } finally {
             rs.close();
-            stmt.close();
             disconnectSQL();
         }
     }
@@ -60,10 +58,9 @@ public class CommentDao
             throws SQLException {
         connectSQL();
 
-        try {
+        try (PreparedStatement statement = conn.prepareStatement("SELECT * FROM Comments")) {
             List<Comment> comments = new ArrayList<>();
 
-            PreparedStatement statement = conn.prepareStatement("SELECT * FROM Comments");
             rs = statement.executeQuery();
 
             ReviewDao reviewDao = new ReviewDao();
@@ -73,7 +70,7 @@ public class CommentDao
                                 rs.getLong("ID"),
                                 reviewDao.get(rs.getLong("ReviewID")),
                                 rs.getString("Content"),
-                                rs.getDate("SubmissionDate"),
+                                rs.getTimestamp("SubmissionDate"),
                                 rs.getBoolean("IsReply")));
             }
 
@@ -84,7 +81,6 @@ public class CommentDao
 
         } finally {
             rs.close();
-            stmt.close();
             disconnectSQL();
         }
     }
@@ -94,13 +90,14 @@ public class CommentDao
             throws SQLException {
         connectSQL();
 
-        try {
-            PreparedStatement statement = conn.prepareStatement("INSERT INTO Comments(ReviewID, Content, SubmissionDate, IsReply) VALUES (?, ?, ?, ?)");
+        try (PreparedStatement statement = conn.prepareStatement("INSERT INTO Comments(ReviewID, Content, IsReply) VALUES (?, ?, ?)")) {
             statement.setLong(1, comment.getReview().getId());
             statement.setString(2, comment.getContent());
-            statement.setDate(3, (Date) comment.getSubmissionDate());
-            statement.setBoolean(4, comment.isReply());
+            statement.setBoolean(3, comment.isReply());
             statement.executeUpdate();
+
+            List<Comment> comments = getAll();
+            comment.setId(comments.get(comments.size() - 1).getId());
 
         } catch (SQLException e) {
             throw new SQLException(e.getMessage());

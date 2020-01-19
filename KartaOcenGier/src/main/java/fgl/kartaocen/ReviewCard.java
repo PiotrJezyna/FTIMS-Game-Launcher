@@ -5,6 +5,7 @@ package fgl.kartaocen;
 // ================================================================ JavaFX == //
 import fgl.product.Game;
 import fgl.userPanel.User;
+import fgl.userPanel.UserType;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -44,8 +45,8 @@ public class ReviewCard {
         comments = commentDao.getAll();
 
         // todo: remove this
-        loggedUser = new User("tmwitczak", "mailmailmail@mail");
-        game = new Game(2L, 1L, "Test", "tags", "path", "genre", "description", 4, false);
+        loggedUser = new User(2L, "name", "surname", "tmwitczak", "mailmailmail@mail", UserType.USER, false);
+        game = new Game(2L, 1L, "Test", 2, "tags", "genre", "description", 4, false);
     }
     //Now we use test1()
    /* private void writeReviewToDatabase(Review review) throws IOException, ClassNotFoundException {
@@ -91,8 +92,7 @@ public class ReviewCard {
     private void addReview() throws IOException, ClassNotFoundException, SQLException {
         // Create review
         Review review = new Review(0L, game, loggedUser, rating);
-        Comment comment = new Comment(0L, review, textAreaReview.getText(),
-                new java.sql.Date(Calendar.getInstance().getTime().getTime()), false);
+        Comment comment = new Comment(0L, review, textAreaReview.getText(), null, false);
 
         reviewDao.insert(review);
         commentDao.insert(comment);

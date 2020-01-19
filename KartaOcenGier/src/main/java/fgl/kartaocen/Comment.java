@@ -3,7 +3,7 @@ package fgl.kartaocen;
 
 // ////////////////////////////////////////////////////////////////// Imports //
 // ================================================================= Other == //
-import java.util.Date;
+import java.sql.Timestamp;
 
 // /////////////////////////////////////////////////////////// Class: Comment //
 public class Comment {
@@ -12,14 +12,14 @@ public class Comment {
     private Long id;
     private Review review;
     private String content;
-    private Date submissionDate;
+    private Timestamp submissionDate;
     private boolean isReply;
 
     // ========================================================= Behaviour == //
     public Comment(Long id,
                    Review review,
                    String content,
-                   Date submissionDate,
+                   Timestamp submissionDate,
                    boolean isReply) {
         this.id = id;
         this.review = review;
@@ -52,11 +52,11 @@ public class Comment {
         this.content = String.copyValueOf(content.toCharArray());
     }
 
-    public Date getSubmissionDate() {
+    public Timestamp getSubmissionDate() {
         return submissionDate;
     }
 
-    public void setSubmissionDate(Date submissionDate) {
+    public void setSubmissionDate(Timestamp submissionDate) {
         this.submissionDate = submissionDate;
     }
 

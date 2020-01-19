@@ -25,10 +25,9 @@ public class ReviewDao
             throws SQLException {
         connectSQL();
 
-        try {
+        try (PreparedStatement statement = conn.prepareStatement("SELECT * FROM Reviews WHERE ID = ?")) {
             List<Review> reviews = new ArrayList<>();
 
-            PreparedStatement statement = conn.prepareStatement("SELECT * FROM Reviews WHERE ID = ?");
             statement.setLong(1, id);
             rs = statement.executeQuery();
 
@@ -50,7 +49,6 @@ public class ReviewDao
 
         } finally {
             rs.close();
-            stmt.close();
             disconnectSQL();
         }
     }
@@ -60,10 +58,9 @@ public class ReviewDao
             throws SQLException {
         connectSQL();
 
-        try {
+        try (PreparedStatement statement = conn.prepareStatement("SELECT * FROM Reviews")) {
             List<Review> reviews = new ArrayList<>();
 
-            PreparedStatement statement = conn.prepareStatement("SELECT * FROM Reviews");
             rs = statement.executeQuery();
 
             GameDAO gameDao = new GameDAO();
@@ -84,7 +81,6 @@ public class ReviewDao
 
         } finally {
             rs.close();
-            stmt.close();
             disconnectSQL();
         }
     }
@@ -94,12 +90,14 @@ public class ReviewDao
             throws SQLException {
         connectSQL();
 
-        try {
-            PreparedStatement statement = conn.prepareStatement("INSERT INTO Reviews(GameID, UserID, Rating) VALUES (?, ?, ?)");
+        try (PreparedStatement statement = conn.prepareStatement("INSERT INTO Reviews(GameID, UserID, Rating) VALUES (?, ?, ?)")) {
             statement.setLong(1, review.getGame().getId());
             statement.setLong(2, review.getUser().getId());
             statement.setInt(3, review.getRating());
             statement.executeUpdate();
+
+            List<Review> reviews = getAll();
+            review.setId(reviews.get(reviews.size() - 1).getId());
 
         } catch (SQLException e) {
             throw new SQLException(e.getMessage());
