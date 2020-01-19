@@ -25,7 +25,6 @@ import java.util.List;
 
 public class RegisterViewControl {
 
-    @FXML
     private AnchorPane root;
 
     @FXML
@@ -34,21 +33,18 @@ public class RegisterViewControl {
     @FXML
     private Label label;
 
+    public void init(AnchorPane root) {
+        this.root = root;
+    }
+
     public void openLoginScene(ActionEvent actionEvent) throws IOException {
-        AnchorPane pain = FXMLLoader.load(getClass().getResource("/LoginView.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource( "/LoginView.fxml" ));
+        AnchorPane pane = loader.load();
+        LoginViewControl ctrl = loader.getController();
+        ctrl.init( root );
 
         root.getChildren().clear();
-        root.getChildren().add(pain);
-        /*Parent root = FXMLLoader.load(getClass().getResource("/LoginView.fxml"));
-
-        Scene scene = new Scene(root);
-        scene.setFill(Color.TRANSPARENT);
-
-        Stage window = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
-
-        window.setScene(scene);
-        //window.initStyle(StageStyle.TRANSPARENT);
-        window.show();*/
+        root.getChildren().add( pane );
     }
 
     public void registerUser(ActionEvent actionEvent) throws SQLException, NoSuchAlgorithmException, IOException {
@@ -58,9 +54,6 @@ public class RegisterViewControl {
         String uEmail = email.getText();
         String uPassword = password.getText();
         String uRepeatPassword = repeatPassword.getText();
-
-
-
 
         if (uName.equals("") || uSurname.equals("") || uUserName.equals("") || uEmail.equals("") || uPassword.equals("") || uRepeatPassword.equals("")) {
             warningWindow("Not all data was filled in", "Please fill in all data!" );
@@ -72,6 +65,8 @@ public class RegisterViewControl {
             if (registration.createUser(uUserName, uName, uSurname, uEmail, uPassword)) {
                 informationWindow("Successfully registered", "Please confirm your account");
 
+                //************************************************
+                //TODO change
                 Parent root = FXMLLoader.load(getClass().getResource("/ConfirmationView.fxml"));
                 Scene scene = new Scene(root);
                 scene.setFill(Color.TRANSPARENT);

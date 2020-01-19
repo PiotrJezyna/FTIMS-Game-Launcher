@@ -3,15 +3,13 @@ package fgl.userPanel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -21,50 +19,44 @@ import java.sql.SQLException;
 
 public class LoginViewControl {
 
-    @FXML
     private AnchorPane root;
 
     @FXML
     private TextField username, password;
 
-    String uUsername, uPassword;
+    private String uUsername, uPassword;
+
+    public void init(AnchorPane root) {
+        this.root = root;
+    }
 
     public void openRegisterScene(ActionEvent actionEvent) throws IOException {
-        AnchorPane pain = FXMLLoader.load( getClass().getResource( "/RegisterView.fxml" ) );
+        FXMLLoader loader = new FXMLLoader(getClass().getResource( "/RegisterView.fxml" ));
+        AnchorPane pane = loader.load();
+        RegisterViewControl ctrl = loader.getController();
+        ctrl.init( root );
 
         root.getChildren().clear();
-        root.getChildren().add( pain );
-        /*
-        Parent root = FXMLLoader.load(getClass().getResource("/RegisterView.fxml"));
-
-        Scene scene = new Scene(root);
-        scene.setFill(Color.TRANSPARENT);
-
-        Stage window = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
-
-        window.setScene(scene);
-        //window.initStyle(StageStyle.TRANSPARENT);
-        window.show();*/
+        root.getChildren().add( pane );
     }
 
     public void loginButtonClicked(ActionEvent actionEvent) throws SQLException, IOException, NoSuchAlgorithmException {
         uUsername = username.getText();
         uPassword =password.getText();
         uPassword = encryptPassword(password.getText());
-        Login login = new Login();
-        if(login.validate(uUsername, uPassword)){
 
-            // Remove comment for module tests
-            /*
-            Parent root = FXMLLoader.load(getClass().getResource("/UserProfileView.fxml"));
-            Scene scene = new Scene(root);
-            scene.setFill(Color.TRANSPARENT);
-            Stage window = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
-            window.setScene(scene);
-            //window.initStyle(StageStyle.TRANSPARENT);
-            window.show();*/
+        Login login = new Login();
+        if( login.validate( uUsername, uPassword ) ) {
+            Text text = new Text();
+            text.setX( 70 );
+            text.setY( 50 );
+            text.setFont( Font.font( "Verdana", FontWeight.NORMAL, FontPosture.REGULAR, 15 ) );
+            text.setText( "You have logged in successfully" );
+
+            root.getChildren().clear();
+            root.getChildren().add( text );
         } else {
-            warningWindow("Warning", "Wrong credentials. Please try again");
+            warningWindow( "Warning", "Wrong credentials. Please try again" );
         }
     }
 

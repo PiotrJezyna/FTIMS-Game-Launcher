@@ -1,6 +1,8 @@
 package fgl;
 
 import fgl.admin.AdminPageController;
+import fgl.userPanel.LoginViewControl;
+import fgl.userPanel.UserProfileViewControl;
 import fgl.userPanel.UserSession;
 import fgl.userPanel.Login;
 
@@ -31,11 +33,16 @@ public class LauncherController {
 
     public void initialize() {
         try {
-            AnchorPane pain = FXMLLoader.load( getClass().getResource( "/LoginView.fxml" ) );
-            loginPanel.getChildren().add( pain );
+            FXMLLoader loader = new FXMLLoader(getClass().getResource( "/LoginView.fxml" ));
+            loadedFxml = loader.load();
+            LoginViewControl ctrl = loader.getController();
+            ctrl.init( loginPanel );
         } catch ( IOException e ) {
             e.printStackTrace();
         }
+
+        loginPanel.getChildren().clear();
+        loginPanel.getChildren().add( loadedFxml );
 
         userSession = UserSession.getUserSession();
     }
@@ -61,7 +68,10 @@ public class LauncherController {
         } else {
 
             try {
-                loadedFxml = FXMLLoader.load( getClass().getResource("/UserProfileView.fxml") );
+                FXMLLoader loader = new FXMLLoader(getClass().getResource( "/UserProfileView.fxml" ));
+                loadedFxml = loader.load();
+                UserProfileViewControl ctrl = loader.getController();
+                ctrl.init( paneChanger );
             } catch ( IOException e ) {
                 e.printStackTrace();
             }

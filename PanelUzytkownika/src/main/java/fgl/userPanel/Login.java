@@ -19,7 +19,6 @@ public class Login {
                 System.out.println(allUsers.get(i).getUsername());
                 checkFlag = true;
             }
-
         }
 
         return checkFlag;

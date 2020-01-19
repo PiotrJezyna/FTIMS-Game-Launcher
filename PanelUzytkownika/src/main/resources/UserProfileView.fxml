@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane fx:id="root" prefHeight="218.0" prefWidth="286.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fgl.userPanel.UserProfileViewControl">
+<AnchorPane prefHeight="218.0" prefWidth="286.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fgl.userPanel.UserProfileViewControl">
    <children>
       <TextField fx:id="nameField" editable="false" layoutX="71.0" layoutY="30.0" />
       <TextField fx:id="surnameField" editable="false" layoutX="71.0" layoutY="60.0" />

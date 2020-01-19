@@ -16,7 +16,6 @@ import java.io.IOException;
 
 public class UserProfileViewControl {
 
-    @FXML
     private AnchorPane root;
 
     @FXML
@@ -42,6 +41,10 @@ public class UserProfileViewControl {
         emailField.setText(getLoggedInUserEmail());
     }
 
+    public void init(AnchorPane root) {
+        this.root = root;
+    }
+
     private String getLoggedInUserName(){
         String name = UserSession.getUserSession().getCurrentUser().getName();
         return name;
@@ -60,28 +63,23 @@ public class UserProfileViewControl {
     }
 
     public void goToEditProfile(ActionEvent actionEvent) throws IOException {
-        AnchorPane pain = FXMLLoader.load( getClass().getResource( "/EditUserProfileView.fxml" ) );
+        FXMLLoader loader = new FXMLLoader(getClass().getResource( "/EditUserProfileView.fxml" ));
+        AnchorPane pane = loader.load();
+        EditUserProfileViewControl ctrl = loader.getController();
+        ctrl.init( root );
 
         root.getChildren().clear();
-        root.getChildren().add( pain );
-        /*
-        Parent root = FXMLLoader.load(getClass().getResource("/EditUserProfileView.fxml"));
-        Scene scene = new Scene(root);
-        scene.setFill(Color.TRANSPARENT);
-        Stage window = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
-        window.setScene(scene);
-        //window.initStyle(StageStyle.TRANSPARENT);
-        window.show();*/
+        root.getChildren().add( pane );
     }
 
     public void logoutUser(ActionEvent actionEvent) throws IOException {
-
-        Parent root = FXMLLoader.load(getClass().getResource("/LoginView.fxml"));
+        UserSession.getUserSession().setCurrentUser( null );
+        Parent root = FXMLLoader.load(getClass().getResource("/Launcher.fxml"));
         Scene scene = new Scene(root);
-        scene.setFill(Color.TRANSPARENT);
         Stage window = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
+        window.setTitle("FTIMS Game Launcher");
+        window.setResizable(false);
         window.setScene(scene);
-        //window.initStyle(StageStyle.TRANSPARENT);
         window.show();
     }
 }

@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -19,10 +20,17 @@ import java.util.Random;
 
 public class ConfirmationViewControl {
 
+    private AnchorPane root;
 
     @FXML
     public TextField confirmationTextField;
+
+    @FXML
     public TextField usernameTextField;
+
+    public void init(AnchorPane root) {
+        this.root = root;
+    }
 
     public void checkConfirmationString(ActionEvent actionEvent) throws IOException, SQLException {
 
@@ -34,6 +42,8 @@ public class ConfirmationViewControl {
         if (userConfirmationNumber.equals(inputString)) {
             informationWindow("Information", "Your account is confirmed");
 
+            //*************************************
+            //TODO change
             Parent root = FXMLLoader.load(getClass().getResource("/LoginView.fxml"));
             Scene scene = new Scene(root);
             scene.setFill(Color.TRANSPARENT);

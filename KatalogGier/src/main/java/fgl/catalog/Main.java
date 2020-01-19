@@ -1,6 +1,5 @@
 package fgl.catalog;
 
-import fgl.userPanel.LoginAndRegister;
 import fgl.userPanel.UserSession;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

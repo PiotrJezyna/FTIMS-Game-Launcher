@@ -19,7 +19,6 @@ import java.util.List;
 
 public class EditUserProfileViewControl {
 
-    @FXML
     private AnchorPane root;
 
     @FXML
@@ -43,6 +42,10 @@ public class EditUserProfileViewControl {
         surnameEditField.setText(getLoggedInUserSurname());
         usernameEditField.setText(getLoggedInUserUsername());
         emailEditField.setText(getLoggedInUserEmail());
+    }
+
+    public void init(AnchorPane root) {
+        this.root = root;
     }
 
     private String getLoggedInUserName(){
@@ -86,18 +89,13 @@ public class EditUserProfileViewControl {
     }
 
     public void backToUserProfile(javafx.event.ActionEvent actionEvent) throws IOException {
-        AnchorPane pain = FXMLLoader.load( getClass().getResource( "/UserProfileView.fxml" ) );
+        FXMLLoader loader = new FXMLLoader(getClass().getResource( "/UserProfileView.fxml" ));
+        AnchorPane pane = loader.load();
+        UserProfileViewControl ctrl = loader.getController();
+        ctrl.init( root );
 
         root.getChildren().clear();
-        root.getChildren().add( pain );
-        /*
-        Parent root = FXMLLoader.load(getClass().getResource("/UserProfileView.fxml"));
-        Scene scene = new Scene(root);
-        scene.setFill(Color.TRANSPARENT);
-        Stage window = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
-        window.setScene(scene);
-        //window.initStyle(StageStyle.TRANSPARENT);
-        window.show();*/
+        root.getChildren().add( pane );
     }
 
     private boolean checkForMailAndUsername(String uUserName, String uEmail) throws SQLException {
