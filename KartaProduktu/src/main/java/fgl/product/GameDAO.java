@@ -32,7 +32,7 @@ public class GameDAO extends AbstractDao<Game> {
             Integer userCount = rs.getInt("UserCount");
             boolean isReported = rs.getBoolean("IsReported");
 
-            return new Game(id, userId, title, tags, null, null, userCount, isReported);
+            return new Game(id, userId, title, version, tags, null, null, userCount, isReported);
 
         } catch ( SQLException e ) {
 
@@ -53,7 +53,7 @@ public class GameDAO extends AbstractDao<Game> {
 
         try {
 
-            String query = "SELECT ID, UserID, Title, Tags, UserCount, IsReported FROM Games";
+            String query = "SELECT ID, UserID, Title, Version, Tags, UserCount, IsReported FROM Games";
             stmt = conn.createStatement();
             rs = stmt.executeQuery( query );
 
@@ -64,11 +64,12 @@ public class GameDAO extends AbstractDao<Game> {
                 Long gameId = rs.getLong("ID");
                 Long userId = rs.getLong("UserID");
                 String title = rs.getString("Title");
+                Integer version = rs.getInt("Version");
                 String tags = rs.getString("Tags");
                 Integer userCount = rs.getInt("UserCount");
                 boolean isReported = rs.getBoolean("IsReported");
 
-                Game game = new Game(gameId, userId, title, tags, null, null, userCount, isReported);
+                Game game = new Game(gameId, userId, title, version, tags, null, null, userCount, isReported);
                 games.add( game );
             }
 
@@ -121,7 +122,7 @@ public class GameDAO extends AbstractDao<Game> {
                         "SET " +
                         "UserID = %s, " +
                         "Title = '%s', " +
-                        "Version = %s" +
+                        "Version = %s, " +
                         "Tags = '%s', " +
                         "UserCount = %s, " +
                         "IsReported = %s " +
