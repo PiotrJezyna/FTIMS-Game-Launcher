@@ -8,6 +8,17 @@ import java.util.List;
 
 public class LocalGamesDAO extends AbstractDao<Game> {
 
+    private File path;
+
+    public LocalGamesDAO(){
+        this.path = new File("C:\\FtimsGameLauncher");
+        if(!path.exists()) path.mkdir();
+    }
+
+    public void changePath(File path){
+        this.path = path;
+    }
+
     @Override
     protected Game get(Long id) throws SQLException {
         return null;
@@ -18,13 +29,12 @@ public class LocalGamesDAO extends AbstractDao<Game> {
 
         List<Game> localGames = new ArrayList<>();
 
-        File f = new File("C:\\FtimsGameLauncher");
         String[] pathnames;
-        pathnames = f.list();
+        pathnames = this.path.list();
 
         for (String pathname : pathnames) {
 
-            File tmpDir = new File("C:\\FtimsGameLauncher\\" + pathname + "\\" + pathname + ".exe");
+            File tmpDir = new File(this.path.getAbsolutePath()+ "\\" + pathname + "\\" + pathname + ".exe");
             if (tmpDir.exists())
             {
                 connectSQL();
