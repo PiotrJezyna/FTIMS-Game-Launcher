@@ -183,7 +183,7 @@ public class LocalLibrary {
             gameList.get(localGames.indexOf(game)).onGameStart(userID, game.getId());
             isPlaying = true;
 
-            String folder = dao.getPath().getAbsolutePath() + game.getTitle() + "\\";
+            String folder = dao.getPath().getAbsolutePath() + "\\" + game.getTitle() + "\\";
             String executable = game.getTitle() + ".exe";
 
             Process process = runtime.exec(folder + executable, null, new File(folder));
