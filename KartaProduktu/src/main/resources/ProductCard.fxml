@@ -47,6 +47,6 @@
       <TextField fx:id="newTitle" layoutX="54.0" layoutY="84.0" text="newTitle" visible="false" />
       <TextField fx:id="newTags" layoutX="50.0" layoutY="317.0" text="newTags" visible="false" />
       <Button fx:id="buttonBack" layoutX="43.0" layoutY="25.0" mnemonicParsing="false" onAction="#SetDefaultProductCardDisplaySettings" text="Powrót" visible="false" />
-      <Button fx:id="saveButton" layoutX="51.0" layoutY="415.0" mnemonicParsing="false" onAction="#SaveEditedProductCard" text="Save" visible="false" />
+      <Button fx:id="saveButton" layoutX="68.0" layoutY="447.0" mnemonicParsing="false" onAction="#SaveEditedProductCard" prefHeight="26.0" prefWidth="84.0" text="Zapisz" />
    </children>
 </AnchorPane>
