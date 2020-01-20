@@ -46,7 +46,9 @@ public class ReportedGameBox extends HBox {
       @Override
       public void handle( ActionEvent event ) {
         try {
-          FXMLLoader fxmlLoader = new FXMLLoader( getClass().getResource( "/ProductCard.fxml" ) );
+          FXMLLoader fxmlLoader = new FXMLLoader(
+                  getClass().getResource( "/ProductCard.fxml" )
+          );
           Parent root = fxmlLoader.load();
           Stage stage = new Stage();
           stage.setTitle( "Reported Game Product Card" );
