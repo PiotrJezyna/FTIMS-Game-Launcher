@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="root" prefHeight="428.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="fgl.catalog.GameContener">
+<AnchorPane fx:id="root" prefHeight="428.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="fgl.catalog.GameContenerGUI">
   <children>
     <VBox fx:id="gamesBox" layoutX="25.0" layoutY="75.0" />
     <ScrollPane fx:id="scrollPane" layoutX="25.0" layoutY="96.0" prefHeight="280.0" prefWidth="550.0">
@@ -18,7 +18,7 @@
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
       </content>
     </ScrollPane>
-    <TextField fx:id="phaseField" layoutX="60.0" layoutY="30.0" />
+    <TextField fx:id="phraseField" layoutX="60.0" layoutY="30.0" />
     <TextField fx:id="tagsField" layoutX="282.0" layoutY="30.0" />
     <Button layoutX="489.0" layoutY="30.0" mnemonicParsing="false" onAction="#buttonOnAction" text="Szukaj" />
     <Label layoutX="25.0" layoutY="34.0" text="Title:" />

@@ -38,57 +38,36 @@ public class GameContener {
     private int category = 0;   // 0 - no category (display all)
     private int typeOfSort; // 0 - no sort
     private String searchPhrase = new String();
-    private Login login;
+    private Long userID;
 
     private GameDAO gameDao = new GameDAO();
     private ChangelogDAO changelogDao = new ChangelogDAO();
 
-    private int recordPerPage = 5;
-    private int pageNumber = 0;
-    private int pageCount = 0;
-
-    public Button wszystkie;
-    public Button naCzasie;
-    public Button polecane;
-    public Button historia;
-    public Button panelAkt;
-    public Button prevPage;
-    public Button nextPage;
-
-    @FXML
-    private AnchorPane root;
-
-    @FXML
-    private ScrollPane scrollPane;
-    @FXML
-    private VBox gamesBox;
-
-    @FXML
-    private TextField phaseField;
-    @FXML
-    private TextField tagsField;
-
-    public void initialize() {
-        scrollPane.setContent(gamesBox);
-        main(null);
-    }
-
     public void main(String[] args) {
 
-        login = new Login();
-        try {
-            login.validate("js", "js");
-        }
-        catch (Exception e) {}
-
-        System.out.println(login.getUserSession().getCurrentUser().getId());
-
-        updateDisplayedGames();
     }
 
-    public List<Game> getDisplayedGames() {
+    public List<Game> getDisplayedGames() throws Exception {
+        updateDisplayedGames();
         return displayedGames;
     }
+    public List<Changelog> getDisplayedChangelogs() throws Exception {
+        updateDisplayedChangelogs();
+        return displayedChangelogs;
+    }
+
+    public int getCategory() {
+        return category;
+    }
+
+    public int getRecordCount() {
+        if (category != 4)
+            return displayedGames.size();
+        else
+            return displayedChangelogs.size();
+
+    }
+
 
     public void setTags(List<String> tags) {
         this.tags = tags;
@@ -101,35 +80,55 @@ public class GameContener {
     public void setTypeOfSort(int typeOfSort) {
         this.typeOfSort = typeOfSort;
     }
-
-    @FXML
     public void setSearchPhrase(String searchPhrase) {
         this.searchPhrase = searchPhrase;
     }
+    public void setUserID (Long id) {
+        this.userID = id;
+    }
 
-    public void updateDisplayedChangelogs() throws Exception{
+    private void downloadDataFromDatabase() throws Exception {
+
+        if (category == 0) {
+            this.games = gameDao.getAll();
+        } else if (category == 1) {
+            this.games = gameDao.getAllWithQuery("SELECT A.ID, A.UserID, A.Title, A.Version, A.Tags, A.UserCount, A.IsReported FROM Games A, Users_Games B WHERE A.ID = B.GameID and B.LastInstallation >= curdate() - INTERVAL DAYOFWEEK(curdate())+6 DAY GROUP BY A.ID ORDER BY COUNT(*) DESC LIMIT 2");
+        } else if (category == 2) {
+            this.games = gameDao.getAllWithQuery("SELECT Games.ID, Games.UserID, Games.Title, Games.Version, Games.Tags, Games.UserCount, Games.IsReported FROM Games " +
+                    "INNER JOIN Games_Genres ON Games.ID = Games_Genres.GameID " +
+                    "INNER JOIN Genres ON Games_Genres.GenreID = Genres.ID " +
+                    "WHERE Genres.ID IN (SELECT Genres.ID FROM Genres, Games WHERE (Games.ID IN (SELECT GameID FROM Users_Games WHERE (Users_Games.UserID = " + userID + "))) AND " +
+                    "(Genres.ID IN (SELECT GenreID FROM Games_Genres WHERE Games_Genres.GameID = Games.ID)))" +
+                    "GROUP BY Games.ID");
+        } else if (category == 3) {
+            this.games = gameDao.getAllWithQuery("SELECT ID, UserID, Title, Version, Tags, UserCount, IsReported FROM Games WHERE (Games.ID IN (SELECT GameID FROM Users_Games WHERE (Users_Games.UserID = " + userID + ")))");
+        } else if (category == 4) {
+            this.changelogs = changelogDao.getAll();
+        }
+    }
+
+    public void updateDisplayedChangelogs() throws Exception {
         //displayedChangelogs.clear();
+        downloadDataFromDatabase();
 
         // check title
 
         displayedChangelogs = changelogs;
 
-        pageCount = (int)Math.ceil((double) displayedChangelogs.size() / recordPerPage);
-        displayChangelogs();
+        //pageCount = (int)Math.ceil((double) displayedChangelogs.size() / recordPerPage);
+        //displayChangelogs();
 
     }
 
-    public void updateDisplayedGames() {
+    private void updateDisplayedGames() throws Exception {
         displayedGames.clear();
+        downloadDataFromDatabase();
 
         for (Game game : games) {
 
             boolean categoryFlag = true;
             boolean searchPhraseFlag = true;
             boolean tagsFlag = true;
-
-            //if (category != 0 && category != 3 && category != 1)
-                //categoryFlag = false;
 
             if (!searchPhrase.isEmpty())
                 searchPhraseFlag = (game.getTitle().contains(searchPhrase));
@@ -147,210 +146,8 @@ public class GameContener {
             if (categoryFlag && searchPhraseFlag && tagsFlag)
                 displayedGames.add(game);
         }
-        pageCount = (int)Math.ceil((double) displayedGames.size() / recordPerPage);
-
-        displayGames();
     }
 
-    public void displayChangelogs() throws  Exception {
-        gamesBox.getChildren().clear();
 
-        int start = pageNumber * recordPerPage;
-        int length = ((displayedChangelogs.size() - start) < 5) ? (displayedChangelogs.size() - start) : 5;
-
-        for (int i = start; i < start + length; ++i) {
-        //for (Changelog changelog : displayedChangelogs) {
-            Changelog changelog = displayedChangelogs.get(i);
-            HBox gameBox = new HBox();
-
-            Game game = gameDao.get(changelog.getGameId());
-
-            Label label = new Label(game.getTitle());
-            Label labelDescription = new Label(changelog.getDescription());
-            Button button = new Button("Open Card");
-
-
-            button.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    try {
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ProductCard.fxml"));
-
-                        root.getChildren().clear();
-                        root.getChildren().add(loader.load());
-
-                        GameManager gm = loader.getController();
-                        gm.ShowProductCard(game);
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-
-            gameBox.getChildren().add(button);
-            gameBox.getChildren().add(label);
-            gameBox.getChildren().add(labelDescription);
-
-            HBox.setMargin(button, new Insets(0, 10, 0, 10));
-            HBox.setMargin(label, new Insets(0, 10, 0, 10));
-            HBox.setMargin(labelDescription, new Insets(0, 10, 0, 10));
-            VBox.setMargin(gameBox, new Insets(10, 0, 5, 0));
-
-            gamesBox.getChildren().add(gameBox);
-        }
-    };
-
-    public void displayGames() {
-        gamesBox.getChildren().clear();
-        System.out.println(displayedGames.size());
-
-        int start = pageNumber * recordPerPage;
-        int length = ((displayedGames.size() - start) < 5) ? (displayedGames.size() - start) : 5;
-
-
-        for (int i = start; i < start + length; ++i) {
-            Game game = displayedGames.get(i);
-            //Image image = new Image( files.get(i).toURI().toString(), 120, 120, true, false );
-            HBox gameBox = new HBox();
-
-            Label label = new Label(game.getTitle());
-            Button button = new Button("Open Card");
-
-            button.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    try {
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ProductCard.fxml"));
-
-                        root.getChildren().clear();
-                        root.getChildren().add(loader.load());
-                        ImageView imageView;
-
-                        GameManager gm = loader.getController();
-                        gm.ShowProductCard(game);
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-
-            ImageView imageView;
-            gameBox.getChildren().add(button);
-            gameBox.getChildren().add(label);
-
-            HBox.setMargin(button, new Insets(0, 10, 0, 10));
-            HBox.setMargin(label, new Insets(0, 10, 0, 10));
-            VBox.setMargin(gameBox, new Insets(10, 0, 5, 0));
-
-            gamesBox.getChildren().add(gameBox);
-        }
-    }
-
-    @FXML
-    void buttonOnAction(ActionEvent event) {
-
-        setSearchPhrase(phaseField.getText());
-
-        if (tagsField.getText().isEmpty() == false) {
-            String[] tags = tagsField.getText().split(",");
-            setTags(Arrays.asList(tags));
-        } else {
-            setTags(new ArrayList<String>());
-        }
-
-        updateDisplayedGames();
-    }
-
-    @FXML
-    void handlePageButton(ActionEvent event) throws Exception {
-        boolean dirtyFlag = false;
-
-        if (prevPage.isHover()) {
-            if (pageNumber > 0) {
-                pageNumber--;
-                dirtyFlag = true;
-            }
-            System.out.println("page nr: " + pageNumber);
-        }
-        if (nextPage.isHover()) {
-            if (pageNumber < pageCount - 1) {
-                pageNumber++;
-                dirtyFlag = true;
-            }
-            System.out.println("page nr: " + pageNumber);
-        }
-
-        if (!dirtyFlag)
-            return;
-
-        if (category != 4)
-            displayGames();
-        else
-            displayChangelogs();
-    }
-
-    @FXML
-    void handleCategoryButton(ActionEvent event) throws Exception {
-
-        phaseField.clear();
-        setSearchPhrase(phaseField.getText());
-        pageNumber = 0;
-
-        if (wszystkie.isHover()) {
-            category = 0;
-
-            try {
-                this.games = gameDao.getAll();
-            } catch (SQLException e) {
-            }
-        }
-        if (naCzasie.isHover()) {
-            category = 1;
-
-            try {
-                this.games = gameDao.getAllWithQuery("SELECT A.ID, A.UserID, A.Title, A.Version, A.Tags, A.UserCount, A.IsReported FROM Games A, Users_Games B WHERE A.ID = B.GameID and B.LastInstallation >= curdate() - INTERVAL DAYOFWEEK(curdate())+6 DAY GROUP BY A.ID ORDER BY COUNT(*) DESC LIMIT 2");
-            } catch (SQLException e) {
-            }
-        }
-        if (polecane.isHover()) {
-            category = 2;
-
-            this.games = gameDao.getAllWithQuery("SELECT Games.ID, Games.UserID, Games.Title, Games.Version, Games.Tags, Games.UserCount, Games.IsReported FROM Games " +
-                    "INNER JOIN Games_Genres ON Games.ID = Games_Genres.GameID " +
-                    "INNER JOIN Genres ON Games_Genres.GenreID = Genres.ID " +
-                    "WHERE Genres.ID IN (SELECT Genres.ID FROM Genres, Games WHERE (Games.ID IN (SELECT GameID FROM Users_Games WHERE (Users_Games.UserID = " + login.getUserSession().getCurrentUser().getId() + "))) AND " +
-                    "(Genres.ID IN (SELECT GenreID FROM Games_Genres WHERE Games_Genres.GameID = Games.ID)))" +
-                    "GROUP BY Games.ID");
-        }
-        if (historia.isHover()) {
-            category = 3;
-
-            try {
-                this.games = gameDao.getAllWithQuery("SELECT ID, UserID, Title, Version, Tags, UserCount, IsReported FROM Games WHERE (Games.ID IN (SELECT GameID FROM Users_Games WHERE (Users_Games.UserID = " + login.getUserSession().getCurrentUser().getId() + ")))");
-            } catch (SQLException e) {
-            }
-        }
-        if (panelAkt.isHover()) {
-            category = 4;
-
-            try {
-                this.changelogs = changelogDao.getAll();
-            } catch (SQLException e) {
-            }
-        }
-
-        if (category != 4) {
-            updateDisplayedGames();
-        }
-        else {
-            updateDisplayedChangelogs();
-        }
-
-        System.out.println("page count: " + pageCount);
-    }
 }
 
