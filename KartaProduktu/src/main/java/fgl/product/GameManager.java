@@ -46,7 +46,6 @@ public class GameManager {
 
         dao = new GameDAO();
         userDAO = new UserDAO();
-
         games = dao.getAll();
     }
 

@@ -9,7 +9,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("/LibraryCard.fxml"));
-        primaryStage.setTitle("Karta ocen gier");
+        primaryStage.setTitle("Lokalna biblioteka");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
     }

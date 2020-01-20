@@ -182,9 +182,18 @@ public class LocalLibrary {
             // Zamienic usera gry na zalogowanego usera !!!!
             gameList.get(localGames.indexOf(game)).onGameStart(userID, game.getId());
             isPlaying = true;
+            String folder, executable, result;
 
-            String folder = dao.getPath().getAbsolutePath() + game.getTitle() + "\\";
-            String executable = game.getTitle() + ".exe";
+            int i = 0;
+            File tmpFile;
+
+            do {
+                tmpFile = dao.getGamesFiles(i);
+                folder = dao.getGamesFilesPath(i) + "\\" + game.getTitle() + "\\";
+                executable = game.getTitle() + ".exe";                                         //TUTAJ NAMIESZALEM ZE SPRAWDZANIEM
+                result = folder + executable;
+                i++;
+            } while (!tmpFile.getAbsolutePath().equals(result));
 
             Process process = runtime.exec(folder + executable, null, new File(folder));
             process.waitFor();
