@@ -263,11 +263,18 @@ public class LocalLibrary {
             if(!resultSet.next()){
                 Statistics statistics = new Statistics(game.getId());
                 gameList.add(statistics);
+                java.util.Date tempDate = new java.util.Date();
+                Date date = new Date(tempDate.getTime());
                 PreparedStatement preparedStatement = connection.prepareStatement(
-                        "INSERT Users_Games VALUES (?,?,?)");
+                        "INSERT Users_Games VALUES (?,?,?,?,?,?,?,?)");
                 preparedStatement.setLong(1, userID);
                 preparedStatement.setLong(2, game.getId());
                 preparedStatement.setDouble(3, 0);
+                preparedStatement.setInt(4, 0);
+                preparedStatement.setDouble(5, 0);
+                preparedStatement.setDate(6, null);
+                preparedStatement.setDate(7, date);
+                preparedStatement.setDate(8, date);
                 preparedStatement.executeUpdate();
             }
         } catch (Exception se) {

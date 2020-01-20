@@ -92,7 +92,7 @@ public class LocalGamesDAO extends AbstractDao<Game> {
         List<Game> localGames = new ArrayList<>();
         List<File> games = findGame();
 
-        for(int i = 0; i < games.size(); i++)
+        for(int i = 0; i <= games.size(); i++)
         {
             connectSQL();
             String query = "SELECT ID, UserID, Tags, UserCount, IsReported FROM Games WHERE Title = '" + gameNames[i] + "'";
