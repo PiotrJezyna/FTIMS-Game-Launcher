@@ -220,4 +220,81 @@ public class GameDAO extends AbstractDao<Game> {
             disconnectSQL();
         }*/
     }
+
+    public float GetTimeInGame(Game game) throws SQLException {
+
+        connectSQL();
+
+        float timeInGame = 0;
+
+        try {
+
+            String query = "SELECT PlayTime FROM Users_Games WHERE GameID = %s";
+            query = String.format(query, game.getId());
+
+            System.out.println(query);
+
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(query);
+
+            while(rs.next())
+            {
+                timeInGame += rs.getFloat("PlayTime");
+            }
+
+        } catch (SQLException e) {
+
+            throw new SQLException(e.getMessage());
+
+        } finally {
+
+            rs.close();
+            stmt.close();
+            disconnectSQL();
+        }
+
+        return timeInGame;
+    }
+
+    public float GetTimeInGamePerUser(Game game) throws SQLException {
+
+        float timeInGame = GetTimeInGame(game);
+        ArrayList<Long> users = new ArrayList<Long>();
+
+        connectSQL();
+
+        try {
+
+            String query = "SELECT UserID FROM Users_Games WHERE GameID = %s";
+            query = String.format(query, game.getId());
+
+            System.out.println(query);
+
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(query);
+
+            while(rs.next())
+            {
+                Long currentUser = rs.getLong("UserID");
+
+                if(!users.contains(currentUser))
+                    users.add(currentUser);
+            }
+
+        } catch (SQLException e) {
+
+            throw new SQLException(e.getMessage());
+
+        } finally {
+
+            rs.close();
+            stmt.close();
+            disconnectSQL();
+        }
+
+        if(users.size() == 0)
+            return 0;
+        else
+            return timeInGame / (float)users.size();
+    }
 }

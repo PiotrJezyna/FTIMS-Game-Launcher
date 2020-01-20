@@ -89,11 +89,11 @@ public class GameManager {
 
         SetDefaultProductCardDisplaySettings();
         AddAdditionalButtons(game);
+        SetGameStats(game);
 
         System.out.println("Game: " + game.getTitle());
         System.out.println("Author: " + game.getUserId());
         System.out.println("Tags: " + game.getTags());
-        //System.out.println("Genre: " + games.get(i).getGenre());
         System.out.println("Description: " + game.getDescription());
     }
 
@@ -121,6 +121,7 @@ public class GameManager {
 
                 SetDefaultProductCardDisplaySettings();
                 AddAdditionalButtons(currentGame);
+                SetGameStats(currentGame);
 
                 System.out.println("Game: " + games.get(i).getTitle());
                 System.out.println("Author: " + games.get(i).getUserId());
@@ -324,4 +325,16 @@ public class GameManager {
             removeButton.setVisible(false);
         }
     }
+
+    @FXML private Label usersTimeSpent;
+    @FXML private Label usersAvgTimeSpent;
+
+    private void SetGameStats(Game game) throws SQLException
+    {
+        usersTimeSpent.setText((int)dao.GetTimeInGame(game) + " min");
+        usersAvgTimeSpent.setText((int)dao.GetTimeInGamePerUser(game) + " min");
+        //System.out.println(dao.GetTimeInGame(game));
+        //System.out.println(dao.GetTimeInGamePerUser(game));
+    }
+
 }
