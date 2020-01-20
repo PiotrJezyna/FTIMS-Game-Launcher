@@ -128,7 +128,8 @@ public class ReviewDao
             throws SQLException {
         connectSQL();
 
-        try (PreparedStatement statement = conn.prepareStatement("INSERT INTO Reviews(GameID, UserID, Rating) VALUES (?, ?, ?)")) {
+        try (PreparedStatement statement = conn.prepareStatement(
+                "INSERT INTO Reviews(GameID, UserID, Rating) VALUES (?, ?, ?)")) {
             statement.setLong(1, review.getGame().getId());
             statement.setLong(2, review.getUser().getId());
             statement.setInt(3, review.getRating());
@@ -147,30 +148,22 @@ public class ReviewDao
 
     @Override
     protected void update(Review review) throws SQLException {
-        // TODO: Write this function
-//        connectSQL();
-//
-//        String query = "UPDATE Opinions SET Reply = '%s' WHERE Opinions.ID = %d";
-//
-//        query = String.format(query, review.getAuthorsReply(), review.getId());
-////        query = query.replace("false", "0");
-////        query = query.replace("true", "1");
-//
-//        System.out.println(query);
-//
-//        try {
-//
-//            stmt = conn.createStatement();
-//            stmt.executeUpdate(query);
-//
-//        } catch (SQLException e) {
-//
-//            throw new SQLException(e.getMessage());
-//
-//        } finally {
-//
-//            disconnectSQL();
-//        }
+        connectSQL();
+
+        try (PreparedStatement statement = conn.prepareStatement(
+                "UPDATE Reviews SET GameID = ?, UserID = ?, Rating = ? WHERE ID = ?")) {
+            statement.setLong(1, review.getGame().getId());
+            statement.setLong(2, review.getUser().getId());
+            statement.setInt(3, review.getRating());
+            statement.setLong(4, review.getId());
+            statement.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new SQLException(e.getMessage());
+
+        } finally {
+            disconnectSQL();
+        }
     }
 
     @Override
@@ -179,3 +172,5 @@ public class ReviewDao
         // TODO: Write this function
     }
 }
+
+// ////////////////////////////////////////////////////////////////////////// //
