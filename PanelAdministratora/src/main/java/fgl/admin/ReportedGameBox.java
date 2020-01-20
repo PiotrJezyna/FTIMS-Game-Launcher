@@ -1,12 +1,20 @@
 package fgl.admin;
 
 import fgl.product.Game;
+import fgl.product.GameManager;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.stage.Stage;
+
+import java.io.IOException;
+import java.sql.SQLException;
 
 public class ReportedGameBox extends HBox {
   ReportedGameBox( Game game ) {
@@ -37,8 +45,20 @@ public class ReportedGameBox extends HBox {
     show.setOnAction( new EventHandler<ActionEvent>() {
       @Override
       public void handle( ActionEvent event ) {
-        // TODO Show Product Card
-        // ...
+        try {
+          FXMLLoader fxmlLoader = new FXMLLoader( getClass().getResource( "/ProductCard.fxml" ) );
+          Parent root = fxmlLoader.load();
+          Stage stage = new Stage();
+          stage.setTitle( "Reported Game Product Card" );
+          stage.setScene( new Scene( root ) );
+          stage.show();
+          GameManager gm = fxmlLoader.getController();
+          gm.ShowProductCard( game );
+        } catch ( IOException e ) {
+          //TODO hande io exception
+        } catch ( SQLException e ) {
+          //TODO hande sql exception
+        }
       }
     } );
 
