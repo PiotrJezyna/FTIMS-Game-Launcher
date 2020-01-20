@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.sql.Date;
 
 import fgl.userPanel.UserDAO;
 import javafx.scene.layout.AnchorPane;
@@ -23,9 +24,11 @@ public class GameManager {
 
     public GameDAO dao;
     public UserDAO userDAO;
+    public ChangelogDAO changelogDAO;
     public List <Game> games;
 
     private Game currentGame;
+    private Changelog currentChangelog;
 
     @FXML private AnchorPane root;
 
@@ -41,11 +44,23 @@ public class GameManager {
     @FXML private Button buttonReviews;
     @FXML private Button buttonBack;
     @FXML private Button saveButton;
+    @FXML private TextArea changelog;
+    @FXML private Label changelogDate;
+
+
+    @FXML private TextField newGameTitle;
+    @FXML private TextField newGameTags;
+    @FXML private TextField newGamePathZip;
+    @FXML private TextField newGamePathScreenshot;
+    @FXML private TextArea newGameDescription;
+
 
     public GameManager() throws SQLException {
 
         dao = new GameDAO();
         userDAO = new UserDAO();
+        changelogDAO = new ChangelogDAO();
+
         games = dao.getAll();
     }
 
@@ -66,6 +81,12 @@ public class GameManager {
 
         currentGame = game;
 
+        if(changelogDAO.get(currentGame) != null)
+            currentChangelog = changelogDAO.get(currentGame);
+        else
+            currentChangelog = new Changelog(0L, currentGame.getId(), 0L,
+                    "", new Date(new java.util.Date().getTime()), currentGame.getTitle());
+
         String author = userDAO.get(game.getUserId()).getName();
 
         gameTitle.setText(game.getTitle());
@@ -76,11 +97,11 @@ public class GameManager {
 
         SetDefaultProductCardDisplaySettings();
         AddAdditionalButtons(game);
+        SetGameStats(game);
 
         System.out.println("Game: " + game.getTitle());
         System.out.println("Author: " + game.getUserId());
         System.out.println("Tags: " + game.getTags());
-        //System.out.println("Genre: " + games.get(i).getGenre());
         System.out.println("Description: " + game.getDescription());
     }
 
@@ -92,6 +113,12 @@ public class GameManager {
             {
                 currentGame = games.get(i);
 
+                if(changelogDAO.get(currentGame) != null)
+                    currentChangelog = changelogDAO.get(currentGame);
+                else
+                    currentChangelog = new Changelog(0L, currentGame.getId(), 0L,
+                            "", new Date(new java.util.Date().getTime()), currentGame.getTitle());
+
                 String author = userDAO.get(games.get(i).getUserId()).getName();
 
                 gameTitle.setText(games.get(i).getTitle());
@@ -102,6 +129,7 @@ public class GameManager {
 
                 SetDefaultProductCardDisplaySettings();
                 AddAdditionalButtons(currentGame);
+                SetGameStats(currentGame);
 
                 System.out.println("Game: " + games.get(i).getTitle());
                 System.out.println("Author: " + games.get(i).getUserId());
@@ -140,7 +168,7 @@ public class GameManager {
         }
     }
 
-    public void CreateProductCard(Long userId, String title, String tags, String path, String genre, String description) throws SQLException
+    public void CreateProductCard(Long userId, String title, Integer version,  String description, String tags) throws SQLException
     {
         boolean canCreate = true;
 
@@ -150,17 +178,22 @@ public class GameManager {
 
         if(canCreate)
         {
-            Game game = new Game(userId, title, tags, genre, description);
+            Game game = new Game(userId, title, 1,  description, tags);
 
             games.add(game);
 
             dao.insert(game);
+
+            Game sentGame = dao.get(title);
+
+            changelogDAO.insert(new Changelog(0L, sentGame.getId() , 0L, "Pierwsza wersj gry",new Date(new java.util.Date().getTime()),game.getTitle()));
         }
         else
         {
             System.out.println("Game with this title \"" + title + "\" already exists!");
         }
     }
+
 
     // this should be written better, some overrides
     public void EditProductCard(String title, String newTitle, String tags, String path, String genre, String description) throws SQLException
@@ -184,6 +217,50 @@ public class GameManager {
             System.out.println("Game " + title + "successfully edited and saved.");
         }
     }
+    private void informationWindow(String title, String content) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+
+        alert.showAndWait();
+    }
+    
+    @FXML
+    private void SendNewGameButton(){
+        System.out.println(newGameTags.getText());
+        try
+        {
+            if(newGameTitle.getText().isEmpty())  {
+
+                informationWindow("Błędne dane", "Tytuł gry jest pusty");
+            }
+            else if(newGameTags.getText().isEmpty())  {
+
+                informationWindow("Błędne dane", "Tagi gry są puste");
+            }
+            else if(newGameDescription.getText().isEmpty())  {
+
+                informationWindow("Błędne dane", "Opis gry jest pusty");
+            }
+            else if(newGamePathZip.getText().isEmpty())  {
+
+                informationWindow("Błędne dane", "Podaj ścieżkę do pliku .zip z grą");
+            }
+            else if(newGamePathScreenshot.getText().isEmpty())  {
+
+                informationWindow("Błędne dane", "Podaj ścieżkę do pliku .png z zrzutem ekranu");
+            }
+            else{
+                CreateProductCard(Login.userSession.getCurrentUser().getId(),  newGameTitle.getText(), 1, newGameDescription.getText(), newGameTags.getText() );
+            }
+
+        }
+        catch (SQLException e)
+        {
+            System.out.println("SQL Exception while adding new product card!");
+        }
+    }
 
     @FXML
     private void buttonEditProductCard(ActionEvent event) throws Exception {
@@ -202,11 +279,15 @@ public class GameManager {
         gameDescription.setEditable(true);
         buttonBack.setVisible(true);
         saveButton.setVisible(true);
+        changelog.setEditable(true);
     }
 
     @FXML
     private void SetDefaultProductCardDisplaySettings()
     {
+        changelog.setText(currentChangelog.getDescription());
+        changelogDate.setText(currentChangelog.getDate().toString());
+
         gameTitle.setVisible(true);
         gameTitle.setText(currentGame.getTitle());
 
@@ -224,6 +305,7 @@ public class GameManager {
 
         buttonBack.setVisible(false);
         saveButton.setVisible(false);
+        changelog.setEditable(false);
     }
 
     @FXML
@@ -233,15 +315,45 @@ public class GameManager {
 
         try
         {
-            EditProductCard(currentGame.getTitle(), newTitle.getText(), newTags.getText(),
-                    null, null, gameDescription.getText());
+
+            if(newTitle.getText().isEmpty())
+            {
+                informationWindow("Błędne dane", "Tytuł gry jest pusty");
+            }
+            else if(newTags.getText().isEmpty())
+            {
+                informationWindow("Błędne dane", "Tagi gry są puste");
+            }
+            else if(gameDescription.getText().isEmpty())
+            {
+                informationWindow("Błędne dane", "Opis gry jest pusty");
+            }
+            else {
+
+                EditProductCard(currentGame.getTitle(), newTitle.getText(), newTags.getText(),
+                        null, null, gameDescription.getText());
+
+                currentChangelog.setDate(new Date(new java.util.Date().getTime()));
+                currentChangelog.setDescription(changelog.getText());
+                currentChangelog.setVersion(currentChangelog.getVersion() + 1);
+
+                changelogDAO.update(currentChangelog);
+                SetDefaultProductCardDisplaySettings();
+            }
         }
         catch (SQLException e)
         {
             System.out.println("SQL Exception while editing product card!");
+            SetDefaultProductCardDisplaySettings();
         }
 
-        SetDefaultProductCardDisplaySettings();
+
+    }
+
+    @FXML
+    private void downloadGameButton()
+    {
+        System.out.println("https://www.youtube.com/watch?v=CPhTkU9nHBs");
     }
 
     @FXML
@@ -294,4 +406,16 @@ public class GameManager {
             removeButton.setVisible(false);
         }
     }
+
+    @FXML private Label usersTimeSpent;
+    @FXML private Label usersAvgTimeSpent;
+
+    private void SetGameStats(Game game) throws SQLException
+    {
+        usersTimeSpent.setText((int)dao.GetTimeInGame(game) + " min");
+        usersAvgTimeSpent.setText((int)dao.GetTimeInGamePerUser(game) + " min");
+        //System.out.println(dao.GetTimeInGame(game));
+        //System.out.println(dao.GetTimeInGamePerUser(game));
+    }
+
 }

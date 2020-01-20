@@ -6,6 +6,7 @@ public class Changelog {
 
     private Long ID;
     private Long gameId;
+    private String gameTitle;
     private Long version;
     private String description;
     private Date date;
@@ -30,6 +31,8 @@ public class Changelog {
         return date;
     }
 
+    public String getGameTitle() { return gameTitle; }
+
     public void setID(Long ID) {
         this.ID = ID;
     }
@@ -50,11 +53,14 @@ public class Changelog {
         this.date = date;
     }
 
-    public Changelog(Long ID, Long gameId, Long version, String description, Date date) {
+    public void setGameTitle(String gameTitle) { this.gameTitle = gameTitle; }
+
+    public Changelog(Long ID, Long gameId, Long version, String description, Date date, String gameTitle) {
         this.ID = ID;
         this.gameId = gameId;
         this.version = version;
         this.description = description;
         this.date = date;
+        this.gameTitle = gameTitle;
     }
 }
