@@ -8,6 +8,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 
+import java.awt.image.DirectColorModel;
+import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -19,6 +21,8 @@ import fgl.userPanel.UserDAO;
 import javafx.scene.layout.AnchorPane;
 
 import fgl.kartaocen.ReviewCard;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.Stage;
 
 public class GameManager {
 
@@ -48,6 +52,7 @@ public class GameManager {
     @FXML private Label changelogDate;
 
 
+    @FXML private AnchorPane anchorid;
     @FXML private TextField newGameTitle;
     @FXML private TextField newGameTags;
     @FXML private TextField newGamePathZip;
@@ -225,7 +230,7 @@ public class GameManager {
 
         alert.showAndWait();
     }
-    
+
     @FXML
     private void SendNewGameButton(){
         System.out.println(newGameTags.getText());
@@ -253,12 +258,49 @@ public class GameManager {
             }
             else{
                 CreateProductCard(Login.userSession.getCurrentUser().getId(),  newGameTitle.getText(), 1, newGameDescription.getText(), newGameTags.getText() );
+                informationWindow("Sukces", "Gra poprawnie dodana do platformy FTIMS Game Launcher");
+                try {
+                    AnchorPane loadedFxml = FXMLLoader.load( getClass().getResource("/CatalogCard.fxml") );
+
+                    root.getChildren().clear();
+                    root.getChildren().add( loadedFxml );
+
+                } catch ( IOException e ) {
+                    e.printStackTrace();
+                }
             }
 
         }
         catch (SQLException e)
         {
             System.out.println("SQL Exception while adding new product card!");
+        }
+    }
+    @FXML
+    private void handleDirectoryButtonActionZip(ActionEvent event)
+    {
+        final DirectoryChooser dirChooser = new DirectoryChooser();
+
+        Stage stage = (Stage) anchorid.getScene().getWindow();
+
+        File file = dirChooser.showDialog(stage);
+        if(file != null)
+        {
+            newGamePathZip.setText(file.getAbsolutePath());
+        }
+    }
+
+    @FXML
+    private void handleDirectoryButtonActionScreenshot(ActionEvent event)
+    {
+        final DirectoryChooser dirChooser = new DirectoryChooser();
+
+        Stage stage = (Stage) anchorid.getScene().getWindow();
+
+        File file = dirChooser.showDialog(stage);
+        if(file != null)
+        {
+            newGamePathScreenshot.setText(file.getAbsolutePath());
         }
     }
 
