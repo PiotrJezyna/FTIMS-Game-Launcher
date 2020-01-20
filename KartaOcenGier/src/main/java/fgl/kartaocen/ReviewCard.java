@@ -18,10 +18,7 @@ import javafx.scene.layout.VBox;
 // ================================================================= Other == //
 import java.io.IOException;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 // //////////////////////////////////////////////////////// Class: ReviewCard //
 public class ReviewCard {
@@ -30,15 +27,26 @@ public class ReviewCard {
     private User loggedUser;
     private Game game;
     private Long ID;
-    public ReviewDao reviewDao;
-    public CommentDao commentDao;
-    public List<Review> reviews;
-    public List<Comment> comments;
+
+    private ReviewDao reviewDao = new ReviewDao();
+    private CommentDao commentDao = new CommentDao();
+
+    private List<Review> currentGameReviews = new ArrayList<>();
+    private List<Comment> currentGameComments = new ArrayList<>();
+
+    private Map<Review, List<Comment>> userCommentsPerReview = new HashMap<>();
+    private Map<Review, List<Comment>> authorRepliesPerReview = new HashMap<>();
     private int rating = 10;
 
     // ========================================================= Behaviour == //
     public void setGame(Long id) {
-//        this.game = id;
+        try {
+            game = (new GameDAO()).get(id);
+            init();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     private boolean isUserAuthor() {
@@ -46,7 +54,7 @@ public class ReviewCard {
     }
 
     private boolean hasUserReviewedBefore() {
-        for (Review review : reviews) {
+        for (Review review : currentGameReviews) {
             if (loggedUser.getId().equals(review.getUser().getId())) {
                 return true;
             }
@@ -54,20 +62,64 @@ public class ReviewCard {
         return false;
     }
 
-    public ReviewCard(/*Game game, User user*/) throws SQLException {
-        reviewDao = new ReviewDao();
-        commentDao = new CommentDao();
-
-        reviews = reviewDao.getAll();
-        comments = commentDao.getAll();
-
-        // todo: remove this
-        loggedUser = (new UserDAO()).get(2L);
-        game = (new GameDAO()).get(2L);
+    public ReviewCard() {
     }
 
-    @FXML
-    public void initialize() throws SQLException {
+    private void getCurrentGamesReviews() throws SQLException {
+        currentGameReviews.clear();
+
+        List<Review> allReviews = reviewDao.getAll();
+        for (Review review : allReviews) {
+            if (review.getGame().getId().equals(game.getId())) {
+                currentGameReviews.add(review);
+            }
+        }
+    }
+
+    private void getCurrentGamesComments() throws SQLException {
+        currentGameComments.clear();
+
+        List<Comment> allComments = commentDao.getAll();
+        for (Comment comment : allComments) {
+            if (comment.getReview().getGame().getId().equals(game.getId())) {
+                currentGameComments.add(comment);
+            }
+        }
+    }
+
+    private void organizeUserCommentsAndAuthorsRepliesPerReview() {
+        for (Review review : currentGameReviews) {
+            userCommentsPerReview.put(review, new ArrayList<>());
+            authorRepliesPerReview.put(review, new ArrayList<>());
+
+            for (Comment comment : currentGameComments) {
+                if (!review.getId().equals(comment.getReview().getId())) {
+                    continue;
+                }
+
+                if (comment.isReply()) {
+                    authorRepliesPerReview.get(review).add(comment);
+                } else {
+                    userCommentsPerReview.get(review).add(comment);
+                }
+            }
+        }
+    }
+
+
+    //    @FXML
+    public void init() throws SQLException {
+        //--------------------------------------------------
+        // todo: remove this
+        loggedUser = (new UserDAO()).get(6L);
+        game = (new GameDAO()).get(5L);
+
+        // .................................................................. //
+        getCurrentGamesReviews();
+        getCurrentGamesComments();
+        organizeUserCommentsAndAuthorsRepliesPerReview();
+
+        //--------------------------------------------------
         // Set label
         labelGameTitle.setText(game.getTitle());
 
@@ -86,21 +138,20 @@ public class ReviewCard {
 
 //        progressBar.setVisible(false);
 
+        // .................................................................. //
         if (isUserAuthor()) {
             //todo
-        }
-        else {
+        } else {
             if (hasUserReviewedBefore()) {
                 Review userReview = null;
-                for (Review review : reviews) {
+                for (Review review : currentGameReviews) {
                     if (loggedUser.getId().equals(review.getUser().getId())) {
                         userReview = review;
                         rating = userReview.getRating();
                         unhover();
                     }
                 }
-            }
-            else {
+            } else {
                 labelDate.setText("");
                 buttonShowEditHistory.setVisible(false);
                 hboxNavigation.getChildren().get(0).setVisible(false);
@@ -111,6 +162,7 @@ public class ReviewCard {
         }
 
     }
+
     //todo: refactor
     static void deleteRow(GridPane grid, final int row) {
         Set<Node> deleteNodes = new HashSet<>();
@@ -123,7 +175,7 @@ public class ReviewCard {
 
             if (r > row) {
                 // decrement rows for rows after the deleted row
-                GridPane.setRowIndex(child, r-1);
+                GridPane.setRowIndex(child, r - 1);
             } else if (r == row) {
                 // collect matching rows for deletion
                 deleteNodes.add(child);
@@ -174,28 +226,18 @@ public class ReviewCard {
     //}
 
     @FXML
-    private void addReview() throws IOException, ClassNotFoundException, SQLException {
-        progressBar.setVisible(true);
-        progressBar.setProgress(0.0);
-
+    private void addReview() throws SQLException {
         Review review = new Review(0L, game, loggedUser, rating);
         Comment comment = new Comment(0L, review, textAreaReview.getText(), null, false);
 
-        progressBar.setProgress(0.5);
-
         reviewDao.insert(review);
-        reviews.add(review);
-
-        progressBar.setProgress(0.75);
+        currentGameReviews.add(review);
 
         commentDao.insert(comment);
-        comments.add(comment);
+        currentGameComments.add(comment);
+        organizeUserCommentsAndAuthorsRepliesPerReview();
 
-        progressBar.setProgress(1.0);
-        progressBar.setVisible(false);
 //        labelStatus.setText("written correctly");
-
-        textAreaReview.setDisable(true);
 
         labelDate.setVisible(true);
         labelDate.setText(comment.getSubmissionDate().toString());
@@ -274,33 +316,111 @@ public class ReviewCard {
         for (int i = 0; i < buttonRatings.size(); i++) {
             if (i < stars) {
                 buttonRatings.get(i).setText(Character.toString('\u2605'));
-            }
-            else {
+            } else {
                 buttonRatings.get(i).setText(Character.toString('\u2606'));
             }
         }
     }
 
-    @FXML private void unhover1() { unhover(); }
-    @FXML private void unhover2() { unhover(); }
-    @FXML private void unhover3() { unhover(); }
-    @FXML private void unhover4() { unhover(); }
-    @FXML private void unhover5() { unhover(); }
-    @FXML private void unhover6() { unhover(); }
-    @FXML private void unhover7() { unhover(); }
-    @FXML private void unhover8() { unhover(); }
-    @FXML private void unhover9() { unhover(); }
-    @FXML private void unhover10() { unhover(); }
-    @FXML private void hover1() { hover(1); }
-    @FXML private void hover2() { hover(2); }
-    @FXML private void hover3() { hover(3); }
-    @FXML private void hover4() { hover(4); }
-    @FXML private void hover5() { hover(5); }
-    @FXML private void hover6() { hover(6); }
-    @FXML private void hover7() { hover(7); }
-    @FXML private void hover8() { hover(8); }
-    @FXML private void hover9() { hover(9); }
-    @FXML private void hover10() { hover(10); }
+    @FXML
+    private void unhover1() {
+        unhover();
+    }
+
+    @FXML
+    private void unhover2() {
+        unhover();
+    }
+
+    @FXML
+    private void unhover3() {
+        unhover();
+    }
+
+    @FXML
+    private void unhover4() {
+        unhover();
+    }
+
+    @FXML
+    private void unhover5() {
+        unhover();
+    }
+
+    @FXML
+    private void unhover6() {
+        unhover();
+    }
+
+    @FXML
+    private void unhover7() {
+        unhover();
+    }
+
+    @FXML
+    private void unhover8() {
+        unhover();
+    }
+
+    @FXML
+    private void unhover9() {
+        unhover();
+    }
+
+    @FXML
+    private void unhover10() {
+        unhover();
+    }
+
+    @FXML
+    private void hover1() {
+        hover(1);
+    }
+
+    @FXML
+    private void hover2() {
+        hover(2);
+    }
+
+    @FXML
+    private void hover3() {
+        hover(3);
+    }
+
+    @FXML
+    private void hover4() {
+        hover(4);
+    }
+
+    @FXML
+    private void hover5() {
+        hover(5);
+    }
+
+    @FXML
+    private void hover6() {
+        hover(6);
+    }
+
+    @FXML
+    private void hover7() {
+        hover(7);
+    }
+
+    @FXML
+    private void hover8() {
+        hover(8);
+    }
+
+    @FXML
+    private void hover9() {
+        hover(9);
+    }
+
+    @FXML
+    private void hover10() {
+        hover(10);
+    }
 
     @FXML
     private void setRating1() {
@@ -354,18 +474,29 @@ public class ReviewCard {
 
 
     private List<Button> buttonRatings;
-    @FXML private Button buttonRating1;
-    @FXML private Button buttonRating2;
-    @FXML private Button buttonRating3;
-    @FXML private Button buttonRating4;
-    @FXML private Button buttonRating5;
-    @FXML private Button buttonRating6;
-    @FXML private Button buttonRating7;
-    @FXML private Button buttonRating8;
-    @FXML private Button buttonRating9;
-    @FXML private Button buttonRating10;
+    @FXML
+    private Button buttonRating1;
+    @FXML
+    private Button buttonRating2;
+    @FXML
+    private Button buttonRating3;
+    @FXML
+    private Button buttonRating4;
+    @FXML
+    private Button buttonRating5;
+    @FXML
+    private Button buttonRating6;
+    @FXML
+    private Button buttonRating7;
+    @FXML
+    private Button buttonRating8;
+    @FXML
+    private Button buttonRating9;
+    @FXML
+    private Button buttonRating10;
 
-    @FXML private ProgressBar progressBar;
+    @FXML
+    private ProgressBar progressBar;
 
     @FXML
     private Label labelGameTitle;

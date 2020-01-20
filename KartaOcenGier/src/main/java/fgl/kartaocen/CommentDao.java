@@ -98,6 +98,7 @@ public class CommentDao
 
             List<Comment> comments = getAll();
             comment.setId(comments.get(comments.size() - 1).getId());
+            comment.setSubmissionDate(comments.get(comments.size() - 1).getSubmissionDate());
 
         } catch (SQLException e) {
             throw new SQLException(e.getMessage());

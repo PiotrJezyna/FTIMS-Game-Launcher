@@ -61,16 +61,16 @@
              <HBox alignment="CENTER" spacing="10.0" GridPane.columnIndex="2" GridPane.halignment="CENTER">
                <children>
                   <Label alignment="CENTER" contentDisplay="CENTER" disable="true" text="Your rating" textAlignment="CENTER" />
-                  <Button fx:id="buttonRating1" alignment="CENTER" mnemonicParsing="false" onAction="#setRating1" onMouseEntered="#hover1" onMouseExited="#unhover1" text="☆" />
-                  <Button fx:id="buttonRating2" mnemonicParsing="false" onAction="#setRating2" onMouseEntered="#hover2" onMouseExited="#unhover2" text="☆" />
-                  <Button fx:id="buttonRating3" mnemonicParsing="false" onAction="#setRating3" onMouseEntered="#hover3" onMouseExited="#unhover3" text="☆" />
-                  <Button fx:id="buttonRating4" mnemonicParsing="false" onAction="#setRating4" onMouseEntered="#hover4" onMouseExited="#unhover4" text="☆" />
-                  <Button fx:id="buttonRating5" mnemonicParsing="false" onAction="#setRating5" onMouseEntered="#hover5" onMouseExited="#unhover5" text="☆" />
-                  <Button fx:id="buttonRating6" mnemonicParsing="false" onAction="#setRating6" onMouseEntered="#hover6" onMouseExited="#unhover6" text="☆" />
-                  <Button fx:id="buttonRating7" mnemonicParsing="false" onAction="#setRating7" onMouseEntered="#hover7" onMouseExited="#unhover7" text="☆" />
-                  <Button fx:id="buttonRating8" mnemonicParsing="false" onAction="#setRating8" onMouseEntered="#hover8" onMouseExited="#unhover8" text="☆" />
-                  <Button fx:id="buttonRating9" mnemonicParsing="false" onAction="#setRating9" onMouseEntered="#hover9" onMouseExited="#unhover9" text="☆" />
-                  <Button fx:id="buttonRating10" mnemonicParsing="false" onAction="#setRating10" onMouseEntered="#hover10" onMouseExited="#unhover10" text="☆" />
+                  <Button fx:id="buttonRating1" alignment="CENTER" mnemonicParsing="false" onAction="#setRating1" onMouseEntered="#hover1" onMouseExited="#unhover1" text="★" />
+                  <Button fx:id="buttonRating2" mnemonicParsing="false" onAction="#setRating2" onMouseEntered="#hover2" onMouseExited="#unhover2" text="★" />
+                  <Button fx:id="buttonRating3" mnemonicParsing="false" onAction="#setRating3" onMouseEntered="#hover3" onMouseExited="#unhover3" text="★" />
+                  <Button fx:id="buttonRating4" mnemonicParsing="false" onAction="#setRating4" onMouseEntered="#hover4" onMouseExited="#unhover4" text="★" />
+                  <Button fx:id="buttonRating5" mnemonicParsing="false" onAction="#setRating5" onMouseEntered="#hover5" onMouseExited="#unhover5" text="★" />
+                  <Button fx:id="buttonRating6" mnemonicParsing="false" onAction="#setRating6" onMouseEntered="#hover6" onMouseExited="#unhover6" text="★" />
+                  <Button fx:id="buttonRating7" mnemonicParsing="false" onAction="#setRating7" onMouseEntered="#hover7" onMouseExited="#unhover7" text="★" />
+                  <Button fx:id="buttonRating8" mnemonicParsing="false" onAction="#setRating8" onMouseEntered="#hover8" onMouseExited="#unhover8" text="★" />
+                  <Button fx:id="buttonRating9" mnemonicParsing="false" onAction="#setRating9" onMouseEntered="#hover9" onMouseExited="#unhover9" text="★" />
+                  <Button fx:id="buttonRating10" mnemonicParsing="false" onAction="#setRating10" onMouseEntered="#hover10" onMouseExited="#unhover10" text="★" />
                </children>
             </HBox>
             <TextArea fx:id="textAreaReview" promptText="You can write your comments here! (optional)" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="1" />
