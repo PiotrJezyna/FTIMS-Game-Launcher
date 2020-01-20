@@ -6,8 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -16,8 +15,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import fgl.userPanel.UserDAO;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 
 import fgl.kartaocen.ReviewCard;
@@ -169,32 +166,6 @@ public class GameManager {
     // this should be written better, some overrides
     public void EditProductCard(String title, String newTitle, String tags, String path, String genre, String description) throws SQLException
     {
-        /*for(int i = 0; i < games.size(); i++)
-        {
-            if(games.get(i).getTitle().equals(title))
-            {
-                if(newTitle != null)
-                    games.get(i).setTitle(newTitle);
-
-                if(tags != null)
-                    games.get(i).setTags(tags);
-
-                if(genre != null)
-                    games.get(i).setGenre(genre);
-
-                if(description != null)
-                    games.get(i).setDescription(description);
-
-                dao.update(games.get(i));
-
-                System.out.println("Game " + title + "successfully edited and saved.");
-                break;
-            }
-
-            if(i == games.size() - 1)
-                System.out.println("Game " + title + "not found");
-        }*/
-
         if(currentGame != null)
         {
             if(newTitle != null)
@@ -274,6 +245,46 @@ public class GameManager {
         SetDefaultProductCardDisplaySettings();
     }
 
+    @FXML
+    private void ButtonRemoveProductCard()
+    {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Removing game");
+        alert.setHeaderText(null);
+        alert.setContentText("Are you sure you want to remove this game?");
+
+        alert.showAndWait();
+
+        if(alert.getResult() == ButtonType.OK)
+        {
+            try
+            {
+                RemoveProductCard(currentGame.getTitle());
+
+                Alert informationAlert = new Alert(Alert.AlertType.INFORMATION);
+                informationAlert.setTitle("Game removed");
+                informationAlert.setHeaderText(null);
+                informationAlert.setContentText("The game has been successfully removed.");
+
+                informationAlert.showAndWait();
+
+                try {
+                    AnchorPane loadedFxml = FXMLLoader.load( getClass().getResource("/CatalogCard.fxml") );
+
+                    root.getChildren().clear();
+                    root.getChildren().add( loadedFxml );
+
+                } catch ( IOException e ) {
+                    e.printStackTrace();
+                }
+            }
+            catch (SQLException e)
+            {
+                System.out.println("SQL Exception while removing product card!");
+            }
+        }
+    }
+
     private void AddAdditionalButtons(Game game)
     {
         if(Login.userSession.getCurrentUser().getId() != game.getUserId()
@@ -284,19 +295,4 @@ public class GameManager {
             removeButton.setVisible(false);
         }
     }
-
-
-    // ---according to the class scheme from the presentation--
-    /*
-    public void CreateProductCard(String title, User author, String linkToDownload, String md5, String genre, List<String> tags,
-                      String description, List<Image> screenshots, Image icon, int downloads)
-    {
-        Game game = new Game(title, author, linkToDownload, md5, genre, tags, description, screenshots, icon, downloads);
-    }
-
-    public void EditProductCard(String title, User author, String linkToDownload, String md5, String genre, List<String> tags,
-                                  String description, List<Image> screenshots, Image icon, int downloads)
-    {
-
-    } */
 }
