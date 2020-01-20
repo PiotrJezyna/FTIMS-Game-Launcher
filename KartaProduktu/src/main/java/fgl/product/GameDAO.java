@@ -15,7 +15,7 @@ public class GameDAO extends AbstractDao<Game> {
 
         try {
 
-            String query = "SELECT UserID, Title, Version, Tags, UserCount, IsReported " +
+            String query = "SELECT UserID, Title, Version, Description, Tags, Path, UserCount, IsReported " +
                            "FROM Games WHERE ID = %s";
             query = String.format(query, id);
 
@@ -27,12 +27,13 @@ public class GameDAO extends AbstractDao<Game> {
 
             Long userId = rs.getLong("UserID");
             String title = rs.getString("Title");
+            String description = rs.getString("Description");
             Integer version = rs.getInt("Version");
             String tags = rs.getString("Tags");
             Integer userCount = rs.getInt("UserCount");
             boolean isReported = rs.getBoolean("IsReported");
 
-            return new Game(id, userId, title, version, tags, null, null, userCount, isReported);
+            return new Game(id, userId, title, version, tags, null, description, userCount, isReported);
 
         } catch ( SQLException e ) {
 
@@ -53,7 +54,7 @@ public class GameDAO extends AbstractDao<Game> {
 
         try {
 
-            String query = "SELECT ID, UserID, Title, Version, Tags, UserCount, IsReported FROM Games";
+            String query = "SELECT ID, UserID, Title, Description, Version, Tags, UserCount, IsReported FROM Games";
             stmt = conn.createStatement();
             rs = stmt.executeQuery( query );
 
@@ -64,12 +65,13 @@ public class GameDAO extends AbstractDao<Game> {
                 Long gameId = rs.getLong("ID");
                 Long userId = rs.getLong("UserID");
                 String title = rs.getString("Title");
+                String description = rs.getString("Description");
                 Integer version = rs.getInt("Version");
                 String tags = rs.getString("Tags");
                 Integer userCount = rs.getInt("UserCount");
                 boolean isReported = rs.getBoolean("IsReported");
 
-                Game game = new Game(gameId, userId, title, version, tags, null, null, userCount, isReported);
+                Game game = new Game(gameId, userId, title, version, tags, null, description, userCount, isReported);
                 games.add( game );
             }
 
@@ -162,13 +164,14 @@ public class GameDAO extends AbstractDao<Game> {
                         "SET " +
                         "UserID = %s, " +
                         "Title = '%s', " +
+                        "Description = '%s', " +
                         "Version = %s, " +
                         "Tags = '%s', " +
                         "UserCount = %s, " +
                         "IsReported = %s " +
                         "WHERE ID = " + game.getId();
 
-        query = String.format(query, game.getUserId(), game.getTitle(), game.getVersion(), game.getTags(), game.getUserCount(), game.isReported());
+        query = String.format(query, game.getUserId(), game.getTitle(), game.getDescription(), game.getVersion(), game.getTags(), game.getUserCount(), game.isReported());
         query = query.replace("false", "0");
         query = query.replace("true", "1");
 
