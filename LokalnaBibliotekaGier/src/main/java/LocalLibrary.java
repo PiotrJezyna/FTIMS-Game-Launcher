@@ -77,9 +77,7 @@ public class LocalLibrary {
 
                         GameManager gm = loader.getController();
                         gm.ShowProductCard(game);
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
+                    } catch (SQLException | IOException e) {
                         e.printStackTrace();
                     }
                 }
@@ -119,7 +117,6 @@ public class LocalLibrary {
         Label label = new Label();
         label.setText("Set new directory path");
 
-        final String[] path = {new String()};
         TextField field = new TextField();
         Button browse = new Button("Browse");
         Button close = new Button("Confirm");
@@ -129,22 +126,15 @@ public class LocalLibrary {
             final DirectoryChooser directoryChooser = new DirectoryChooser();
             directoryChooser.setInitialDirectory(dao.getPath());
             File file = directoryChooser.showDialog(window);
-            dao.changePath(file);
-            field.setText(dao.getPath().getAbsolutePath());
+            //dao.changePath(file);
+            field.setText(file.getAbsolutePath());
         });
 
         if(field.getText() != null)
         {
             close.setOnAction(event ->
             {
-                try{
-                    FileWriter fileWriter = new FileWriter(dao.getDefaultPath().getAbsolutePath()+"\\file.txt");
-                    fileWriter.write(dao.getDefaultPath().getAbsolutePath());
-                    fileWriter.close();
-                }catch (IOException e){
-                    e.printStackTrace();
-                }
-
+                dao.changePath(new File(field.getText()));
                 window.close();
             });
         }
@@ -225,10 +215,8 @@ public class LocalLibrary {
                 preparedStatement.setDouble(3, 0);
                 preparedStatement.executeUpdate();
             }
-        } catch (SQLException se) {
+        } catch (Exception se) {
             se.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 

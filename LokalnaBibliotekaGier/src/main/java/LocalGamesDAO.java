@@ -1,9 +1,7 @@
 import fgl.database.AbstractDao;
 import fgl.product.Game;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,22 +11,40 @@ public class LocalGamesDAO extends AbstractDao<Game> {
     private File path;
     private File defaultPath;
     private FileWriter fileWriter = null;
+    private BufferedReader bufferedReader = null;
 
     public LocalGamesDAO(){
-        this.path = new File("C:\\FtimsGameLauncher");
-        defaultPath = path;
+        defaultPath = new File("C:\\FtimsGameLauncher");
         if(!defaultPath.exists()) defaultPath.mkdir();
-        try{
-            fileWriter = new FileWriter(defaultPath.getAbsolutePath()+"\\file.txt");
-            fileWriter.write(defaultPath.getAbsolutePath());
-            fileWriter.close();
-        }catch (IOException e){
-            e.printStackTrace();
+        String pathName = null;
+        while(pathName == null){
+            try{
+                bufferedReader = new BufferedReader(new FileReader(defaultPath.getAbsoluteFile()+"\\file.txt"));
+                pathName = bufferedReader.readLine();
+                if(pathName!=null){
+                    path = new File(pathName);
+                }
+            } catch (IOException e) {
+                try {
+                    fileWriter = new FileWriter(defaultPath.getAbsolutePath()+"\\file.txt");
+                    fileWriter.write(defaultPath.getAbsolutePath());
+                    fileWriter.close();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
         }
     }
 
     public void changePath(File path){
         this.path = path;
+        try{
+            FileWriter fileWriter = new FileWriter(defaultPath.getAbsolutePath()+"\\file.txt");
+            fileWriter.write(this.path.getAbsolutePath());
+            fileWriter.close();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 
     public File getPath(){
