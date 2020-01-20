@@ -1,12 +1,59 @@
 import fgl.database.AbstractDao;
 import fgl.product.Game;
 
-import java.io.File;
+import java.io.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class LocalGamesDAO extends AbstractDao<Game> {
+
+    private File path;
+    private File defaultPath;
+    private FileWriter fileWriter = null;
+    private BufferedReader bufferedReader = null;
+
+    public LocalGamesDAO(){
+        defaultPath = new File("C:\\FtimsGameLauncher");
+        if(!defaultPath.exists()) defaultPath.mkdir();
+        String pathName = null;
+        while(pathName == null){
+            try{
+                bufferedReader = new BufferedReader(new FileReader(defaultPath.getAbsoluteFile()+"\\file.txt"));
+                pathName = bufferedReader.readLine();
+                if(pathName!=null){
+                    path = new File(pathName);
+                }
+            } catch (IOException e) {
+                try {
+                    fileWriter = new FileWriter(defaultPath.getAbsolutePath()+"\\file.txt");
+                    fileWriter.write(defaultPath.getAbsolutePath());
+                    fileWriter.close();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public void changePath(File path){
+        this.path = path;
+        try{
+            FileWriter fileWriter = new FileWriter(defaultPath.getAbsolutePath()+"\\file.txt");
+            fileWriter.write(this.path.getAbsolutePath());
+            fileWriter.close();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    public File getPath(){
+        return path;
+    }
+
+    public File getDefaultPath() {
+        return defaultPath;
+    }
 
     @Override
     protected Game get(Long id) throws SQLException {
@@ -18,13 +65,12 @@ public class LocalGamesDAO extends AbstractDao<Game> {
 
         List<Game> localGames = new ArrayList<>();
 
-        File f = new File("C:\\FtimsGameLauncher");
         String[] pathnames;
-        pathnames = f.list();
+        pathnames = this.path.list();
 
         for (String pathname : pathnames) {
 
-            File tmpDir = new File("C:\\FtimsGameLauncher\\" + pathname + "\\" + pathname + ".exe");
+            File tmpDir = new File(this.path.getAbsolutePath()+ "\\" + pathname + "\\" + pathname + ".exe");
             if (tmpDir.exists())
             {
                 connectSQL();
