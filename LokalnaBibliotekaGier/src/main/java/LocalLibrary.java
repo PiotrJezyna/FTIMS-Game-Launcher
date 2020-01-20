@@ -190,7 +190,7 @@ public class LocalLibrary {
             do {
                 tmpFile = dao.getGamesFiles(i);
                 folder = dao.getGamesFilesPath(i) + "\\" + game.getTitle() + "\\";
-                executable = game.getTitle() + ".exe";                                         //TUTAJ NAMIESZALEM ZE SPRAWDZANIEM
+                executable = game.getTitle() + ".exe";
                 result = folder + executable;
                 i++;
             } while (!tmpFile.getAbsolutePath().equals(result));

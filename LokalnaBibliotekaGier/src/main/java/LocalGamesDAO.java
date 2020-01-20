@@ -17,10 +17,12 @@ public class LocalGamesDAO extends AbstractDao<Game> {
     private BufferedReader bufferedReader = null;
     private String pathsFile = "\\paths.txt";
     private String[] pathnames;
-    private String[] gamesFilesPath;            //TO NOWE TABLICE
+    private String[] gamesFilesPath;
     private File[] gamesFiles;
 
     public LocalGamesDAO(){
+        gamesFiles = new File[100];
+        gamesFilesPath = new String[100];
         defaultPath = new File("C:\\FtimsGameLauncher");
         if(!defaultPath.exists()) defaultPath.mkdir();
         String pathName = null;
@@ -74,7 +76,7 @@ public class LocalGamesDAO extends AbstractDao<Game> {
     }
 
     public String getGamesFilesPath(int index) { return gamesFilesPath[index]; }
-                                                                                        //TO SA NOWE GETY
+
     public File getGamesFiles(int index) {
         return gamesFiles[index];
     }
@@ -113,11 +115,10 @@ public class LocalGamesDAO extends AbstractDao<Game> {
                 File tmpDir = new File(absolutePath[i] + "\\" + pathname + "\\" + pathname + ".exe");
                 int iterator = 0;
                 if (tmpDir.exists()) {
-                    this.gamesFilesPath[i] = absolutePath[i];           //TUTAJ SIE WYWALA
-                    this.gamesFiles[iterator] = tmpDir;                 // I TUTAJ
+                    this.gamesFilesPath[i] = absolutePath[i];
+                    this.gamesFiles[iterator] = tmpDir;
 
                     connectSQL();
-
                     String query = "SELECT ID, UserID, Tags, UserCount, IsReported  FROM Games WHERE Title = '" + pathname + "'";
 
                     stmt = conn.createStatement();
@@ -135,7 +136,6 @@ public class LocalGamesDAO extends AbstractDao<Game> {
                 }
             }
         }
-
         return localGames;
     }
 
