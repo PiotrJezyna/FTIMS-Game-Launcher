@@ -15,11 +15,14 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.ScrollPane;
 
+import javafx.stage.DirectoryChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.apache.commons.lang3.time.StopWatch;
 
+import javax.swing.*;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -43,7 +46,6 @@ public class LocalLibrary {
     private boolean isPlaying;
     private List<GameDownloader> downloaderList;
     private boolean isDownloading;
-
     private LocalGamesDAO dao;
 
     @FXML AnchorPane root;
@@ -119,20 +121,27 @@ public class LocalLibrary {
 
         final String[] path = {new String()};
         TextField field = new TextField();
+        Button browse = new Button("Browse");
         Button close = new Button("Confirm");
+        field.setText(dao.getPath().getAbsolutePath());
+
+        browse.setOnAction(event -> {
+            final DirectoryChooser directoryChooser = new DirectoryChooser();
+            directoryChooser.setInitialDirectory(dao.getPath());
+            File file = directoryChooser.showDialog(window);
+            dao.changePath(file);
+            field.setText(dao.getPath().getAbsolutePath());
+        });
 
         if(field.getText() != null)
         {
             close.setOnAction(event ->
             {
-                path[0] = field.getText();
-                File temp = new File(path[0]);
-
-                dao.changePath(temp);
-                
-                try {
-                    dao.getAll();
-                } catch (SQLException e) {
+                try{
+                    FileWriter fileWriter = new FileWriter(dao.getDefaultPath().getAbsolutePath()+"\\file.txt");
+                    fileWriter.write(dao.getDefaultPath().getAbsolutePath());
+                    fileWriter.close();
+                }catch (IOException e){
                     e.printStackTrace();
                 }
 
@@ -141,7 +150,7 @@ public class LocalLibrary {
         }
 
         VBox layout = new VBox(10);
-        layout.getChildren().addAll(label, field,close);
+        layout.getChildren().addAll(label, field,browse, close);
         layout.setAlignment(Pos.CENTER);
 
         Scene scene = new Scene(layout);
@@ -153,6 +162,7 @@ public class LocalLibrary {
         this.userID = 1L;
         gameList = new ArrayList<Statistics>();
         downloaderList = new ArrayList<GameDownloader>();
+
         Class.forName(JDBC_DRIVER);
         try (Connection connection = DriverManager.getConnection(DB_URL, USER, PASS);
              PreparedStatement preparedStatement = connection.prepareStatement(
@@ -180,10 +190,10 @@ public class LocalLibrary {
         Runtime runtime = Runtime.getRuntime();
         try{
             // Zamienic usera gry na zalogowanego usera !!!!
-            gameList.get(localGames.indexOf(game)).onGameStart(game.getUserId(), game.getId());
+            gameList.get(localGames.indexOf(game)).onGameStart(userID, game.getId());
             isPlaying = true;
 
-            String folder = "C:\\FtimsGameLauncher\\" + game.getTitle() + "\\";
+            String folder = dao.getPath().getAbsolutePath() + game.getTitle() + "\\";
             String executable = game.getTitle() + ".exe";
 
             Process process = runtime.exec(folder + executable, null, new File(folder));

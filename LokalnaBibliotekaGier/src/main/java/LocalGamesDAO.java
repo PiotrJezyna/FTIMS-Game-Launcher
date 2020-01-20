@@ -2,6 +2,8 @@ import fgl.database.AbstractDao;
 import fgl.product.Game;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,14 +11,32 @@ import java.util.List;
 public class LocalGamesDAO extends AbstractDao<Game> {
 
     private File path;
+    private File defaultPath;
+    private FileWriter fileWriter = null;
 
     public LocalGamesDAO(){
         this.path = new File("C:\\FtimsGameLauncher");
-        if(!path.exists()) path.mkdir();
+        defaultPath = path;
+        if(!defaultPath.exists()) defaultPath.mkdir();
+        try{
+            fileWriter = new FileWriter(defaultPath.getAbsolutePath()+"\\file.txt");
+            fileWriter.write(defaultPath.getAbsolutePath());
+            fileWriter.close();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 
     public void changePath(File path){
         this.path = path;
+    }
+
+    public File getPath(){
+        return path;
+    }
+
+    public File getDefaultPath() {
+        return defaultPath;
     }
 
     @Override
