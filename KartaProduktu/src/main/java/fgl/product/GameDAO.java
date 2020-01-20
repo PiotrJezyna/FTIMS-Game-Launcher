@@ -15,7 +15,7 @@ public class GameDAO extends AbstractDao<Game> {
 
         try {
 
-            String query = "SELECT UserID, Title, Version, Description, Tags, Path, UserCount, IsReported " +
+            String query = "SELECT UserID, Title, Version, Description, Tags, UserCount, IsReported " +
                            "FROM Games WHERE ID = %s";
             query = String.format(query, id);
 
