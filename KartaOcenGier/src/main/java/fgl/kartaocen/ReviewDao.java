@@ -4,7 +4,9 @@ package fgl.kartaocen;
 // ////////////////////////////////////////////////////////////////// Imports //
 // =================================================================== FGL == //
 import fgl.database.AbstractDao;
+import fgl.product.Game;
 import fgl.product.GameDAO;
+import fgl.userPanel.User;
 import fgl.userPanel.UserDAO;
 
 // ================================================================= Other == //
@@ -33,11 +35,29 @@ public class ReviewDao
 
             GameDAO gameDao = new GameDAO();
             UserDAO userDao = new UserDAO();
+            List<Game> games = gameDao.getAll();
+            List<User> users = userDao.getAll();
             while (rs.next()) {
+                Game game = null;
+                User user = null;
+
+                for (Game g : games) {
+                    if (g.getId().equals(rs.getLong("GameID"))) {
+                        game = g;
+                        break;
+                    }
+                }
+                for (User u : users) {
+                    if (u.getId().equals(rs.getLong("UserID"))) {
+                        user = u;
+                        break;
+                    }
+                }
+
                 reviews.add(new Review(
                         rs.getLong("ID"),
-                        gameDao.get(rs.getLong("GameID")),
-                        userDao.get(rs.getLong("UserID")),
+                        game,
+                        user,
                         rs.getInt("Rating")
                 ));
             }
@@ -65,11 +85,29 @@ public class ReviewDao
 
             GameDAO gameDao = new GameDAO();
             UserDAO userDao = new UserDAO();
+            List<Game> games = gameDao.getAll();
+            List<User> users = userDao.getAll();
             while (rs.next()) {
+                Game game = null;
+                User user = null;
+
+                for (Game g : games) {
+                    if (g.getId().equals(rs.getLong("GameID"))) {
+                        game = g;
+                        break;
+                    }
+                }
+                for (User u : users) {
+                    if (u.getId().equals(rs.getLong("UserID"))) {
+                        user = u;
+                        break;
+                    }
+                }
+
                 reviews.add(new Review(
                         rs.getLong("ID"),
-                        gameDao.get(rs.getLong("GameID")),
-                        userDao.get(rs.getLong("UserID")),
+                        game,
+                        user,
                         rs.getInt("Rating")
                 ));
             }

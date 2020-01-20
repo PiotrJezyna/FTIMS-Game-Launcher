@@ -4,17 +4,18 @@ package fgl.kartaocen;
 // ////////////////////////////////////////////////////////////////// Imports //
 // ================================================================ JavaFX == //
 import fgl.product.Game;
+import fgl.product.GameDAO;
 import fgl.userPanel.User;
+import fgl.userPanel.UserDAO;
 import fgl.userPanel.UserType;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 
 // ================================================================= Other == //
 import java.io.IOException;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -29,12 +30,24 @@ public class ReviewCard {
     public CommentDao commentDao;
     public List<Review> reviews;
     public List<Comment> comments;
-    Review review;
     private int rating;
 
     // ========================================================= Behaviour == //
     public void setGame(Long id) {
 //        this.game = id;
+    }
+
+    private boolean isUserAuthor() {
+        return loggedUser.getId().equals(game.getUserId());
+    }
+
+    private boolean hasUserReviewedBefore() {
+        for (Review review : reviews) {
+            if (loggedUser.getId().equals(review.getUser().getId())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public ReviewCard(/*Game game, User user*/) throws SQLException {
@@ -45,8 +58,38 @@ public class ReviewCard {
         comments = commentDao.getAll();
 
         // todo: remove this
-        loggedUser = new User(2L, "name", "surname", "tmwitczak", "mailmailmail@mail", UserType.USER, false);
-        game = new Game(2L, 1L, "Test", 2, "tags", "genre", "description", 4, false);
+        loggedUser = (new UserDAO()).get(2L);
+        game = (new GameDAO()).get(2L);
+    }
+
+    @FXML
+    public void initialize() throws SQLException {
+        // Set label
+        labelGameTitle.setText(game.getTitle());
+
+        // Create button reference
+        buttonRatings = new ArrayList<>();
+        buttonRatings.add(buttonRating1);
+        buttonRatings.add(buttonRating2);
+        buttonRatings.add(buttonRating3);
+        buttonRatings.add(buttonRating4);
+        buttonRatings.add(buttonRating5);
+        buttonRatings.add(buttonRating6);
+        buttonRatings.add(buttonRating7);
+        buttonRatings.add(buttonRating8);
+        buttonRatings.add(buttonRating9);
+        buttonRatings.add(buttonRating10);
+
+//        progressBar.setVisible(false);
+
+        if (hasUserReviewedBefore()) {
+            for (Review review : reviews) {
+                if (loggedUser.getId().equals(review.getUser().getId())) {
+                    rating = review.getRating();
+                    unhover();
+                }
+            }
+        }
     }
     //Now we use test1()
    /* private void writeReviewToDatabase(Review review) throws IOException, ClassNotFoundException {
@@ -90,13 +133,27 @@ public class ReviewCard {
 
     @FXML
     private void addReview() throws IOException, ClassNotFoundException, SQLException {
-        // Create review
+        progressBar.setVisible(true);
+        progressBar.setProgress(0.0);
+
         Review review = new Review(0L, game, loggedUser, rating);
         Comment comment = new Comment(0L, review, textAreaReview.getText(), null, false);
 
+        progressBar.setProgress(0.5);
+
         reviewDao.insert(review);
+        reviews.add(review);
+
+        progressBar.setProgress(0.75);
+
         commentDao.insert(comment);
+        comments.add(comment);
+
+        progressBar.setProgress(1.0);
+        progressBar.setVisible(false);
         labelStatus.setText("written correctly");
+
+        textAreaReview.setDisable(true);
     }
 
     private void editReview(Review review) {
@@ -162,8 +219,43 @@ public class ReviewCard {
     // TODO: Definitely refactor this!
     private void setRating(int r) {
         rating = r;
-        labelRating.setText(Integer.toString(rating) + "/10");
     }
+
+    private void unhover() {
+        hover(rating);
+    }
+
+    private void hover(int stars) {
+        for (int i = 0; i < buttonRatings.size(); i++) {
+            if (i < stars) {
+                buttonRatings.get(i).setText(Character.toString('\u2605'));
+            }
+            else {
+                buttonRatings.get(i).setText(Character.toString('\u2606'));
+            }
+        }
+    }
+
+    @FXML private void unhover1() { unhover(); }
+    @FXML private void unhover2() { unhover(); }
+    @FXML private void unhover3() { unhover(); }
+    @FXML private void unhover4() { unhover(); }
+    @FXML private void unhover5() { unhover(); }
+    @FXML private void unhover6() { unhover(); }
+    @FXML private void unhover7() { unhover(); }
+    @FXML private void unhover8() { unhover(); }
+    @FXML private void unhover9() { unhover(); }
+    @FXML private void unhover10() { unhover(); }
+    @FXML private void hover1() { hover(1); }
+    @FXML private void hover2() { hover(2); }
+    @FXML private void hover3() { hover(3); }
+    @FXML private void hover4() { hover(4); }
+    @FXML private void hover5() { hover(5); }
+    @FXML private void hover6() { hover(6); }
+    @FXML private void hover7() { hover(7); }
+    @FXML private void hover8() { hover(8); }
+    @FXML private void hover9() { hover(9); }
+    @FXML private void hover10() { hover(10); }
 
     @FXML
     private void setRating1() {
@@ -215,6 +307,20 @@ public class ReviewCard {
         setRating(10);
     }
 
+
+    private List<Button> buttonRatings;
+    @FXML private Button buttonRating1;
+    @FXML private Button buttonRating2;
+    @FXML private Button buttonRating3;
+    @FXML private Button buttonRating4;
+    @FXML private Button buttonRating5;
+    @FXML private Button buttonRating6;
+    @FXML private Button buttonRating7;
+    @FXML private Button buttonRating8;
+    @FXML private Button buttonRating9;
+    @FXML private Button buttonRating10;
+
+    @FXML private ProgressBar progressBar;
 
     @FXML
     private Label labelGameTitle;
