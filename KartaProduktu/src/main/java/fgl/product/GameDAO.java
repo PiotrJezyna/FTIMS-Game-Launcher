@@ -195,7 +195,10 @@ public class GameDAO extends AbstractDao<Game> {
     @Override
     public void delete( Game game ) throws SQLException {
 
-        connectSQL();
+        //ARCHITEKCI:
+        //blokowanie gry
+
+        /*connectSQL();
 
         //String query = "DELETE FROM Games WHERE ID = " + game.getId();
         String query = "DELETE FROM Games WHERE ID = %s";
@@ -215,6 +218,6 @@ public class GameDAO extends AbstractDao<Game> {
         } finally {
 
             disconnectSQL();
-        }
+        }*/
     }
 }

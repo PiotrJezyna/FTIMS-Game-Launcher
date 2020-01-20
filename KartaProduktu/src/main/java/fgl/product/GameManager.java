@@ -166,32 +166,6 @@ public class GameManager {
     // this should be written better, some overrides
     public void EditProductCard(String title, String newTitle, String tags, String path, String genre, String description) throws SQLException
     {
-        /*for(int i = 0; i < games.size(); i++)
-        {
-            if(games.get(i).getTitle().equals(title))
-            {
-                if(newTitle != null)
-                    games.get(i).setTitle(newTitle);
-
-                if(tags != null)
-                    games.get(i).setTags(tags);
-
-                if(genre != null)
-                    games.get(i).setGenre(genre);
-
-                if(description != null)
-                    games.get(i).setDescription(description);
-
-                dao.update(games.get(i));
-
-                System.out.println("Game " + title + "successfully edited and saved.");
-                break;
-            }
-
-            if(i == games.size() - 1)
-                System.out.println("Game " + title + "not found");
-        }*/
-
         if(currentGame != null)
         {
             if(newTitle != null)
