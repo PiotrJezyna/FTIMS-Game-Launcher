@@ -45,7 +45,7 @@
       <TextField fx:id="newTags" layoutX="50.0" layoutY="317.0" text="newTags" visible="false" />
       <Button fx:id="buttonBack" layoutX="43.0" layoutY="25.0" mnemonicParsing="false" onAction="#SetDefaultProductCardDisplaySettings" text="Powrót" visible="false" />
       <Button fx:id="saveButton" layoutX="68.0" layoutY="447.0" mnemonicParsing="false" onAction="#SaveEditedProductCard" prefHeight="26.0" prefWidth="84.0" text="Zapisz" />
-      <Label layoutX="46.0" layoutY="507.0" text="Changelog:" />
+      <Label layoutX="46.0" layoutY="507.0" text="Dziennik zmian:" />
       <TextArea fx:id="changelog" editable="false" layoutX="43.0" layoutY="525.0" prefHeight="142.0" prefWidth="494.0" />
       <Label fx:id="changelogDate" layoutX="475.0" layoutY="672.0" text="01-01-2001" />
    </children>
