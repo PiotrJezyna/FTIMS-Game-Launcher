@@ -4,7 +4,12 @@ import org.apache.commons.lang3.time.StopWatch;
 
 import java.io.IOException;
 import java.sql.*;
+import java.time.DateTimeException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.concurrent.TimeUnit;
+
+import static java.time.LocalDateTime.*;
 
 public class Statistics implements LibraryObserver{
     static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
@@ -79,15 +84,18 @@ public class Statistics implements LibraryObserver{
     }
 
     public void onGameStart(Long userID, Long gameID) throws ClassNotFoundException {
+
         stopWatch.start();
         Class.forName(JDBC_DRIVER);
         try (Connection connection = DriverManager.getConnection(DB_URL, USER, PASS);
              PreparedStatement statement = connection.prepareStatement(
                      "UPDATE Users_Games SET LastSession = ? WHERE UserID = ? AND GameID = ?")){
 
-            statement.setDate(1, recentlyPlayed);
+            statement.setDate(1, Date.valueOf(LocalDate.now()));
             statement.setLong(2, userID);
             statement.setLong(3, gameID);
+
+            System.out.println(statement.toString());
             statement.executeUpdate();
         } catch (SQLException se) {
             se.printStackTrace();
@@ -97,8 +105,9 @@ public class Statistics implements LibraryObserver{
         try (Connection connection = DriverManager.getConnection(DB_URL, USER, PASS);
              PreparedStatement statement = connection.prepareStatement(
                      "UPDATE Users_Games SET SessionCount = SessionCount + 1 WHERE UserID = ? AND GameID = ?")){
-            statement.setLong(2, userID);
-            statement.setLong(3, gameID);
+            statement.setLong(1, userID);
+            statement.setLong(2, gameID);
+            System.out.println(statement.toString());
             statement.executeUpdate();
         } catch (SQLException se) {
             se.printStackTrace();
@@ -117,6 +126,8 @@ public class Statistics implements LibraryObserver{
             statement.setDouble(1, gameTime);
             statement.setLong(2, userID);
             statement.setLong(3, gameID);
+
+            System.out.println(statement.toString());
             statement.executeUpdate();
         } catch (SQLException se) {
             se.printStackTrace();
@@ -128,8 +139,9 @@ public class Statistics implements LibraryObserver{
                      "SELECT LongestSession FROM Users_Games WHERE UserID = ? AND GameID = ?")){
             statement.setLong(1, userID);
             statement.setLong(2, gameID);
+            System.out.println(statement.toString());
             final ResultSet resultSet = statement.executeQuery();
-            if(!resultSet.next()){
+            if(resultSet.next()){
                 if(resultSet.getDouble("LongestSession") < stopWatch.getTime()/60000.0){
                     PreparedStatement preparedStatement = connection.prepareStatement(
                             "UPDATE Users_Games SET LongestSession=? WHERE UserID=? AND GameID=?");

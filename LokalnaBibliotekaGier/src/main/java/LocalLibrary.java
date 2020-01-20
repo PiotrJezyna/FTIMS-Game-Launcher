@@ -179,6 +179,7 @@ public class LocalLibrary {
     public void play(Game game){
         Runtime runtime = Runtime.getRuntime();
         try{
+            // Zamienic usera gry na zalogowanego usera !!!!
             gameList.get(localGames.indexOf(game)).onGameStart(game.getUserId(), game.getId());
             isPlaying = true;
 
