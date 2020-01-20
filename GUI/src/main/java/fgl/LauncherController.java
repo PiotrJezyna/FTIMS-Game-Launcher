@@ -89,7 +89,21 @@ public class LauncherController {
             paneChanger.getChildren().add( loadedFxml );
         }
     }
+    public void newProductCardButton() {
+        if ( userSession.getCurrentUser() == null ) {
+            showAlert("Information", "You have to login first!");
+        } else {
+            try {
+                loadedFxml = FXMLLoader.load( getClass().getResource("/NewProductCard.fxml") );
+            } catch ( IOException e ) {
+                e.printStackTrace();
+            }
 
+            paneChanger.getChildren().clear();
+            paneChanger.getChildren().add( loadedFxml );
+        }
+
+    }
     private void showAlert( String title, String content ) {
         Alert alert = new Alert( Alert.AlertType.WARNING );
         alert.setTitle( title );

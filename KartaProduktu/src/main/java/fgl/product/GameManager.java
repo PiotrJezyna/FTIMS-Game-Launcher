@@ -47,6 +47,14 @@ public class GameManager {
     @FXML private TextArea changelog;
     @FXML private Label changelogDate;
 
+
+    @FXML private TextField newGameTitle;
+    @FXML private TextField newGameTags;
+    @FXML private TextField newGamePathZip;
+    @FXML private TextField newGamePathScreenshot;
+    @FXML private TextArea newGameDescription;
+
+
     public GameManager() throws SQLException {
 
         dao = new GameDAO();
@@ -160,7 +168,7 @@ public class GameManager {
         }
     }
 
-    public void CreateProductCard(Long userId, String title, String tags, String path, String genre, String description) throws SQLException
+    public void CreateProductCard(Long userId, String title, Integer version,  String description, String tags) throws SQLException
     {
         boolean canCreate = true;
 
@@ -170,17 +178,22 @@ public class GameManager {
 
         if(canCreate)
         {
-            Game game = new Game(userId, title, tags, genre, description);
+            Game game = new Game(userId, title, 1,  description, tags);
 
             games.add(game);
 
             dao.insert(game);
+
+            Game sentGame = dao.get(title);
+
+            changelogDAO.insert(new Changelog(0L, sentGame.getId() , 0L, "Pierwsza wersj gry",new Date(new java.util.Date().getTime()),game.getTitle()));
         }
         else
         {
             System.out.println("Game with this title \"" + title + "\" already exists!");
         }
     }
+
 
     // this should be written better, some overrides
     public void EditProductCard(String title, String newTitle, String tags, String path, String genre, String description) throws SQLException
@@ -202,6 +215,50 @@ public class GameManager {
             dao.update(currentGame);
 
             System.out.println("Game " + title + "successfully edited and saved.");
+        }
+    }
+    private void informationWindow(String title, String content) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+
+        alert.showAndWait();
+    }
+    
+    @FXML
+    private void SendNewGameButton(){
+        System.out.println(newGameTags.getText());
+        try
+        {
+            if(newGameTitle.getText().isEmpty())  {
+
+                informationWindow("Błędne dane", "Tytuł gry jest pusty");
+            }
+            else if(newGameTags.getText().isEmpty())  {
+
+                informationWindow("Błędne dane", "Tagi gry są puste");
+            }
+            else if(newGameDescription.getText().isEmpty())  {
+
+                informationWindow("Błędne dane", "Opis gry jest pusty");
+            }
+            else if(newGamePathZip.getText().isEmpty())  {
+
+                informationWindow("Błędne dane", "Podaj ścieżkę do pliku .zip z grą");
+            }
+            else if(newGamePathScreenshot.getText().isEmpty())  {
+
+                informationWindow("Błędne dane", "Podaj ścieżkę do pliku .png z zrzutem ekranu");
+            }
+            else{
+                CreateProductCard(Login.userSession.getCurrentUser().getId(),  newGameTitle.getText(), 1, newGameDescription.getText(), newGameTags.getText() );
+            }
+
+        }
+        catch (SQLException e)
+        {
+            System.out.println("SQL Exception while adding new product card!");
         }
     }
 
@@ -258,21 +315,39 @@ public class GameManager {
 
         try
         {
-            EditProductCard(currentGame.getTitle(), newTitle.getText(), newTags.getText(),
-                    null, null, gameDescription.getText());
 
-            currentChangelog.setDate(new Date(new java.util.Date().getTime()));
-            currentChangelog.setDescription(changelog.getText());
-            currentChangelog.setVersion(currentChangelog.getVersion() + 1);
+            if(newTitle.getText().isEmpty())
+            {
+                informationWindow("Błędne dane", "Tytuł gry jest pusty");
+            }
+            else if(newTags.getText().isEmpty())
+            {
+                informationWindow("Błędne dane", "Tagi gry są puste");
+            }
+            else if(gameDescription.getText().isEmpty())
+            {
+                informationWindow("Błędne dane", "Opis gry jest pusty");
+            }
+            else {
 
-            changelogDAO.update(currentChangelog);
+                EditProductCard(currentGame.getTitle(), newTitle.getText(), newTags.getText(),
+                        null, null, gameDescription.getText());
+
+                currentChangelog.setDate(new Date(new java.util.Date().getTime()));
+                currentChangelog.setDescription(changelog.getText());
+                currentChangelog.setVersion(currentChangelog.getVersion() + 1);
+
+                changelogDAO.update(currentChangelog);
+                SetDefaultProductCardDisplaySettings();
+            }
         }
         catch (SQLException e)
         {
             System.out.println("SQL Exception while editing product card!");
+            SetDefaultProductCardDisplaySettings();
         }
 
-        SetDefaultProductCardDisplaySettings();
+
     }
 
     @FXML

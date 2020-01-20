@@ -12,12 +12,13 @@ public class Game {
     private Integer userCount;
     private boolean isReported;
 
-    public Game(Long userId, String title, String tags, String genre, String description) {
+    public Game(Long userId, String title,Integer version, String description, String tags) {
         this.userId = userId;
         this.title = title;
-        this.tags = tags;
-        this.genre = genre;
+        this.version = version;
         this.description = description;
+        this.tags = tags;
+
     }
 
     public Game(Long id, Long userId, String title, Integer version, String tags, String genre, String description, Integer userCount, boolean isReported) {

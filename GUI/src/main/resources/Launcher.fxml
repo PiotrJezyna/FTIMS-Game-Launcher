@@ -14,7 +14,7 @@
             <Button layoutX="21.0" layoutY="85.0" mnemonicParsing="false" onAction="#adminButton" prefHeight="35.0" prefWidth="144.0" text="Panel administratora" />
             <Button layoutX="21.0" layoutY="189.0" mnemonicParsing="false" onAction="#catalogButton" prefHeight="35.0" prefWidth="144.0" text="Katalog gier" />
             <Button layoutX="21.0" layoutY="242.0" mnemonicParsing="false" onAction="#libraryButton" prefHeight="35.0" prefWidth="144.0" text="Lokalna biblioteka" />
-            <Button layoutX="21.0" layoutY="294.0" mnemonicParsing="false" onAction="#libraryButton" prefHeight="35.0" prefWidth="144.0" text="Dodaj grę" />
+            <Button layoutX="21.0" layoutY="294.0" mnemonicParsing="false" onAction="#newProductCardButton" prefHeight="35.0" prefWidth="144.0" text="Dodaj grę" />
          </children>
     </AnchorPane>
     <AnchorPane fx:id="paneChanger" minHeight="0.0" minWidth="0.0" prefHeight="598.0" prefWidth="633.0">

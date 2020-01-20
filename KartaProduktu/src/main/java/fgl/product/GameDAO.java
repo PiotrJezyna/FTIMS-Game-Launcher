@@ -15,7 +15,7 @@ public class GameDAO extends AbstractDao<Game> {
 
         try {
 
-            String query = "SELECT UserID, Title, Version, Description, Tags, Path, UserCount, IsReported " +
+            String query = "SELECT UserID, Title, Version, Description, Tags, UserCount, IsReported " +
                            "FROM Games WHERE ID = %s";
             query = String.format(query, id);
 
@@ -27,6 +27,44 @@ public class GameDAO extends AbstractDao<Game> {
 
             Long userId = rs.getLong("UserID");
             String title = rs.getString("Title");
+            String description = rs.getString("Description");
+            Integer version = rs.getInt("Version");
+            String tags = rs.getString("Tags");
+            Integer userCount = rs.getInt("UserCount");
+            boolean isReported = rs.getBoolean("IsReported");
+
+            return new Game(id, userId, title, version, tags, null, description, userCount, isReported);
+
+        } catch ( SQLException e ) {
+
+            throw new SQLException(e.getMessage());
+
+        } finally {
+
+            rs.close();
+            stmt.close();
+            disconnectSQL();
+        }
+    }
+
+    public Game get( String title ) throws SQLException {
+
+        connectSQL();
+
+        try {
+
+            String query = "SELECT UserID, Title, Version, Description, Tags, UserCount, IsReported " +
+                    "FROM Games WHERE Title = '%s'";
+            query = String.format(query, title);
+
+            System.out.println(query);
+
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery( query );
+            rs.next();
+
+            Long userId = rs.getLong("UserID");
+            Long id = rs.getLong("ID");
             String description = rs.getString("Description");
             Integer version = rs.getInt("Version");
             String tags = rs.getString("Tags");
@@ -134,8 +172,8 @@ public class GameDAO extends AbstractDao<Game> {
 
         connectSQL();
 
-        String query = "INSERT INTO Games(UserID, Title, Tags) VALUES (%s, '%s', '%s', '%s')";
-        query = String.format(query, game.getUserId(), game.getTitle(), game.getTags());
+        String query = "INSERT INTO Games(UserID, Title, Version, Description, Tags) VALUES (%s, '%s', '1', '%s', '%s')";
+        query = String.format(query, game.getUserId(), game.getTitle() ,game.getDescription(), game.getTags());
 
         System.out.println( query );
 
