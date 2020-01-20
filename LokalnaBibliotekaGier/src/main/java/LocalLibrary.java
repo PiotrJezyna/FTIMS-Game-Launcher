@@ -1,5 +1,7 @@
 import fgl.product.Game;
 import fgl.product.GameManager;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -56,7 +58,6 @@ public class LocalLibrary {
         scrollPane.setContent(localGamesBox);
         dao = new LocalGamesDAO();
         localGames = dao.getAll();
-
         for (Game game: localGames) {
 
             HBox gameBox = new HBox();
@@ -64,6 +65,7 @@ public class LocalLibrary {
             Label label = new Label(game.getTitle());
             Button buttonOpenCard = new Button("Open Card");
             Button buttonLaunch = new Button("Launch");
+            Button buttonShowStats = new Button("Show Statistics");
 
             buttonOpenCard.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
@@ -94,9 +96,54 @@ public class LocalLibrary {
                     }
                 }
             });
+            buttonShowStats.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    Stage window = new Stage();
+                    window.initModality(Modality.APPLICATION_MODAL);
+                    window.setTitle("Statistics");
+                    window.setMinWidth(400);
+
+                    try {
+                        Class.forName(JDBC_DRIVER);
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    String[] statsString = new String[2];
+                    try (Connection connection = DriverManager.getConnection(DB_URL, USER, PASS);
+                         PreparedStatement preparedStatement = connection.prepareStatement(
+                                 "SELECT * FROM Users_Games WHERE UserID = ? AND GameID = ?")) {
+                        preparedStatement.setLong(1, userID);
+                        preparedStatement.setLong(2, game.getId());
+                        final ResultSet resultSet = preparedStatement.executeQuery();
+                        System.out.println(resultSet.next());
+                        while(resultSet.next()){
+                            statsString[0] = "" + resultSet.getDouble(3);
+                            System.out.println(resultSet.getDouble(3));
+                            statsString[1] = String.valueOf(resultSet.getDate(6));
+                        }
+                    }catch (SQLException e){
+                        e.printStackTrace();
+                    }
+
+                    Label recentlyPlayed = new Label();
+                    recentlyPlayed.setText("Recently Played "+ statsString[0]);
+                    Label lastSession = new Label();
+                    lastSession.setText("Last Session "+ statsString[1]);
+
+                    VBox layout = new VBox(10);
+                    layout.getChildren().addAll(recentlyPlayed, lastSession);
+                    layout.setAlignment(Pos.CENTER);
+
+                    Scene scene = new Scene(layout);
+                    window.setScene(scene);
+                    window.showAndWait();
+                }
+            });
 
             gameBox.getChildren().add(buttonOpenCard);
             gameBox.getChildren().add(buttonLaunch);
+            gameBox.getChildren().add(buttonShowStats);
             gameBox.getChildren().add(label);
 
             HBox.setMargin(buttonOpenCard, new Insets(0, 10, 0, 10));
@@ -126,7 +173,6 @@ public class LocalLibrary {
             final DirectoryChooser directoryChooser = new DirectoryChooser();
             directoryChooser.setInitialDirectory(dao.getPath());
             File file = directoryChooser.showDialog(window);
-            //dao.changePath(file);
             field.setText(file.getAbsolutePath());
         });
 

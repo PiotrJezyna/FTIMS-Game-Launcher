@@ -102,8 +102,6 @@ public class LocalGamesDAO extends AbstractDao<Game> {
                 lineAmount++;
             }
             bufferedReader.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -115,12 +113,11 @@ public class LocalGamesDAO extends AbstractDao<Game> {
                 File tmpDir = new File(absolutePath[i] + "\\" + pathname + "\\" + pathname + ".exe");
                 int iterator = 0;
                 if (tmpDir.exists()) {
+
                     this.gamesFilesPath[i] = absolutePath[i];
                     this.gamesFiles[iterator] = tmpDir;
-
                     connectSQL();
-                    String query = "SELECT ID, UserID, Tags, UserCount, IsReported  FROM Games WHERE Title = '" + pathname + "'";
-
+                    String query = "SELECT ID, UserID, Tags, UserCount, IsReported FROM Games WHERE Title = '" + pathname + "'";
                     stmt = conn.createStatement();
                     rs = stmt.executeQuery(query);
                     if (rs.next()) {
@@ -136,6 +133,7 @@ public class LocalGamesDAO extends AbstractDao<Game> {
                 }
             }
         }
+        System.out.println(localGames);
         return localGames;
     }
 
