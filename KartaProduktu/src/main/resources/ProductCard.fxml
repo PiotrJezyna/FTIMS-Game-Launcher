@@ -23,7 +23,7 @@
       <Button fx:id="buttonReviews" layoutX="55.0" layoutY="403.0" mnemonicParsing="false" onAction="#ShowReviews" text="Show Reviews" />
       <TextArea fx:id="gameDescription" editable="false" layoutX="51.0" layoutY="149.0" prefHeight="131.0" prefWidth="200.0" />
       <Button fx:id="editButton" layoutX="46.0" layoutY="25.0" mnemonicParsing="false" onAction="#buttonEditProductCard" text="Edit" />
-      <Button fx:id="removeButton" layoutX="99.0" layoutY="25.0" mnemonicParsing="false" text="Remove" />
+      <Button fx:id="removeButton" layoutX="99.0" layoutY="25.0" mnemonicParsing="false" onAction="#ButtonRemoveProductCard" text="Remove" />
       <TextField fx:id="newTitle" layoutX="54.0" layoutY="84.0" text="newTitle" visible="false" />
       <TextField fx:id="newTags" layoutX="50.0" layoutY="317.0" text="newTags" visible="false" />
       <Button fx:id="buttonBack" layoutX="43.0" layoutY="25.0" mnemonicParsing="false" onAction="#SetDefaultProductCardDisplaySettings" text="Back" visible="false" />

@@ -197,6 +197,7 @@ public class GameDAO extends AbstractDao<Game> {
 
         connectSQL();
 
+        //String query = "DELETE FROM Games WHERE ID = " + game.getId();
         String query = "DELETE FROM Games WHERE ID = %s";
         query = String.format(query, game.getId());
 
