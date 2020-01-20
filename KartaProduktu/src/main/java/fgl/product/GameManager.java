@@ -1,14 +1,23 @@
 package fgl.product;
 
+import fgl.userPanel.Login;
+import fgl.userPanel.UserType;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import fgl.userPanel.UserDAO;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 
 import fgl.kartaocen.ReviewCard;
@@ -27,6 +36,14 @@ public class GameManager {
     @FXML private Label gameAuthor;
     @FXML private Label gameTags;
     @FXML private Label gameUserCount;
+    @FXML private TextArea gameDescription;
+    @FXML private Button editButton;
+    @FXML private Button removeButton;
+    @FXML private TextField newTitle;
+    @FXML private TextField newTags;
+    @FXML private Button buttonReviews;
+    @FXML private Button buttonBack;
+    @FXML private Button saveButton;
 
     public GameManager() throws SQLException {
 
@@ -59,12 +76,16 @@ public class GameManager {
         gameTags.setText(game.getTags());
         gameAuthor.setText(author);
         gameUserCount.setText(game.getUserCount().toString());
+        gameDescription.setText(game.getDescription());
+
+        SetDefaultProductCardDisplaySettings();
+        AddAdditionalButtons(game);
 
         System.out.println("Game: " + game.getTitle());
         System.out.println("Author: " + game.getUserId());
         System.out.println("Tags: " + game.getTags());
         //System.out.println("Genre: " + games.get(i).getGenre());
-        //System.out.println("Description: " + games.get(i).getDescription());
+        System.out.println("Description: " + game.getDescription());
     }
 
     public void ShowProductCard(String title) throws SQLException {
@@ -81,19 +102,23 @@ public class GameManager {
                 gameTags.setText(games.get(i).getTags());
                 gameAuthor.setText(author);
                 gameUserCount.setText(games.get(i).getUserCount().toString());
+                gameDescription.setText(games.get(i).getDescription());
+
+                SetDefaultProductCardDisplaySettings();
+                AddAdditionalButtons(currentGame);
 
                 System.out.println("Game: " + games.get(i).getTitle());
                 System.out.println("Author: " + games.get(i).getUserId());
                 System.out.println("Tags: " + games.get(i).getTags());
                 //System.out.println("Genre: " + games.get(i).getGenre());
-                //System.out.println("Description: " + games.get(i).getDescription());
+                System.out.println("Description: " + games.get(i).getDescription());
 
                 break;
             }
         }
     }
 
-    public void showReviews() throws IOException {
+    public void ShowReviews() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/RatingsCard.fxml"));
 
         root.getChildren().clear();
@@ -144,7 +169,7 @@ public class GameManager {
     // this should be written better, some overrides
     public void EditProductCard(String title, String newTitle, String tags, String path, String genre, String description) throws SQLException
     {
-        for(int i = 0; i < games.size(); i++)
+        /*for(int i = 0; i < games.size(); i++)
         {
             if(games.get(i).getTitle().equals(title))
             {
@@ -168,8 +193,98 @@ public class GameManager {
 
             if(i == games.size() - 1)
                 System.out.println("Game " + title + "not found");
+        }*/
+
+        if(currentGame != null)
+        {
+            if(newTitle != null)
+                currentGame.setTitle(newTitle);
+
+            if(tags != null)
+                currentGame.setTags(tags);
+
+            if(genre != null)
+                currentGame.setGenre(genre);
+
+            if(description != null)
+                currentGame.setDescription(description);
+
+            dao.update(currentGame);
+
+            System.out.println("Game " + title + "successfully edited and saved.");
         }
     }
+
+    @FXML
+    private void buttonEditProductCard(ActionEvent event) throws Exception {
+
+        newTitle.setText(gameTitle.getText());
+        newTags.setText(gameTags.getText());
+
+        gameTitle.setVisible(false);
+        gameTags.setVisible(false);
+        editButton.setVisible(false);
+        removeButton.setVisible(false);
+        buttonReviews.setVisible(false);
+
+        newTags.setVisible(true);
+        newTitle.setVisible(true);
+        gameDescription.setEditable(true);
+        buttonBack.setVisible(true);
+        saveButton.setVisible(true);
+    }
+
+    @FXML
+    private void SetDefaultProductCardDisplaySettings()
+    {
+        gameTitle.setVisible(true);
+        gameTitle.setText(currentGame.getTitle());
+
+        gameTags.setVisible(true);
+        gameTags.setText(currentGame.getTags());
+
+        editButton.setVisible(true);
+        removeButton.setVisible(true);
+        buttonReviews.setVisible(true);
+
+        newTags.setVisible(false);
+        newTitle.setVisible(false);
+        gameDescription.setEditable(false);
+        gameDescription.setText(currentGame.getDescription());
+
+        buttonBack.setVisible(false);
+        saveButton.setVisible(false);
+    }
+
+    @FXML
+    private void SaveEditedProductCard()
+    {
+        System.out.println(gameDescription.getText());
+
+        try
+        {
+            EditProductCard(currentGame.getTitle(), newTitle.getText(), newTags.getText(),
+                    null, null, gameDescription.getText());
+        }
+        catch (SQLException e)
+        {
+            System.out.println("SQL Exception while editing product card!");
+        }
+
+        SetDefaultProductCardDisplaySettings();
+    }
+
+    private void AddAdditionalButtons(Game game)
+    {
+        if(Login.userSession.getCurrentUser().getId() != game.getUserId()
+            && Login.userSession.getCurrentUser().getType() == UserType.USER)
+        {
+            editButton.setVisible(false);
+
+            removeButton.setVisible(false);
+        }
+    }
+
 
     // ---according to the class scheme from the presentation--
     /*
