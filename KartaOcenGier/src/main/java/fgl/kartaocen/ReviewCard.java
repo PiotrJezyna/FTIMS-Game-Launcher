@@ -7,17 +7,21 @@ import fgl.product.Game;
 import fgl.product.GameDAO;
 import fgl.userPanel.User;
 import fgl.userPanel.UserDAO;
-import fgl.userPanel.UserType;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
 
 // ================================================================= Other == //
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 // //////////////////////////////////////////////////////// Class: ReviewCard //
 public class ReviewCard {
@@ -30,7 +34,7 @@ public class ReviewCard {
     public CommentDao commentDao;
     public List<Review> reviews;
     public List<Comment> comments;
-    private int rating;
+    private int rating = 10;
 
     // ========================================================= Behaviour == //
     public void setGame(Long id) {
@@ -82,14 +86,52 @@ public class ReviewCard {
 
 //        progressBar.setVisible(false);
 
-        if (hasUserReviewedBefore()) {
-            for (Review review : reviews) {
-                if (loggedUser.getId().equals(review.getUser().getId())) {
-                    rating = review.getRating();
-                    unhover();
+        if (isUserAuthor()) {
+            //todo
+        }
+        else {
+            if (hasUserReviewedBefore()) {
+                Review userReview = null;
+                for (Review review : reviews) {
+                    if (loggedUser.getId().equals(review.getUser().getId())) {
+                        userReview = review;
+                        rating = userReview.getRating();
+                        unhover();
+                    }
                 }
             }
+            else {
+                labelDate.setText("");
+                buttonShowEditHistory.setVisible(false);
+                hboxNavigation.getChildren().get(0).setVisible(false);
+                hboxNavigation.getChildren().get(1).setVisible(false);
+//                authorsReplyConstraints.setPrefHeight(0.0);
+                deleteRow(mainGrid, 4);
+            }
         }
+
+    }
+    //todo: refactor
+    static void deleteRow(GridPane grid, final int row) {
+        Set<Node> deleteNodes = new HashSet<>();
+        for (Node child : grid.getChildren()) {
+            // get index from child
+            Integer rowIndex = GridPane.getRowIndex(child);
+
+            // handle null values for index=0
+            int r = rowIndex == null ? 0 : rowIndex;
+
+            if (r > row) {
+                // decrement rows for rows after the deleted row
+                GridPane.setRowIndex(child, r-1);
+            } else if (r == row) {
+                // collect matching rows for deletion
+                deleteNodes.add(child);
+            }
+        }
+
+        // remove nodes from row
+        grid.getChildren().removeAll(deleteNodes);
     }
     //Now we use test1()
    /* private void writeReviewToDatabase(Review review) throws IOException, ClassNotFoundException {
@@ -151,9 +193,12 @@ public class ReviewCard {
 
         progressBar.setProgress(1.0);
         progressBar.setVisible(false);
-        labelStatus.setText("written correctly");
+//        labelStatus.setText("written correctly");
 
         textAreaReview.setDisable(true);
+
+        labelDate.setVisible(true);
+        labelDate.setText(comment.getSubmissionDate().toString());
     }
 
     private void editReview(Review review) {
@@ -339,9 +384,19 @@ public class ReviewCard {
     @FXML
     private Label labelReview;
     @FXML
+    private Label labelDate;
+    @FXML
     private TextArea textAreaReply;
     @FXML
     private TextArea textAreaID;
     @FXML
     private VBox boxReviews;
+    @FXML
+    private Button buttonShowEditHistory;
+    @FXML
+    private HBox hboxNavigation;
+    @FXML
+    private GridPane mainGrid;
+    @FXML
+    private RowConstraints authorsReplyConstraints;
 }
