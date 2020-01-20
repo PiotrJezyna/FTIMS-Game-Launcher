@@ -2,6 +2,8 @@ package fgl.catalog;
 
 import fgl.product.*;
 import fgl.userPanel.Login;
+import fgl.drive.*;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -15,6 +17,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+import javax.swing.text.html.ImageView;
+import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -38,11 +43,17 @@ public class GameContener {
     private GameDAO gameDao = new GameDAO();
     private ChangelogDAO changelogDao = new ChangelogDAO();
 
+    private int recordPerPage = 5;
+    private int pageNumber = 0;
+    private int pageCount = 0;
+
     public Button wszystkie;
     public Button naCzasie;
     public Button polecane;
     public Button historia;
     public Button panelAkt;
+    public Button prevPage;
+    public Button nextPage;
 
     @FXML
     private AnchorPane root;
@@ -103,6 +114,7 @@ public class GameContener {
 
         displayedChangelogs = changelogs;
 
+        pageCount = (int)Math.ceil((double) displayedChangelogs.size() / recordPerPage);
         displayChangelogs();
 
     }
@@ -135,6 +147,7 @@ public class GameContener {
             if (categoryFlag && searchPhraseFlag && tagsFlag)
                 displayedGames.add(game);
         }
+        pageCount = (int)Math.ceil((double) displayedGames.size() / recordPerPage);
 
         displayGames();
     }
@@ -142,7 +155,12 @@ public class GameContener {
     public void displayChangelogs() throws  Exception {
         gamesBox.getChildren().clear();
 
-        for (Changelog changelog : displayedChangelogs) {
+        int start = pageNumber * recordPerPage;
+        int length = ((displayedChangelogs.size() - start) < 5) ? (displayedChangelogs.size() - start) : 5;
+
+        for (int i = start; i < start + length; ++i) {
+        //for (Changelog changelog : displayedChangelogs) {
+            Changelog changelog = displayedChangelogs.get(i);
             HBox gameBox = new HBox();
 
             Game game = gameDao.get(changelog.getGameId());
@@ -184,12 +202,17 @@ public class GameContener {
         }
     };
 
-
     public void displayGames() {
         gamesBox.getChildren().clear();
         System.out.println(displayedGames.size());
 
-        for (Game game : displayedGames) {
+        int start = pageNumber * recordPerPage;
+        int length = ((displayedGames.size() - start) < 5) ? (displayedGames.size() - start) : 5;
+
+
+        for (int i = start; i < start + length; ++i) {
+            Game game = displayedGames.get(i);
+            //Image image = new Image( files.get(i).toURI().toString(), 120, 120, true, false );
             HBox gameBox = new HBox();
 
             Label label = new Label(game.getTitle());
@@ -203,6 +226,7 @@ public class GameContener {
 
                         root.getChildren().clear();
                         root.getChildren().add(loader.load());
+                        ImageView imageView;
 
                         GameManager gm = loader.getController();
                         gm.ShowProductCard(game);
@@ -214,6 +238,7 @@ public class GameContener {
                 }
             });
 
+            ImageView imageView;
             gameBox.getChildren().add(button);
             gameBox.getChildren().add(label);
 
@@ -241,10 +266,39 @@ public class GameContener {
     }
 
     @FXML
+    void handlePageButton(ActionEvent event) throws Exception {
+        boolean dirtyFlag = false;
+
+        if (prevPage.isHover()) {
+            if (pageNumber > 0) {
+                pageNumber--;
+                dirtyFlag = true;
+            }
+            System.out.println("page nr: " + pageNumber);
+        }
+        if (nextPage.isHover()) {
+            if (pageNumber < pageCount - 1) {
+                pageNumber++;
+                dirtyFlag = true;
+            }
+            System.out.println("page nr: " + pageNumber);
+        }
+
+        if (!dirtyFlag)
+            return;
+
+        if (category != 4)
+            displayGames();
+        else
+            displayChangelogs();
+    }
+
+    @FXML
     void handleCategoryButton(ActionEvent event) throws Exception {
 
         phaseField.clear();
         setSearchPhrase(phaseField.getText());
+        pageNumber = 0;
 
         if (wszystkie.isHover()) {
             category = 0;
@@ -289,11 +343,14 @@ public class GameContener {
             }
         }
 
-        if (category != 4)
+        if (category != 4) {
             updateDisplayedGames();
-        else
+        }
+        else {
             updateDisplayedChangelogs();
+        }
 
+        System.out.println("page count: " + pageCount);
     }
 }
 
