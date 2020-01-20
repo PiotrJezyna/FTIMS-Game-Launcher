@@ -14,27 +14,53 @@ public final class MailHandler {
   private static final String EMAIL = "ftims.game.launcher@gmail.com";
   private static final String PASSWORD = "W6j8Vm$nx@";
   private static final String FOOTER =
-          "\n For further informations please " +
-          "contact us via email adress: " + EMAIL +
-          "\n\n Sincerly," +
+          "\n Po więcej informacji prosimy " +
+          "kontaktować się z nami poprzez adres email: " + EMAIL +
+          "\n\n Łączymy wyrazy szacunku," +
           "\n Ftims Game Luncher Team";
 
   private MailHandler() {
   }
 
-  public static void sendMail( User to, String type ) {
+  public static Session makeSession() {
     Properties props = new Properties();
     props.put( "mail.smtp.host", "smtp.gmail.com" );
     props.put( "mail.smtp.socketFactory.port", "465" );
     props.put( "mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory" );
     props.put( "mail.smtp.auth", "true" );
     props.put( "mail.smtp.port", "465" );
-    Session session = Session.getDefaultInstance( props,
+    return Session.getDefaultInstance( props,
             new javax.mail.Authenticator() {
               protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication( EMAIL, PASSWORD );
               }
             } );
+  }
+
+  public static void sendMailWithCode( User to, String type, String confirmCode ) {
+    Session session = makeSession();
+    try {
+      Message message = new MimeMessage( session );
+      message.setFrom( new InternetAddress( EMAIL ) );
+      message.setRecipients( Message.RecipientType.TO,
+              InternetAddress.parse( to.getEmail() ) );
+
+      if ( type.compareTo( "registration" ) == 0 ) {
+        message.setSubject( "Rejestracja" );
+        message.setText( registrationText( to, confirmCode ) );
+      } else if ( type.compareTo( "reminder" ) == 0 ) {
+        message.setSubject( "Przypomnienie hasła" );
+        message.setText( reminderText( to, confirmCode ) );
+      }
+
+      Transport.send( message );
+    } catch ( MessagingException e ) {
+      throw new RuntimeException( e );
+    }
+  }
+
+  public static void sendMail( User to, String type ) {
+    Session session = makeSession();
     try {
       Message message = new MimeMessage( session );
       message.setFrom( new InternetAddress( EMAIL ) );
@@ -58,14 +84,28 @@ public final class MailHandler {
   }
 
   public static String blockText( User to ) {
-    return "Hello " + to.getUsername() + "," +
+    return "Witaj " + to.getUsername() + "," +
             "\n\n Your accont on Ftims Game Luncher has been blocked." +
             FOOTER;
   }
 
   public static String unblockText( User to ) {
-    return "Hello " + to.getUsername() + "," +
+    return "Witaj " + to.getUsername() + "," +
             "\n\n Your accont on Ftims Game Luncher has been unblocked." +
+            FOOTER;
+  }
+
+  public static String registrationText( User to, String confirmCode ) {
+    return "Witaj " + to.getUsername() + "," +
+            "\n\n Aby dokończyć proces rejestracji prosimy " +
+            "wpisać ten kod potwierdzający: " + confirmCode +
+            FOOTER;
+  }
+
+  public static String reminderText( User to, String reminderCode ) {
+    return "Witaj " + to.getUsername() + "," +
+            "\n\n Aby przypomnieć hasło prosimy " +
+            "wpisać ten kod potwierdzający: " + reminderCode +
             FOOTER;
   }
 
