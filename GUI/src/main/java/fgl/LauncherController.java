@@ -21,7 +21,7 @@ public class LauncherController {
     private AnchorPane loadedFxml;
 
     @FXML
-    private AnchorPane menu;
+    private AnchorPane avatarSpace;
 
     @FXML
     private AnchorPane paneChanger;
@@ -34,20 +34,23 @@ public class LauncherController {
     }
 
     public void initialize() {
+        boolean load = false;
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource( "/LoginView.fxml" ));
             loadedFxml = loader.load();
             LoginViewControl ctrl = loader.getController();
-            ctrl.init( loginPanel, menu );
+            load = ctrl.init( loginPanel, avatarSpace );
         } catch ( IOException e ) {
             e.printStackTrace();
         }
 
-        double width = loadedFxml.getPrefWidth();
-        loadedFxml.setLayoutX( (loginPanel.getPrefWidth() - width) / 2 );
+        if ( !load ) {
+            double width = loadedFxml.getPrefWidth();
+            loadedFxml.setLayoutX( (loginPanel.getPrefWidth() - width) / 2 );
 
-        loginPanel.getChildren().clear();
-        loginPanel.getChildren().add( loadedFxml );
+            loginPanel.getChildren().clear();
+            loginPanel.getChildren().add( loadedFxml );
+        }
 
         userSession = UserSession.getUserSession();
     }
@@ -76,7 +79,7 @@ public class LauncherController {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource( "/UserProfileView.fxml" ));
                 loadedFxml = loader.load();
                 UserProfileViewControl ctrl = loader.getController();
-                ctrl.init( paneChanger );
+                ctrl.init( paneChanger, avatarSpace );
             } catch ( IOException e ) {
                 e.printStackTrace();
             }

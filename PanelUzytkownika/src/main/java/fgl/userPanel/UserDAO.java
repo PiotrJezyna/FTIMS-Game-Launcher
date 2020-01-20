@@ -145,12 +145,13 @@ public class UserDAO extends AbstractDao<User> {
                         "Username = '%s', " +
                         "Email = '%s', " +
                         "Type = '%s', " +
+                        "Password = '%s'," +
                         //"IsActivated = '%s' " +
                         "IsBlocked = '%s' " +
                         "WHERE ID = " + user.getId();
 
         //query = String.format(query, user.getName(), user.getSurname(), user.getUsername(), user.getEmail(), user.getType(), user.isActivated(), user.isBlocked());
-        query = String.format(query, user.getName(), user.getSurname(), user.getUsername(), user.getEmail(), user.getType(), user.isBlocked());
+        query = String.format(query, user.getName(), user.getSurname(), user.getUsername(), user.getEmail(), user.getType(), user.getPassword(), user.isBlocked());
         query = query.replace("false", "0");
         query = query.replace("true", "1");
 

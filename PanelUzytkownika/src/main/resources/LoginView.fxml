@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane prefHeight="340.0" prefWidth="260.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fgl.userPanel.LoginViewControl">
    <children>
-      <Button layoutX="30.0" layoutY="169.0" mnemonicParsing="false" onAction="#openRegisterScene" prefHeight="0.0" prefWidth="200.0" text="Don't have an account? Register" />
-      <TextField fx:id="username" layoutX="53.0" layoutY="49.0" promptText="Username" />
-      <PasswordField fx:id="password" layoutX="53.0" layoutY="90.0" promptText="Password" />
-      <Button layoutX="105.0" layoutY="131.0" mnemonicParsing="false" onAction="#loginButtonClicked" text="Login" />
+      <TextField fx:id="username" layoutX="55.0" layoutY="53.0" promptText="Username" />
+      <PasswordField fx:id="password" layoutX="55.0" layoutY="83.0" promptText="Password" />
+      <Button layoutX="55.0" layoutY="122.0" mnemonicParsing="false" onAction="#loginButtonClicked" text="Login" />
+      <CheckBox fx:id="rememberMeCheckbox" layoutX="108.0" layoutY="126.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="102.0" text="Remember me" underline="true" />
+      <Button layoutX="69.0" layoutY="158.0" mnemonicParsing="false" onAction="#goToConfirmCodeFromEmail" prefHeight="0.0" prefWidth="123.0" text="Forgot password?" />
+      <Button layoutX="30.0" layoutY="191.0" mnemonicParsing="false" onAction="#openRegisterScene" prefHeight="0.0" prefWidth="200.0" text="Don't have an account? Register" />
    </children>
 </AnchorPane>

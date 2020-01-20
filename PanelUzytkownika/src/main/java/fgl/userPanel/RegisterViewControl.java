@@ -26,7 +26,7 @@ import java.util.List;
 public class RegisterViewControl {
 
     private AnchorPane root;
-    private AnchorPane menu;
+    private AnchorPane avatarSpace;
 
     @FXML
     private TextField name, surname, userName, email, password, repeatPassword;
@@ -34,16 +34,16 @@ public class RegisterViewControl {
     @FXML
     private Label label;
 
-    public void init( AnchorPane root, AnchorPane menu ) {
+    public void init( AnchorPane root, AnchorPane avatarSpace ) {
         this.root = root;
-        this.menu = menu;
+        this.avatarSpace = avatarSpace;
     }
 
     public void openLoginScene(ActionEvent actionEvent) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource( "/LoginView.fxml" ));
         AnchorPane pane = loader.load();
         LoginViewControl ctrl = loader.getController();
-        ctrl.init( root, menu );
+        ctrl.init( root, avatarSpace );
 
         double width = pane.getPrefWidth();
         pane.setLayoutX( (root.getPrefWidth() - width) / 2 );

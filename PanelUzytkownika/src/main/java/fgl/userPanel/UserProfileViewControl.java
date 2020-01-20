@@ -9,14 +9,15 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 
 public class UserProfileViewControl {
 
     private AnchorPane root;
+    private AnchorPane avatarSpace;
 
     @FXML
     public TextField nameField;
@@ -41,8 +42,9 @@ public class UserProfileViewControl {
         emailField.setText(getLoggedInUserEmail());
     }
 
-    public void init(AnchorPane root) {
+    public void init( AnchorPane root, AnchorPane avatarSpace ) {
         this.root = root;
+        this.avatarSpace = avatarSpace;
     }
 
     private String getLoggedInUserName(){
@@ -66,7 +68,7 @@ public class UserProfileViewControl {
         FXMLLoader loader = new FXMLLoader(getClass().getResource( "/EditUserProfileView.fxml" ));
         AnchorPane pane = loader.load();
         EditUserProfileViewControl ctrl = loader.getController();
-        ctrl.init( root );
+        ctrl.init( root, avatarSpace );
 
         root.getChildren().clear();
         root.getChildren().add( pane );
@@ -74,6 +76,13 @@ public class UserProfileViewControl {
 
     public void logoutUser(ActionEvent actionEvent) throws IOException {
         UserSession.getUserSession().setCurrentUser( null );
+
+        File loginFile = new File(System.getProperty( "user.dir" ) + "\\credentials\\login.txt");
+        File passwordFile = new File(System.getProperty( "user.dir" ) + "\\credentials\\password.txt");
+
+        if ( loginFile.exists() ) loginFile.delete();
+        if ( passwordFile.exists() ) passwordFile.delete();
+
         Parent root = FXMLLoader.load(getClass().getResource("/Launcher.fxml"));
         Scene scene = new Scene(root);
         Stage window = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
