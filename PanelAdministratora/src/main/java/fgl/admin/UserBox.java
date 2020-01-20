@@ -13,19 +13,17 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 
 public class UserBox extends HBox {
-  User user;
-  Label label = new Label();
-  Button button = new Button();
-  ChoiceBox<UserType> choiceBox = new ChoiceBox<>();
+  private Button button;
 
   UserBox( User user, boolean isAdminPage ) {
     super();
 
-    this.user = user;
+    Label label = new Label();
     label.setText( user.getUsername() );
-    label.setMaxWidth(Double.MAX_VALUE);
-    HBox.setHgrow(label, Priority.ALWAYS);
+    label.setMaxWidth( Double.MAX_VALUE );
+    HBox.setHgrow( label, Priority.ALWAYS );
 
+    button = new Button();
     if ( user.isBlocked() ) {
       button = new Button( "Unblock user" );
     } else {
@@ -44,21 +42,25 @@ public class UserBox extends HBox {
           MailHandler.sendMail( user, "block" );
         }
       }
-    });
+    } );
 
     if ( isAdminPage ) {
-      choiceBox.getItems().addAll( UserType.USER, UserType.MODERATOR, UserType.ADMINISTRATOR );
+      ChoiceBox<UserType> choiceBox = new ChoiceBox<>();
+      choiceBox.getItems().addAll(
+              UserType.USER, UserType.MODERATOR, UserType.ADMINISTRATOR );
       choiceBox.setValue( user.getType() );
-      choiceBox.getSelectionModel().selectedItemProperty()
-               .addListener( (ObservableValue<? extends UserType> observable, UserType oldValue, UserType newValue ) -> {
+      choiceBox.getSelectionModel().selectedItemProperty().addListener(
+              ( ObservableValue<? extends UserType> observable,
+                UserType oldValue, UserType newValue ) -> {
                 System.out.println( newValue );
                 user.setType( newValue );
                 AdministrationPanel.changePermissions( user, newValue );
-               } );
+              } );
       this.getChildren().addAll( label, button, choiceBox );
     } else {
       this.getChildren().addAll( label, button );
     }
   }
+
 }
 

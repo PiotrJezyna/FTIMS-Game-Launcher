@@ -1,42 +1,27 @@
 package fgl.admin;
 
-import fgl.communication.MailHandler;
 import fgl.product.Game;
 import fgl.product.GameDAO;
 import fgl.userPanel.User;
 import fgl.userPanel.UserDAO;
-
-import fgl.userPanel.UserType;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ModerationPanel {
 
-  // Data
-  private static final String TITLE = "Moderation Panel";
-  private static final String PATH = "/ModerationPanel.fxml";
   protected static UserDAO userDAO = new UserDAO();
   protected static GameDAO gameDAO = new GameDAO();
+  private static final String TITLE = "Moderation Panel";
+  private static final String PATH = "/ModerationPanel.fxml";
   protected List<User> users;
   protected List<Game> reportedGames;
-
   @FXML
   protected ListView<UserBox> usersListView;
-
   @FXML
   protected ListView<ReportedGameBox> reportedGamesListView;
 
@@ -44,7 +29,7 @@ public class ModerationPanel {
   }
 
   @FXML
-  void initialize(){
+  void initialize() {
     refresh();
   }
 
@@ -128,7 +113,8 @@ public class ModerationPanel {
       list.add( new ReportedGameBox( game ) );
     }
 
-    ObservableList<ReportedGameBox> myObservableList = FXCollections.observableList( list );
+    ObservableList<ReportedGameBox> myObservableList =
+            FXCollections.observableList( list );
     reportedGamesListView.setItems( myObservableList );
 
     return true;

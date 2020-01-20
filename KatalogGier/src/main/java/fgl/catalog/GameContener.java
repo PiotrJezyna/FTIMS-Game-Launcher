@@ -116,8 +116,8 @@ public class GameContener {
             boolean searchPhraseFlag = true;
             boolean tagsFlag = true;
 
-            if (category != 0 && category != 3 && category != 1)
-                categoryFlag = false;
+            //if (category != 0 && category != 3 && category != 1)
+                //categoryFlag = false;
 
             if (!searchPhrase.isEmpty())
                 searchPhraseFlag = (game.getTitle().contains(searchPhrase));
@@ -264,6 +264,13 @@ public class GameContener {
         }
         if (polecane.isHover()) {
             category = 2;
+
+            this.games = gameDao.getAllWithQuery("SELECT Games.ID, Games.UserID, Games.Title, Games.Version, Games.Tags, Games.UserCount, Games.IsReported FROM Games " +
+                    "INNER JOIN Games_Genres ON Games.ID = Games_Genres.GameID " +
+                    "INNER JOIN Genres ON Games_Genres.GenreID = Genres.ID " +
+                    "WHERE Genres.ID IN (SELECT Genres.ID FROM Genres, Games WHERE (Games.ID IN (SELECT GameID FROM Users_Games WHERE (Users_Games.UserID = " + login.getUserSession().getCurrentUser().getId() + "))) AND " +
+                    "(Genres.ID IN (SELECT GenreID FROM Games_Genres WHERE Games_Genres.GameID = Games.ID)))" +
+                    "GROUP BY Games.ID");
         }
         if (historia.isHover()) {
             category = 3;
