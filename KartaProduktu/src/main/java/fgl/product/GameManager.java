@@ -188,10 +188,6 @@ public class GameManager {
             games.add(game);
 
             dao.insert(game);
-
-            Game sentGame = dao.get(title);
-
-            changelogDAO.insert(new Changelog(0L, sentGame.getId() , 0L, "Pierwsza wersj gry",new Date(new java.util.Date().getTime()),game.getTitle()));
         }
         else
         {
@@ -310,17 +306,20 @@ public class GameManager {
         newTitle.setText(gameTitle.getText());
         newTags.setText(gameTags.getText());
 
-        gameTitle.setVisible(false);
+        //gameTitle.setVisible(false);
         gameTags.setVisible(false);
         editButton.setVisible(false);
         removeButton.setVisible(false);
         buttonReviews.setVisible(false);
 
         newTags.setVisible(true);
-        newTitle.setVisible(true);
+        //newTitle.setVisible(true);
         gameDescription.setEditable(true);
         buttonBack.setVisible(true);
         saveButton.setVisible(true);
+
+
+        changelog.setText("");
         changelog.setEditable(true);
     }
 
@@ -347,6 +346,16 @@ public class GameManager {
 
         buttonBack.setVisible(false);
         saveButton.setVisible(false);
+
+        try
+        {
+            setChangelogInfo();
+        }
+        catch (SQLException e)
+        {
+            System.out.println("SQL error while getting all changelogs");
+        }
+
         changelog.setEditable(false);
     }
 
@@ -379,7 +388,11 @@ public class GameManager {
                 currentChangelog.setDescription(changelog.getText());
                 currentChangelog.setVersion(currentChangelog.getVersion() + 1);
 
-                changelogDAO.update(currentChangelog);
+                //changelogDAO.update(currentChangelog);
+
+                changelogDAO.insert(new Changelog(0L, currentGame.getId(), currentChangelog.getVersion(),
+                        currentChangelog.getDescription(), currentChangelog.getDate(), currentGame.getTitle()));
+
                 SetDefaultProductCardDisplaySettings();
             }
         }
@@ -390,6 +403,27 @@ public class GameManager {
         }
 
 
+    }
+
+    private void setChangelogInfo() throws SQLException
+    {
+        List<Changelog> changelogs = changelogDAO.getAll();
+
+        StringBuilder sB = new StringBuilder();
+
+        for(int i = 0; i < changelogs.size(); i++)
+        {
+            if(changelogs.get(i).getGameId() == currentGame.getId())
+            {
+                sB.append("-----------\n");
+                sB.append(changelogs.get(i).getDate().toString());
+                sB.append("\n-----------\n");
+                sB.append(changelogs.get(i).getDescription());
+                sB.append("\n");
+            }
+        }
+
+        changelog.setText(sB.toString());
     }
 
     @FXML
