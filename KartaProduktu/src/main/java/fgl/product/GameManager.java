@@ -276,6 +276,12 @@ public class GameManager {
     }
 
     @FXML
+    private void downloadGameButton()
+    {
+        System.out.println("https://www.youtube.com/watch?v=CPhTkU9nHBs");
+    }
+
+    @FXML
     private void ButtonRemoveProductCard()
     {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
