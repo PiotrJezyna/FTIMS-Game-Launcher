@@ -3,9 +3,11 @@ package fgl.product;
 import fgl.database.AbstractDao;
 
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+//import java.sql.Date;
 
 public class ChangelogDAO extends AbstractDao<Changelog> {
 
@@ -28,7 +30,59 @@ public class ChangelogDAO extends AbstractDao<Changelog> {
         String description = rs.getString("Description");
         Date date = rs.getDate("Date");
 
-        return new Changelog(ID, gameID, version, description, date);
+        return new Changelog(ID, gameID, version, description, date, null);
+    }
+
+    public Changelog get(Game game) throws SQLException {
+
+        connectSQL();
+
+        try {
+
+            String query = "SELECT ID, GameID, Version, Description, Date " +
+                "FROM Changelog WHERE GameID = %s";
+            query = String.format(query, game.getId());
+
+            System.out.println(query);
+
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery( query );
+
+            Long ID;
+            Long gameID;
+            Long version;
+            String description;
+            java.sql.Date date;
+
+            if(rs.next())
+            {
+                ID = rs.getLong("ID");
+                gameID = rs.getLong("GameID");
+                version = rs.getLong("Version");
+                description = rs.getString("Description");
+                date = rs.getDate("Date");
+            }
+            else
+            {
+                ID = 0L;
+                gameID = game.getId();
+                version = 0L;
+                description = "";
+                date = new java.sql.Date(new Date().getTime());
+            }
+
+            return new Changelog(ID, gameID, version, description, date, game.getTitle());
+
+        } catch ( SQLException e ) {
+
+            throw new SQLException(e.getMessage());
+
+        } finally {
+
+            rs.close();
+            stmt.close();
+            disconnectSQL();
+        }
     }
 
     @Override
@@ -52,7 +106,7 @@ public class ChangelogDAO extends AbstractDao<Changelog> {
                 String description = rs.getString("Description");
                 Date date = rs.getDate("Date");
 
-                Changelog changelog = new Changelog(ID, gameID, version, description, date);
+                Changelog changelog = new Changelog(ID, gameID, version, description, date, null);
                 changelogs.add(changelog);
             }
 
@@ -105,8 +159,8 @@ public class ChangelogDAO extends AbstractDao<Changelog> {
                         "SET " +
                         "GameID = %s, " +
                         "Version = '%s', " +
-                        "Description = %s" +
-                        "Date = '%s', " +
+                        "Description = '%s', " +
+                        "Date = '%s' " +
                         "WHERE ID = " + changelog.getID();
 
         query = String.format(query, changelog.getGameId(), changelog.getVersion(), changelog.getDescription(), changelog.getDate());

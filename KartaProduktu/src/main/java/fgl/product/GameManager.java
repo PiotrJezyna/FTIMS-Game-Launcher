@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.sql.Date;
 
 import fgl.userPanel.UserDAO;
 import javafx.scene.layout.AnchorPane;
@@ -23,9 +24,11 @@ public class GameManager {
 
     public GameDAO dao;
     public UserDAO userDAO;
+    public ChangelogDAO changelogDAO;
     public List <Game> games;
 
     private Game currentGame;
+    private Changelog currentChangelog;
 
     @FXML private AnchorPane root;
 
@@ -41,11 +44,14 @@ public class GameManager {
     @FXML private Button buttonReviews;
     @FXML private Button buttonBack;
     @FXML private Button saveButton;
+    @FXML private TextArea changelog;
+    @FXML private Label changelogDate;
 
     public GameManager() throws SQLException {
 
         dao = new GameDAO();
         userDAO = new UserDAO();
+        changelogDAO = new ChangelogDAO();
 
         games = dao.getAll();
     }
@@ -66,6 +72,12 @@ public class GameManager {
     public void ShowProductCard(Game game) throws SQLException {
 
         currentGame = game;
+
+        if(changelogDAO.get(currentGame) != null)
+            currentChangelog = changelogDAO.get(currentGame);
+        else
+            currentChangelog = new Changelog(0L, currentGame.getId(), 0L,
+                    "", new Date(new java.util.Date().getTime()), currentGame.getTitle());
 
         String author = userDAO.get(game.getUserId()).getName();
 
@@ -92,6 +104,12 @@ public class GameManager {
             if(games.get(i).getTitle().equals(title))
             {
                 currentGame = games.get(i);
+
+                if(changelogDAO.get(currentGame) != null)
+                    currentChangelog = changelogDAO.get(currentGame);
+                else
+                    currentChangelog = new Changelog(0L, currentGame.getId(), 0L,
+                            "", new Date(new java.util.Date().getTime()), currentGame.getTitle());
 
                 String author = userDAO.get(games.get(i).getUserId()).getName();
 
@@ -203,11 +221,15 @@ public class GameManager {
         gameDescription.setEditable(true);
         buttonBack.setVisible(true);
         saveButton.setVisible(true);
+        changelog.setEditable(true);
     }
 
     @FXML
     private void SetDefaultProductCardDisplaySettings()
     {
+        changelog.setText(currentChangelog.getDescription());
+        changelogDate.setText(currentChangelog.getDate().toString());
+
         gameTitle.setVisible(true);
         gameTitle.setText(currentGame.getTitle());
 
@@ -225,6 +247,7 @@ public class GameManager {
 
         buttonBack.setVisible(false);
         saveButton.setVisible(false);
+        changelog.setEditable(false);
     }
 
     @FXML
@@ -236,6 +259,12 @@ public class GameManager {
         {
             EditProductCard(currentGame.getTitle(), newTitle.getText(), newTags.getText(),
                     null, null, gameDescription.getText());
+
+            currentChangelog.setDate(new Date(new java.util.Date().getTime()));
+            currentChangelog.setDescription(changelog.getText());
+            currentChangelog.setVersion(currentChangelog.getVersion() + 1);
+
+            changelogDAO.update(currentChangelog);
         }
         catch (SQLException e)
         {
