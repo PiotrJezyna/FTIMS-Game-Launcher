@@ -22,32 +22,36 @@ public final class MailHandler {
   private MailHandler() {
   }
 
-  public static void sendRegistrationMail( User to, String confirmCode ) {
+  public static Session makeSession() {
     Properties props = new Properties();
     props.put( "mail.smtp.host", "smtp.gmail.com" );
     props.put( "mail.smtp.socketFactory.port", "465" );
     props.put( "mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory" );
     props.put( "mail.smtp.auth", "true" );
     props.put( "mail.smtp.port", "465" );
-    Session session = Session.getDefaultInstance( props,
+    return Session.getDefaultInstance( props,
             new javax.mail.Authenticator() {
               protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication( EMAIL, PASSWORD );
               }
             } );
+  }
+
+  public static void sendMailWithCode( User to, String type, String confirmCode ) {
+    Session session = makeSession();
     try {
       Message message = new MimeMessage( session );
       message.setFrom( new InternetAddress( EMAIL ) );
       message.setRecipients( Message.RecipientType.TO,
               InternetAddress.parse( to.getEmail() ) );
 
-      message.setSubject( "Rejestracja" );
-      message.setText(
-              "Witaj " + to.getUsername() + "," +
-              "\n\n Aby dokończyć proces rejestracji prosimy " +
-              "wpisać ten kod potwierdzający: " + confirmCode +
-              FOOTER
-      );
+      if ( type.compareTo( "registration" ) == 0 ) {
+        message.setSubject( "Rejestracja" );
+        message.setText( registrationText( to, confirmCode ) );
+      } else if ( type.compareTo( "reminder" ) == 0 ) {
+        message.setSubject( "Przypomnienie hasła" );
+        message.setText( reminderText( to, confirmCode ) );
+      }
 
       Transport.send( message );
     } catch ( MessagingException e ) {
@@ -56,18 +60,7 @@ public final class MailHandler {
   }
 
   public static void sendMail( User to, String type ) {
-    Properties props = new Properties();
-    props.put( "mail.smtp.host", "smtp.gmail.com" );
-    props.put( "mail.smtp.socketFactory.port", "465" );
-    props.put( "mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory" );
-    props.put( "mail.smtp.auth", "true" );
-    props.put( "mail.smtp.port", "465" );
-    Session session = Session.getDefaultInstance( props,
-            new javax.mail.Authenticator() {
-              protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication( EMAIL, PASSWORD );
-              }
-            } );
+    Session session = makeSession();
     try {
       Message message = new MimeMessage( session );
       message.setFrom( new InternetAddress( EMAIL ) );
@@ -99,6 +92,20 @@ public final class MailHandler {
   public static String unblockText( User to ) {
     return "Witaj " + to.getUsername() + "," +
             "\n\n Your accont on Ftims Game Luncher has been unblocked." +
+            FOOTER;
+  }
+
+  public static String registrationText( User to, String confirmCode ) {
+    return "Witaj " + to.getUsername() + "," +
+            "\n\n Aby dokończyć proces rejestracji prosimy " +
+            "wpisać ten kod potwierdzający: " + confirmCode +
+            FOOTER;
+  }
+
+  public static String reminderText( User to, String reminderCode ) {
+    return "Witaj " + to.getUsername() + "," +
+            "\n\n Aby przypomnieć hasło prosimy " +
+            "wpisać ten kod potwierdzający: " + reminderCode +
             FOOTER;
   }
 
