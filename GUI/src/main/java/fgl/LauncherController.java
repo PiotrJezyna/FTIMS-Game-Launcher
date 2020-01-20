@@ -4,7 +4,6 @@ import fgl.admin.AdminPageController;
 import fgl.userPanel.LoginViewControl;
 import fgl.userPanel.UserProfileViewControl;
 import fgl.userPanel.UserSession;
-import fgl.userPanel.Login;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -22,6 +21,9 @@ public class LauncherController {
     private AnchorPane loadedFxml;
 
     @FXML
+    private AnchorPane menu;
+
+    @FXML
     private AnchorPane paneChanger;
 
     @FXML
@@ -36,10 +38,13 @@ public class LauncherController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource( "/LoginView.fxml" ));
             loadedFxml = loader.load();
             LoginViewControl ctrl = loader.getController();
-            ctrl.init( loginPanel );
+            ctrl.init( loginPanel, menu );
         } catch ( IOException e ) {
             e.printStackTrace();
         }
+
+        double width = loadedFxml.getPrefWidth();
+        loadedFxml.setLayoutX( (loginPanel.getPrefWidth() - width) / 2 );
 
         loginPanel.getChildren().clear();
         loginPanel.getChildren().add( loadedFxml );

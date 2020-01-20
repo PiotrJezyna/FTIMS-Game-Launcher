@@ -17,8 +17,6 @@ import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.DriveScopes;
 import com.google.api.services.drive.model.File;
 
-import fgl.userPanel.User;
-import fgl.product.Game;
 import net.lingala.zip4j.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
 
@@ -130,37 +128,58 @@ public class DriveDao {
         driveService = new Drive.Builder( httpTransport, JSON_FACTORY, credential ).setApplicationName( APPLICATION_NAME ).build();
     }
 
-    public boolean uploadGame( Game game, String path ) throws IOException {
+    public boolean uploadGame( String gameTitle, String gamePath, String screenshotPath ) throws IOException {
 
-        File folder = createFolderOnDisk( game.getTitle(), gamesFolderID );
+        File folder = createFolderOnDisk( gameTitle, gamesFolderID );
 
-        return createFileOnDisk( game.getTitle() + "Zip.zip", "aplication/zip", path, folder.getId() ) != null;
+        if ( createFileOnDisk( gameTitle + "Zip.zip", "aplication/zip", gamePath, folder.getId() ) == null ) {
+            return false;
+        }
+
+        if ( createFileOnDisk( gameTitle + "Screenshot.png", "image/png", screenshotPath, folder.getId() ) == null ) {
+            return false;
+        }
+
+        return true;
     }
 
-    public boolean updateGame( Game game, String path ) throws IOException {
+    public boolean updateGame( String gameTitle, String gamePath, String screenshotPath) throws IOException {
 
-        File folder = findFileOnDisk( game.getTitle() );
-        File file = findFileOnDisk( game.getTitle() + "Zip.zip" );
+        File folder = findFileOnDisk( gameTitle );
+        File file = findFileOnDisk( gameTitle + "Zip.zip" );
+        File screenshot = findFileOnDisk( gameTitle + "Screenshot.png" );
 
         if ( file != null ) {
             driveService.files().delete( file.getId() ).execute();
         }
 
-        return createFileOnDisk( game.getTitle() + "Zip.zip", "aplication/zip", path, folder.getId() ) != null;
+        if ( file != null ) {
+            driveService.files().delete( screenshot.getId() ).execute();
+        }
+
+        if ( createFileOnDisk( gameTitle + "Zip.zip", "aplication/zip", gamePath, folder.getId() ) == null ) {
+            return false;
+        }
+
+        if ( createFileOnDisk( gameTitle + "Screenshot.png", "image/png", screenshotPath, folder.getId() ) == null ) {
+            return false;
+        }
+
+        return true;
     }
 
-    public boolean downloadGame( Game game ) throws IOException {
+    public boolean downloadGame( String gameTitle ) throws IOException {
 
-        File file = findFileOnDisk( game.getTitle() + "Zip.zip" );
+        File file = findFileOnDisk( gameTitle + "Zip.zip" );
 
         ByteArrayOutputStream downloadedData = new ByteArrayOutputStream();
         driveService.files().get( file.getId() ).executeMediaAndDownloadTo( downloadedData );
 
-        try ( FileOutputStream newFile = new FileOutputStream( "Data/Temp/" + game.getTitle() + ".zip" ) ) {
+        try ( FileOutputStream newFile = new FileOutputStream( "Data/Temp/" + gameTitle + ".zip" ) ) {
             downloadedData.writeTo( newFile );
         }
 
-        java.io.File archive = new java.io.File( "Data/Temp/" + game.getTitle() + ".zip" );
+        java.io.File archive = new java.io.File( "Data/Temp/" + gameTitle + ".zip" );
         String destination = "Data/Games/";
 
         try {
@@ -176,36 +195,52 @@ public class DriveDao {
         return true;
     }
 
-    public boolean uploadAvatar( User user, String path ) throws IOException {
+    public boolean uploadAvatar( String username, String path ) throws IOException {
 
         File folder;
-        if ( ( folder = findFileOnDisk( user.getUsername() ) ) == null ) {
-            folder = createFolderOnDisk( user.getUsername(), usersFolderID );
+        if ( ( folder = findFileOnDisk( username ) ) == null ) {
+            folder = createFolderOnDisk( username, usersFolderID );
         } else {
             File file;
-            if ( ( file = findFileOnDisk( user.getUsername() + "Avatar.png" ) ) != null ) {
+            if ( ( file = findFileOnDisk( username + "Avatar.png" ) ) != null ) {
                 driveService.files().delete( file.getId() ).execute();
             }
         }
 
-        return createFileOnDisk( user.getUsername() + "Avatar.png", "image/png", path, folder.getId() ) != null;
+        return createFileOnDisk( username + "Avatar.png", "image/png", path, folder.getId() ) != null;
     }
 
-    public java.io.File downloadAvatar( User user ) throws IOException {
+    public java.io.File downloadAvatar( String username ) throws IOException {
 
         File file;
-        if ( ( file = findFileOnDisk( user.getUsername() + "Avatar.png" ) ) == null ) {
+        if ( ( file = findFileOnDisk( username + "Avatar.png" ) ) == null ) {
             file = findFileOnDisk( "DefaultAvatar.png" );
         }
 
         ByteArrayOutputStream downloadedData = new ByteArrayOutputStream();
         driveService.files().get( file.getId() ).executeMediaAndDownloadTo( downloadedData );
 
-        try ( FileOutputStream newFile = new FileOutputStream( "Data/Avatars/" + user.getUsername() + "Avatar.png" ) ) {
+        try ( FileOutputStream newFile = new FileOutputStream( "Data/Avatars/" + username + "Avatar.png" ) ) {
             downloadedData.writeTo( newFile );
         }
 
-        java.io.File avatar = new java.io.File( "Data/Avatars/" + user.getUsername() + "Avatar.png" );
+        java.io.File avatar = new java.io.File( "Data/Avatars/" + username + "Avatar.png" );
+
+        return avatar;
+    }
+
+    public java.io.File downloadScreenshot( String gameTitle ) throws IOException {
+
+        File file = findFileOnDisk( gameTitle + "Screenshot.png" );
+
+        ByteArrayOutputStream downloadedData = new ByteArrayOutputStream();
+        driveService.files().get( file.getId() ).executeMediaAndDownloadTo( downloadedData );
+
+        try ( FileOutputStream newFile = new FileOutputStream( "Data/Games/" + gameTitle + "Screenshot.png" ) ) {
+            downloadedData.writeTo( newFile );
+        }
+
+        java.io.File avatar = new java.io.File( "Data/Games/" + gameTitle + "/Screenshot.png" );
 
         return avatar;
     }
