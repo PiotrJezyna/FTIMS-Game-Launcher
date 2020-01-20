@@ -14,12 +14,45 @@ public final class MailHandler {
   private static final String EMAIL = "ftims.game.launcher@gmail.com";
   private static final String PASSWORD = "W6j8Vm$nx@";
   private static final String FOOTER =
-          "\n For further informations please " +
-          "contact us via email adress: " + EMAIL +
-          "\n\n Sincerly," +
+          "\n Po więcej informacji prosimy " +
+          "kontaktować się z nami poprzez adres email: " + EMAIL +
+          "\n\n Łączymy wyrazy szacunku," +
           "\n Ftims Game Luncher Team";
 
   private MailHandler() {
+  }
+
+  public static void sendRegistrationMail( User to, String confirmCode ) {
+    Properties props = new Properties();
+    props.put( "mail.smtp.host", "smtp.gmail.com" );
+    props.put( "mail.smtp.socketFactory.port", "465" );
+    props.put( "mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory" );
+    props.put( "mail.smtp.auth", "true" );
+    props.put( "mail.smtp.port", "465" );
+    Session session = Session.getDefaultInstance( props,
+            new javax.mail.Authenticator() {
+              protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication( EMAIL, PASSWORD );
+              }
+            } );
+    try {
+      Message message = new MimeMessage( session );
+      message.setFrom( new InternetAddress( EMAIL ) );
+      message.setRecipients( Message.RecipientType.TO,
+              InternetAddress.parse( to.getEmail() ) );
+
+      message.setSubject( "Rejestracja" );
+      message.setText(
+              "Witaj " + to.getUsername() + "," +
+              "\n\n Aby dokończyć proces rejestracji prosimy " +
+              "wpisać ten kod potwierdzający: " + confirmCode +
+              FOOTER
+      );
+
+      Transport.send( message );
+    } catch ( MessagingException e ) {
+      throw new RuntimeException( e );
+    }
   }
 
   public static void sendMail( User to, String type ) {
@@ -58,13 +91,13 @@ public final class MailHandler {
   }
 
   public static String blockText( User to ) {
-    return "Hello " + to.getUsername() + "," +
+    return "Witaj " + to.getUsername() + "," +
             "\n\n Your accont on Ftims Game Luncher has been blocked." +
             FOOTER;
   }
 
   public static String unblockText( User to ) {
-    return "Hello " + to.getUsername() + "," +
+    return "Witaj " + to.getUsername() + "," +
             "\n\n Your accont on Ftims Game Luncher has been unblocked." +
             FOOTER;
   }
