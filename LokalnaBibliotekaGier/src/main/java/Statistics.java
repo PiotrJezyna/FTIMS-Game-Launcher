@@ -84,24 +84,9 @@ public class Statistics implements LibraryObserver{
     }
 
     public void onGameStart(Long userID, Long gameID) throws ClassNotFoundException {
-
         stopWatch.start();
         Class.forName(JDBC_DRIVER);
-        try (Connection connection = DriverManager.getConnection(DB_URL, USER, PASS);
-             PreparedStatement statement = connection.prepareStatement(
-                     "UPDATE Users_Games SET LastSession = ? WHERE UserID = ? AND GameID = ?")){
 
-            statement.setDate(1, Date.valueOf(LocalDate.now()));
-            statement.setLong(2, userID);
-            statement.setLong(3, gameID);
-
-            System.out.println(statement.toString());
-            statement.executeUpdate();
-        } catch (SQLException se) {
-            se.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         try (Connection connection = DriverManager.getConnection(DB_URL, USER, PASS);
              PreparedStatement statement = connection.prepareStatement(
                      "UPDATE Users_Games SET SessionCount = SessionCount + 1 WHERE UserID = ? AND GameID = ?")){

@@ -1,5 +1,7 @@
 import fgl.product.Game;
 import fgl.product.GameManager;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -44,7 +46,6 @@ public class LocalLibrary {
     private List<Game> localGames;
     private List<Statistics> gameList;
     private boolean isPlaying;
-    private List<GameDownloader> downloaderList;
     private boolean isDownloading;
     private LocalGamesDAO dao;
 
@@ -56,7 +57,6 @@ public class LocalLibrary {
         scrollPane.setContent(localGamesBox);
         dao = new LocalGamesDAO();
         localGames = dao.getAll();
-
         for (Game game: localGames) {
 
             HBox gameBox = new HBox();
@@ -64,6 +64,7 @@ public class LocalLibrary {
             Label label = new Label(game.getTitle());
             Button buttonOpenCard = new Button("Open Card");
             Button buttonLaunch = new Button("Launch");
+            Button buttonShowStats = new Button("Show Statistics");
 
             buttonOpenCard.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
@@ -94,9 +95,54 @@ public class LocalLibrary {
                     }
                 }
             });
+            buttonShowStats.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    Stage window = new Stage();
+                    window.initModality(Modality.APPLICATION_MODAL);
+                    window.setTitle("Statistics");
+                    window.setMinWidth(400);
+
+                    try {
+                        Class.forName(JDBC_DRIVER);
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    String[] statsString = new String[2];
+                    try (Connection connection = DriverManager.getConnection(DB_URL, USER, PASS);
+                         PreparedStatement preparedStatement = connection.prepareStatement(
+                                 "SELECT * FROM Users_Games WHERE UserID = ? AND GameID = ?")) {
+                        preparedStatement.setLong(1, userID);
+                        preparedStatement.setLong(2, game.getId());
+                        final ResultSet resultSet = preparedStatement.executeQuery();
+                        System.out.println(resultSet.next());
+                        while(resultSet.next()){
+                            statsString[0] = "" + resultSet.getDouble(3);
+                            System.out.println(resultSet.getDouble(3));
+                            statsString[1] = String.valueOf(resultSet.getDate(6));
+                        }
+                    }catch (SQLException e){
+                        e.printStackTrace();
+                    }
+
+                    Label playTime = new Label();
+                    playTime.setText("Play Time "+ statsString[0]);
+                    Label lastSession = new Label();
+                    lastSession.setText("Last Session "+ statsString[1]);
+
+                    VBox layout = new VBox(10);
+                    layout.getChildren().addAll(playTime, lastSession);
+                    layout.setAlignment(Pos.CENTER);
+
+                    Scene scene = new Scene(layout);
+                    window.setScene(scene);
+                    window.showAndWait();
+                }
+            });
 
             gameBox.getChildren().add(buttonOpenCard);
             gameBox.getChildren().add(buttonLaunch);
+            gameBox.getChildren().add(buttonShowStats);
             gameBox.getChildren().add(label);
 
             HBox.setMargin(buttonOpenCard, new Insets(0, 10, 0, 10));
@@ -126,7 +172,6 @@ public class LocalLibrary {
             final DirectoryChooser directoryChooser = new DirectoryChooser();
             directoryChooser.setInitialDirectory(dao.getPath());
             File file = directoryChooser.showDialog(window);
-            //dao.changePath(file);
             field.setText(file.getAbsolutePath());
         });
 
@@ -151,7 +196,6 @@ public class LocalLibrary {
     public LocalLibrary() throws ClassNotFoundException {
         this.userID = 1L;
         gameList = new ArrayList<Statistics>();
-        downloaderList = new ArrayList<GameDownloader>();
 
         Class.forName(JDBC_DRIVER);
         try (Connection connection = DriverManager.getConnection(DB_URL, USER, PASS);
@@ -183,30 +227,32 @@ public class LocalLibrary {
             gameList.get(localGames.indexOf(game)).onGameStart(userID, game.getId());
             isPlaying = true;
             String folder, executable, result;
+            List<File> games = dao.findGame();
 
             int i = 0;
-            File tmpFile;
-
-            do {
-                tmpFile = dao.getGamesFiles(i);
-                folder = dao.getGamesFilesPath(i) + "\\" + game.getTitle() + "\\";
-                executable = game.getTitle() + ".exe";                                         //TUTAJ NAMIESZALEM ZE SPRAWDZANIEM
-                result = folder + executable;
+            while (i < games.size())
+            {
+                File temp = games.get(i);
+                if(temp.getAbsolutePath().contains(game.getTitle()))
+                {
+                    Process process = runtime.exec(temp.getAbsolutePath(), null);
+                    process.waitFor();
+                    gameList.get(localGames.indexOf(game)).onGameClosed(userID, game.getId());
+                    isPlaying = false;
+                }
                 i++;
-            } while (!tmpFile.getAbsolutePath().equals(result));
+            }
 
-            Process process = runtime.exec(folder + executable, null, new File(folder));
-            process.waitFor();
-            gameList.get(localGames.indexOf(game)).onGameClosed(userID, game.getId());
-            isPlaying = false;
+            folder = dao.getPath().getAbsolutePath() + "\\" + game.getTitle() + "\\";
+            executable = game.getTitle() + ".exe";
+
+
         } catch (IOException | InterruptedException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
 
     public void installGame(Game game) throws ClassNotFoundException{
-        GameDownloader gameDownloader = new GameDownloader();
-        downloaderList.add(gameDownloader);
         Class.forName(JDBC_DRIVER);
         try (Connection connection = DriverManager.getConnection(DB_URL, USER, PASS);
              PreparedStatement statement = connection.prepareStatement(
@@ -217,11 +263,18 @@ public class LocalLibrary {
             if(!resultSet.next()){
                 Statistics statistics = new Statistics(game.getId());
                 gameList.add(statistics);
+                java.util.Date tempDate = new java.util.Date();
+                Date date = new Date(tempDate.getTime());
                 PreparedStatement preparedStatement = connection.prepareStatement(
-                        "INSERT Users_Games VALUES (?,?,?)");
+                        "INSERT Users_Games VALUES (?,?,?,?,?,?,?,?)");
                 preparedStatement.setLong(1, userID);
                 preparedStatement.setLong(2, game.getId());
                 preparedStatement.setDouble(3, 0);
+                preparedStatement.setInt(4, 0);
+                preparedStatement.setDouble(5, 0);
+                preparedStatement.setDate(6, null);
+                preparedStatement.setDate(7, date);
+                preparedStatement.setDate(8, date);
                 preparedStatement.executeUpdate();
             }
         } catch (Exception se) {
