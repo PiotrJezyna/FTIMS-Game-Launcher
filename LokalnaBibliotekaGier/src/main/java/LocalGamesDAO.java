@@ -1,5 +1,7 @@
 import fgl.database.AbstractDao;
 import fgl.product.Game;
+import fgl.product.Main;
+import javafx.stage.Stage;
 
 import java.io.*;
 import java.sql.SQLException;
@@ -15,6 +17,8 @@ public class LocalGamesDAO extends AbstractDao<Game> {
     private BufferedReader bufferedReader = null;
     private String pathsFile = "\\paths.txt";
     private String[] pathnames;
+    private String[] gamesFilesPath;            //TO NOWE TABLICE
+    private File[] gamesFiles;
 
     public LocalGamesDAO(){
         defaultPath = new File("C:\\FtimsGameLauncher");
@@ -69,6 +73,12 @@ public class LocalGamesDAO extends AbstractDao<Game> {
         return defaultPath;
     }
 
+    public String getGamesFilesPath(int index) { return gamesFilesPath[index]; }
+                                                                                        //TO SA NOWE GETY
+    public File getGamesFiles(int index) {
+        return gamesFiles[index];
+    }
+
     @Override
     protected Game get(Long id) throws SQLException {
         return null;
@@ -101,27 +111,27 @@ public class LocalGamesDAO extends AbstractDao<Game> {
             pathnames = new File(absolutePath[i]).list();
             for (String pathname : pathnames) {
                 File tmpDir = new File(absolutePath[i] + "\\" + pathname + "\\" + pathname + ".exe");
-                if (tmpDir.exists())
-                {
+                int iterator = 0;
+                if (tmpDir.exists()) {
+                    this.gamesFilesPath[i] = absolutePath[i];           //TUTAJ SIE WYWALA
+                    this.gamesFiles[iterator] = tmpDir;                 // I TUTAJ
+
                     connectSQL();
 
                     String query = "SELECT ID, UserID, Tags, UserCount, IsReported  FROM Games WHERE Title = '" + pathname + "'";
 
                     stmt = conn.createStatement();
-                    rs = stmt.executeQuery( query );
-                    if (rs.next())
-                    {
-                        System.out.println(pathname);
-
+                    rs = stmt.executeQuery(query);
+                    if (rs.next()) {
                         Long gameId = rs.getLong("ID");
                         Long userId = rs.getLong("UserID");
                         String tags = rs.getString("Tags");
                         Integer userCount = rs.getInt("UserCount");
                         boolean isReported = rs.getBoolean("IsReported");
-
                         localGames.add(new Game(gameId, userId, pathname, tags, null, null, userCount, isReported));
                     }
                     disconnectSQL();
+                    iterator++;
                 }
             }
         }
