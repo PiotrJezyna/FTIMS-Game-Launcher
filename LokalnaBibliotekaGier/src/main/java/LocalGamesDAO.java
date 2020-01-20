@@ -16,7 +16,7 @@ public class LocalGamesDAO extends AbstractDao<Game> {
     private FileWriter fileWriter = null;
     private BufferedReader bufferedReader = null;
     private String pathsFile = "\\paths.txt";
-    private String[] pathnames;
+    private String[] gameNames = new String[100];
     private String[] gamesFilesPath;
     private File[] gamesFiles;
 
@@ -90,6 +90,30 @@ public class LocalGamesDAO extends AbstractDao<Game> {
     protected List<Game> getAll() throws SQLException {
 
         List<Game> localGames = new ArrayList<>();
+        List<File> games = findGame();
+
+        for(int i = 0; i < games.size(); i++)
+        {
+            connectSQL();
+            String query = "SELECT ID, UserID, Tags, UserCount, IsReported FROM Games WHERE Title = '" + gameNames[i] + "'";
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(query);
+            if (rs.next()) {
+                Long gameId = rs.getLong("ID");
+                Long userId = rs.getLong("UserID");
+                String tags = rs.getString("Tags");
+                Integer userCount = rs.getInt("UserCount");
+                boolean isReported = rs.getBoolean("IsReported");
+                localGames.add(new Game(gameId, userId, gameNames[i], tags, null, null, userCount, isReported));
+            }
+            disconnectSQL();
+        }
+        return localGames;
+    }
+
+    protected List<File> findGame()
+    {
+        List<File> results = new ArrayList<>();
         String[] absolutePath = new String[100];
         int lineAmount = 0;
 
@@ -108,33 +132,18 @@ public class LocalGamesDAO extends AbstractDao<Game> {
 
         for(int i = 0; i < lineAmount; i++)
         {
-            pathnames = new File(absolutePath[i]).list();
+            String[] pathnames = new File(absolutePath[i]).list();
             for (String pathname : pathnames) {
                 File tmpDir = new File(absolutePath[i] + "\\" + pathname + "\\" + pathname + ".exe");
-                int iterator = 0;
-                if (tmpDir.exists()) {
-
-                    this.gamesFilesPath[i] = absolutePath[i];
-                    this.gamesFiles[iterator] = tmpDir;
-                    connectSQL();
-                    String query = "SELECT ID, UserID, Tags, UserCount, IsReported FROM Games WHERE Title = '" + pathname + "'";
-                    stmt = conn.createStatement();
-                    rs = stmt.executeQuery(query);
-                    if (rs.next()) {
-                        Long gameId = rs.getLong("ID");
-                        Long userId = rs.getLong("UserID");
-                        String tags = rs.getString("Tags");
-                        Integer userCount = rs.getInt("UserCount");
-                        boolean isReported = rs.getBoolean("IsReported");
-                        localGames.add(new Game(gameId, userId, pathname, tags, null, null, userCount, isReported));
-                    }
-                    disconnectSQL();
-                    iterator++;
+                if(tmpDir.exists())
+                {
+                    gameNames[i] = pathname;
+                    results.add(tmpDir);
                 }
             }
         }
-        System.out.println(localGames);
-        return localGames;
+
+        return results;
     }
 
     @Override

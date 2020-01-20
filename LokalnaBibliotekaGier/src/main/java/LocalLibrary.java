@@ -46,7 +46,6 @@ public class LocalLibrary {
     private List<Game> localGames;
     private List<Statistics> gameList;
     private boolean isPlaying;
-    private List<GameDownloader> downloaderList;
     private boolean isDownloading;
     private LocalGamesDAO dao;
 
@@ -126,13 +125,13 @@ public class LocalLibrary {
                         e.printStackTrace();
                     }
 
-                    Label recentlyPlayed = new Label();
-                    recentlyPlayed.setText("Recently Played "+ statsString[0]);
+                    Label playTime = new Label();
+                    playTime.setText("Play Time "+ statsString[0]);
                     Label lastSession = new Label();
                     lastSession.setText("Last Session "+ statsString[1]);
 
                     VBox layout = new VBox(10);
-                    layout.getChildren().addAll(recentlyPlayed, lastSession);
+                    layout.getChildren().addAll(playTime, lastSession);
                     layout.setAlignment(Pos.CENTER);
 
                     Scene scene = new Scene(layout);
@@ -197,7 +196,6 @@ public class LocalLibrary {
     public LocalLibrary() throws ClassNotFoundException {
         this.userID = 1L;
         gameList = new ArrayList<Statistics>();
-        downloaderList = new ArrayList<GameDownloader>();
 
         Class.forName(JDBC_DRIVER);
         try (Connection connection = DriverManager.getConnection(DB_URL, USER, PASS);
@@ -229,30 +227,32 @@ public class LocalLibrary {
             gameList.get(localGames.indexOf(game)).onGameStart(userID, game.getId());
             isPlaying = true;
             String folder, executable, result;
+            List<File> games = dao.findGame();
 
             int i = 0;
-            File tmpFile;
-
-            do {
-                tmpFile = dao.getGamesFiles(i);
-                folder = dao.getGamesFilesPath(i) + "\\" + game.getTitle() + "\\";
-                executable = game.getTitle() + ".exe";
-                result = folder + executable;
+            while (i < games.size())
+            {
+                File temp = games.get(i);
+                if(temp.getAbsolutePath().contains(game.getTitle()))
+                {
+                    Process process = runtime.exec(temp.getAbsolutePath(), null);
+                    process.waitFor();
+                    gameList.get(localGames.indexOf(game)).onGameClosed(userID, game.getId());
+                    isPlaying = false;
+                }
                 i++;
-            } while (!tmpFile.getAbsolutePath().equals(result));
+            }
 
-            Process process = runtime.exec(folder + executable, null, new File(folder));
-            process.waitFor();
-            gameList.get(localGames.indexOf(game)).onGameClosed(userID, game.getId());
-            isPlaying = false;
+            folder = dao.getPath().getAbsolutePath() + "\\" + game.getTitle() + "\\";
+            executable = game.getTitle() + ".exe";
+
+
         } catch (IOException | InterruptedException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
 
     public void installGame(Game game) throws ClassNotFoundException{
-        GameDownloader gameDownloader = new GameDownloader();
-        downloaderList.add(gameDownloader);
         Class.forName(JDBC_DRIVER);
         try (Connection connection = DriverManager.getConnection(DB_URL, USER, PASS);
              PreparedStatement statement = connection.prepareStatement(
