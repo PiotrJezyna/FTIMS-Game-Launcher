@@ -23,7 +23,7 @@ public class Registration {
             String confirmationString = generateRandomString();
             User user = new User(name, surname, username, email, password, confirmationString);
             UserSession.getUserSession().setConfirmationCode( confirmationString );
-            MailHandler.sendMailWithCode(user.getUsername(), user.getEmail(), "registration", confirmationString);
+            //MailHandler.sendMailWithCode(user.getUsername(), user.getEmail(), "registration", confirmationString);
             dao.insert(user);
 
             return true;

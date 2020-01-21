@@ -176,7 +176,7 @@ public class LoginViewControl {
                     user.setConfirmationString(randomString);
                     UserSession.getUserSession().setConfirmationCode(randomString);
 
-                    MailHandler.sendMailWithCode( user.getUsername(), user.getEmail(), "reminder", randomString );
+                    //MailHandler.sendMailWithCode( user.getUsername(), user.getEmail(), "reminder", randomString );
                 }
             }
 

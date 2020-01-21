@@ -116,7 +116,7 @@ public class EditUserProfileViewControl {
         user.setSurname(surname);
         user.setUsername(username);
         user.setEmail(email);
-        if (checkForMailAndUsername(username, email)) {
+        if (checkForMailAndUsername(user.getId(), username, email)) {
             dao.update(user);
 
             backToUserProfile(null);
@@ -135,15 +135,15 @@ public class EditUserProfileViewControl {
         root.getChildren().add( pane );
     }
 
-    private boolean checkForMailAndUsername(String uUserName, String uEmail) throws SQLException {
+    private boolean checkForMailAndUsername(Long userID, String uUserName, String uEmail) throws SQLException {
         UserDAO dao = new UserDAO();
         List<User> allUsers = dao.getAll();
         boolean flag = true;
 
         for (int i = 0; i < allUsers.size(); i++) {
-            if (uUserName.equals(allUsers.get(i).getUsername())) {
+            if (!userID.equals(allUsers.get(i).getId()) && uUserName.equals(allUsers.get(i).getUsername())) {
                 flag = false;
-            } else if (uEmail.equals(allUsers.get(i).getEmail())) {
+            } else if (!userID.equals(allUsers.get(i).getId()) && uEmail.equals(allUsers.get(i).getEmail())) {
                 flag = false;
             }
         }
