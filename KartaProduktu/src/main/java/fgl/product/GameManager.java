@@ -22,6 +22,7 @@ import javafx.scene.layout.AnchorPane;
 
 import fgl.kartaocen.ReviewCard;
 import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 public class GameManager {
@@ -256,10 +257,11 @@ public class GameManager {
                 CreateProductCard(Login.userSession.getCurrentUser().getId(),  newGameTitle.getText(), 1, newGameDescription.getText(), newGameTags.getText() );
                 informationWindow("Sukces", "Gra poprawnie dodana do platformy FTIMS Game Launcher");
                 try {
+
                     AnchorPane loadedFxml = FXMLLoader.load( getClass().getResource("/CatalogCard.fxml") );
 
-                    root.getChildren().clear();
-                    root.getChildren().add( loadedFxml );
+                    anchorid.getChildren().clear();
+                    anchorid.getChildren().add( loadedFxml );
 
                 } catch ( IOException e ) {
                     e.printStackTrace();
@@ -275,11 +277,11 @@ public class GameManager {
     @FXML
     private void handleDirectoryButtonActionZip(ActionEvent event)
     {
-        final DirectoryChooser dirChooser = new DirectoryChooser();
+        final FileChooser filChooser = new FileChooser();
 
         Stage stage = (Stage) anchorid.getScene().getWindow();
 
-        File file = dirChooser.showDialog(stage);
+        File file = filChooser.showOpenDialog(stage);
         if(file != null)
         {
             newGamePathZip.setText(file.getAbsolutePath());
@@ -289,11 +291,11 @@ public class GameManager {
     @FXML
     private void handleDirectoryButtonActionScreenshot(ActionEvent event)
     {
-        final DirectoryChooser dirChooser = new DirectoryChooser();
+        final FileChooser filChooser = new FileChooser();
 
         Stage stage = (Stage) anchorid.getScene().getWindow();
 
-        File file = dirChooser.showDialog(stage);
+        File file = filChooser.showOpenDialog(stage);
         if(file != null)
         {
             newGamePathScreenshot.setText(file.getAbsolutePath());
