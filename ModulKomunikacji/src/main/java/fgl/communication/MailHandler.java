@@ -111,10 +111,5 @@ public final class MailHandler {
             FOOTER;
   }
 
-  public static void main(String[] args) {
-    User u = new User( "ble", "216894@edu.p.lodz.pl" );
-    sendMail( u, "block" );
-  }
-
 }
 
