@@ -28,6 +28,7 @@ public class ReviewCard {
 
     private int rating = 10;
     private boolean showReviewEditHistory = false;
+    private boolean showReplyEditHistory = false;
 
     static private ReviewDao reviewDao = new ReviewDao();
     static private CommentDao commentDao = new CommentDao();
@@ -40,14 +41,15 @@ public class ReviewCard {
 
     private ListIterator<Review> currentGameReviewIterator;
     private ListIterator<Comment> currentGamesCurrentCommentIterator;
+    private ListIterator<Comment> currentGamesCurrentReplyIterator;
 
     private Review getCurrentGameReview() {
-        if (currentGameReviewIterator.hasNext()) {
+        if (currentGameReviewIterator.nextIndex() !=
+                currentGameReviews.size() - 1) {
             Review review = currentGameReviewIterator.next();
             currentGameReviewIterator.previous();
             return review;
-        }
-        else {
+        } else {
             Review review = currentGameReviewIterator.previous();
             currentGameReviewIterator.next();
             return review;
@@ -55,14 +57,27 @@ public class ReviewCard {
     }
 
     private Comment getCurrentGamesCurrentComment() {
-        if (currentGamesCurrentCommentIterator.hasNext()) {
+        if (currentGamesCurrentCommentIterator.nextIndex() !=
+                userCommentsPerReview.get(getCurrentGameReview()).size()) {
             Comment comment = currentGamesCurrentCommentIterator.next();
             currentGamesCurrentCommentIterator.previous();
             return comment;
-        }
-        else {
+        } else {
             Comment comment = currentGamesCurrentCommentIterator.previous();
             currentGamesCurrentCommentIterator.next();
+            return comment;
+        }
+    }
+
+    private Comment getCurrentGamesCurrentReply() {
+        if (currentGamesCurrentReplyIterator.nextIndex() !=
+                authorRepliesPerReview.get(getCurrentGameReview()).size()) {
+            Comment comment = currentGamesCurrentReplyIterator.next();
+            currentGamesCurrentReplyIterator.previous();
+            return comment;
+        } else {
+            Comment comment = currentGamesCurrentReplyIterator.previous();
+            currentGamesCurrentReplyIterator.next();
             return comment;
         }
     }
@@ -124,38 +139,70 @@ public class ReviewCard {
         // .................................................................. //
         // Set comment's content
         textAreaReview.setText(getCurrentGamesCurrentComment().getContent());
+        textAreaReply.setText(getCurrentGamesCurrentReply().getContent());
 
         // .................................................................. //
         // Disable comment's content if showing edit history
         textAreaReview.setEditable(!showReviewEditHistory);
+        textAreaReply.setEditable(!showReplyEditHistory);
 
         // .................................................................. //
         // Set comment's submission date
         labelReviewDate.setText(
                 getCurrentGamesCurrentComment().getSubmissionDate().toString());
+        labelReplyDate.setText(
+                getCurrentGamesCurrentReply().getSubmissionDate().toString());
+
+        // .................................................................. //
+        // Set edit history buttons' content
+        buttonShowReviewEditHistory.setText((showReviewEditHistory ?
+                "Hide" : "Show") + " edit history");
+        buttonShowReplyEditHistory.setText((showReplyEditHistory ?
+                "Hide" : "Show") + " edit history");
+
+        buttonReviewPreviousEdit.setVisible(showReviewEditHistory);
+        buttonReviewNextEdit.setVisible(showReviewEditHistory);
+        buttonReplyPreviousEdit.setVisible(showReplyEditHistory);
+        buttonReplyNextEdit.setVisible(showReplyEditHistory);
+
+        buttonReviewPreviousEdit.setDisable(
+                !currentGamesCurrentCommentIterator.hasPrevious());
+        buttonReviewNextEdit.setDisable(
+                currentGamesCurrentCommentIterator.nextIndex() ==
+                        userCommentsPerReview.get(getCurrentGameReview()).size() - 1);
+        buttonReplyPreviousEdit.setDisable(
+                !currentGamesCurrentReplyIterator.hasPrevious());
+        buttonReplyNextEdit.setDisable(
+                currentGamesCurrentReplyIterator.nextIndex() ==
+                        authorRepliesPerReview.get(getCurrentGameReview()).size() - 1);
+
+        // .................................................................. //
+        // Set submission button's visibility
+        buttonSubmitReview.setVisible(!showReviewEditHistory);
+
 
         // .................................................................. //
         // If user has more than one comment
-        if (editNumber() == 0) {
-            buttonShowEditHistory.setVisible(false);
-            hboxNavigation.getChildren().get(0).setVisible(false);
-            hboxNavigation.getChildren().get(1).setVisible(false);
-            labelReviewDate.setVisible(false);
-        } else if (editNumber() == 1) {
-            buttonShowEditHistory.setVisible(false);
-            hboxNavigation.getChildren().get(0).setVisible(false);
-            hboxNavigation.getChildren().get(1).setVisible(false);
-            labelReviewDate.setVisible(true);
-            labelReviewDate.setText(
-                    userCommentsPerReview.get(getCurrentUserReview()).get(0).getSubmissionDate().toString());
-            textAreaReview.setText(
-                    userCommentsPerReview.get(getCurrentUserReview()).get(0).getContent());
-        } else {
-            buttonShowEditHistory.setVisible(true);
-            hboxNavigation.getChildren().get(0).setVisible(true);
-            hboxNavigation.getChildren().get(1).setVisible(true);
-        }
-        writtenComment();
+//        if (editNumber() == 0) {
+//            buttonShowReviewEditHistory.setVisible(false);
+//            hboxNavigation.getChildren().get(0).setVisible(false);
+//            hboxNavigation.getChildren().get(1).setVisible(false);
+//            labelReviewDate.setVisible(false);
+//        } else if (editNumber() == 1) {
+//            buttonShowReviewEditHistory.setVisible(false);
+//            hboxNavigation.getChildren().get(0).setVisible(false);
+//            hboxNavigation.getChildren().get(1).setVisible(false);
+//            labelReviewDate.setVisible(true);
+//            labelReviewDate.setText(
+//                    userCommentsPerReview.get(getCurrentUserReview()).get(0).getSubmissionDate().toString());
+//            textAreaReview.setText(
+//                    userCommentsPerReview.get(getCurrentUserReview()).get(0).getContent());
+//        } else {
+//            buttonShowReviewEditHistory.setVisible(true);
+//            hboxNavigation.getChildren().get(0).setVisible(true);
+//            hboxNavigation.getChildren().get(1).setVisible(true);
+//        }
+//        writtenComment();
     }
 
     public void setGame(Long id) {
@@ -242,7 +289,11 @@ public class ReviewCard {
         currentGamesCurrentCommentIterator = userCommentsPerReview.get(
                 getCurrentGameReview()).listIterator(
                 userCommentsPerReview.get(
-                        getCurrentGameReview()).size());
+                        getCurrentGameReview()).size() - 1);
+        currentGamesCurrentReplyIterator = authorRepliesPerReview.get(
+                getCurrentGameReview()).listIterator(
+                authorRepliesPerReview.get(
+                        getCurrentGameReview()).size() - 1);
 
         //--------------------------------------------------
         // Set label
@@ -279,16 +330,16 @@ public class ReviewCard {
                 }
 
                 if (userCommentsPerReview.get(getCurrentUserReview()).size() > 1) {
-                    buttonShowEditHistory.setVisible(true);
+                    buttonShowReviewEditHistory.setVisible(true);
                 } else {
-                    buttonShowEditHistory.setVisible(false);
+                    buttonShowReviewEditHistory.setVisible(false);
                     hboxNavigation.getChildren().get(0).setVisible(false);
                     hboxNavigation.getChildren().get(1).setVisible(false);
                 }
 
             } else {
                 labelReviewDate.setText("");
-                buttonShowEditHistory.setVisible(false);
+                buttonShowReviewEditHistory.setVisible(false);
                 hboxNavigation.getChildren().get(0).setVisible(false);
                 hboxNavigation.getChildren().get(1).setVisible(false);
 //                authorsReplyConstraints.setPrefHeight(0.0);
@@ -486,10 +537,14 @@ public class ReviewCard {
     // TODO: Definitely refactor this!
     private void setRating(int r) {
         rating = r;
+
+        updateUserInterface();
     }
 
     private void unhover() {
         hover(rating);
+
+        updateUserInterface();
     }
 
     private void hover(int stars) {
@@ -502,53 +557,88 @@ public class ReviewCard {
         }
     }
 
-
     @FXML
-    private void showEditHistory() {
+    private void showReviewEditHistory() {
         showReviewEditHistory = !showReviewEditHistory;
-        if (showReviewEditHistory) {
-            currentGamesCurrentCommentIterator = userCommentsPerReview.get(getCurrentUserReview()).listIterator(
-                    userCommentsPerReview.get(getCurrentUserReview()).size()
-            );
-
-            buttonShowEditHistory.setText("Hide edit history");
-            hboxNavigation.getChildren().get(0).setVisible(true);
-            hboxNavigation.getChildren().get(1).setVisible(true);
-//            textAreaReview.setEditable(false);
-            buttonAddReview.setVisible(false);
-        } else {
-            buttonShowEditHistory.setText("Show edit history");
-            hboxNavigation.getChildren().get(0).setVisible(false);
-            hboxNavigation.getChildren().get(1).setVisible(false);
-//            textAreaReview.setEditable(true);
-            buttonAddReview.setVisible(true);
-        }
+//        if (showReviewEditHistory) {
+//            currentGamesCurrentCommentIterator = userCommentsPerReview.get(getCurrentUserReview()).listIterator(
+//                    userCommentsPerReview.get(getCurrentUserReview()).size()
+//            );
+//
+//            buttonShowReviewEditHistory.setText("Hide edit history");
+//            hboxNavigation.getChildren().get(0).setVisible(true);
+//            hboxNavigation.getChildren().get(1).setVisible(true);
+////            textAreaReview.setEditable(false);
+//            buttonSubmitReview.setVisible(false);
+//        } else {
+//            buttonShowReviewEditHistory.setText("Show edit history");
+//            hboxNavigation.getChildren().get(0).setVisible(false);
+//            hboxNavigation.getChildren().get(1).setVisible(false);
+////            textAreaReview.setEditable(true);
+//            buttonSubmitReview.setVisible(true);
+//        }
+        updateUserInterface();
     }
 
     @FXML
-    private void previousEdit() {
+    private void showReplyEditHistory() {
+        showReplyEditHistory = !showReplyEditHistory;
+//        if (showReviewEditHistory) {
+//            currentGamesCurrentCommentIterator = userCommentsPerReview.get(getCurrentUserReview()).listIterator(
+//                    userCommentsPerReview.get(getCurrentUserReview()).size()
+//            );
+//
+//            buttonShowReviewEditHistory.setText("Hide edit history");
+//            hboxNavigation.getChildren().get(0).setVisible(true);
+//            hboxNavigation.getChildren().get(1).setVisible(true);
+////            textAreaReview.setEditable(false);
+//            buttonSubmitReview.setVisible(false);
+//        } else {
+//            buttonShowReviewEditHistory.setText("Show edit history");
+//            hboxNavigation.getChildren().get(0).setVisible(false);
+//            hboxNavigation.getChildren().get(1).setVisible(false);
+////            textAreaReview.setEditable(true);
+//            buttonSubmitReview.setVisible(true);
+//        }
+        updateUserInterface();
+    }
+
+    @FXML
+    private void reviewPreviousEdit() {
         if (currentGamesCurrentCommentIterator.hasPrevious()) {
-            buttonPrevious.setDisable(false);
-            Comment newComment = currentGamesCurrentCommentIterator.previous();
-            textAreaReview.setText(newComment.getContent());
-        } else {
-            buttonPrevious.setDisable(true);
-            buttonNext.setDisable(false);
+            currentGamesCurrentCommentIterator.previous();
         }
-        String breakpoint = "aa";
+
+        updateUserInterface();
     }
 
     @FXML
-    private void nextEdit() {
-        if (currentGamesCurrentCommentIterator.hasNext()) {
-            buttonNext.setDisable(false);
-            Comment newComment = currentGamesCurrentCommentIterator.next();
-            textAreaReview.setText(newComment.getContent());
-        } else {
-            buttonNext.setDisable(true);
-            buttonPrevious.setDisable(false);
+    private void reviewNextEdit() {
+        if (currentGamesCurrentCommentIterator.nextIndex() !=
+                userCommentsPerReview.get(getCurrentGameReview()).size() - 1) {
+            currentGamesCurrentCommentIterator.next();
         }
-        String breakpoint = "aa";
+
+        updateUserInterface();
+    }
+
+    @FXML
+    private void replyPreviousEdit() {
+        if (currentGamesCurrentReplyIterator.hasPrevious()) {
+            currentGamesCurrentReplyIterator.previous();
+        }
+
+        updateUserInterface();
+    }
+
+    @FXML
+    private void replyNextEdit() {
+        if (currentGamesCurrentReplyIterator.nextIndex() !=
+                authorRepliesPerReview.get(getCurrentGameReview()).size() - 1) {
+            currentGamesCurrentReplyIterator.next();
+        }
+
+        updateUserInterface();
     }
 
 
@@ -707,8 +797,10 @@ public class ReviewCard {
     @FXML private Label labelGameTitle;
     @FXML private Label labelReviewUsername;
     @FXML private Label labelReviewDate;
+    @FXML private Label labelReplyDate;
 
     @FXML private TextArea textAreaReview;
+    @FXML private TextArea textAreaReply;
 
     @FXML private Button buttonRating1;
     @FXML private Button buttonRating2;
@@ -722,8 +814,16 @@ public class ReviewCard {
     @FXML private Button buttonRating10;
     private List<Button> ratingButtons;
 
+    @FXML private Button buttonShowReviewEditHistory;
+    @FXML private Button buttonReviewPreviousEdit;
+    @FXML private Button buttonReviewNextEdit;
+
+    @FXML private Button buttonShowReplyEditHistory;
+    @FXML private Button buttonReplyPreviousEdit;
+    @FXML private Button buttonReplyNextEdit;
+
     @FXML
-    private Button buttonAddReview;
+    private Button buttonSubmitReview;
     @FXML
     private Button buttonAddReply;
     @FXML
@@ -735,17 +835,9 @@ public class ReviewCard {
     @FXML
     private Label labelReview;
     @FXML
-    private TextArea textAreaReply;
-    @FXML
     private TextArea textAreaID;
     @FXML
     private VBox boxReviews;
-    @FXML
-    private Button buttonShowEditHistory;
-    @FXML
-    private Button buttonPrevious;
-    @FXML
-    private Button buttonNext;
     @FXML
     private HBox hboxNavigation;
     @FXML

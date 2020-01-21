@@ -50,8 +50,8 @@
          <children>
             <HBox fx:id="hboxNavigation" alignment="CENTER_RIGHT" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                <children>
-                  <Button fx:id="buttonPrevious" minWidth="75.0" mnemonicParsing="false" onAction="#previousEdit" text="Previous" />
-                  <Button fx:id="buttonNext" minWidth="75.0" mnemonicParsing="false" onAction="#nextEdit" text="Next" />
+                  <Button fx:id="buttonReviewPreviousEdit" minWidth="75.0" mnemonicParsing="false" onAction="#reviewPreviousEdit" text="Previous" />
+                  <Button fx:id="buttonReviewNextEdit" minWidth="75.0" mnemonicParsing="false" onAction="#reviewNextEdit" text="Next" />
                </children>
             </HBox>
             <Label fx:id="labelReviewUsername" text="/ Your review" textAlignment="RIGHT" wrapText="true" GridPane.halignment="CENTER" GridPane.rowSpan="3" GridPane.valignment="CENTER">
@@ -75,7 +75,7 @@
                </children>
             </HBox>
             <TextArea fx:id="textAreaReview" onKeyReleased="#writtenComment" promptText="You can write your comments here! (optional)" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-            <Button fx:id="buttonAddReview" minWidth="75.0" mnemonicParsing="false" onAction="#addReview" text="Submit" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+            <Button fx:id="buttonSubmitReview" minWidth="75.0" mnemonicParsing="false" onAction="#addReview" text="Submit" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font></Button>
@@ -89,7 +89,7 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding></Label>
             <Separator orientation="VERTICAL" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowSpan="3" GridPane.valignment="CENTER" />
-            <Button fx:id="buttonShowEditHistory" minWidth="75.0" mnemonicParsing="false" onAction="#showEditHistory" text="Show edit history" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+            <Button fx:id="buttonShowReviewEditHistory" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#showReviewEditHistory" prefWidth="110.0" text="Show edit history" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
          </children>
       </GridPane>
       <VBox fx:id="boxReviews" prefHeight="153.0" prefWidth="536.0" spacing="10.0" visible="false" GridPane.rowIndex="6">
@@ -122,8 +122,8 @@
          <children>
             <HBox alignment="CENTER_RIGHT" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                <children>
-                  <Button minWidth="75.0" mnemonicParsing="false" text="Previous" />
-                  <Button minWidth="75.0" mnemonicParsing="false" text="Next" />
+                  <Button fx:id="buttonReplyPreviousEdit" minWidth="75.0" mnemonicParsing="false" onAction="#replyPreviousEdit" text="Previous" />
+                  <Button fx:id="buttonReplyNextEdit" minWidth="75.0" mnemonicParsing="false" onAction="#replyNextEdit" text="Next" />
                </children>
             </HBox>
             <Label text="\\ Author's reply" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowSpan="2" GridPane.valignment="CENTER">
@@ -131,11 +131,11 @@
                   <Font name="System Bold" size="18.0" />
                </font>
             </Label>
-            <TextArea fx:id="textAreaReview1" promptText="Game's author hasn't replied to the comment above yet!" wrapText="true" GridPane.columnIndex="3" />
+            <TextArea fx:id="textAreaReply" promptText="Game's author hasn't replied to the comment above yet!" wrapText="true" GridPane.columnIndex="3" />
             <ProgressBar fx:id="progressBar1" progress="0.0" visible="false" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
             <ProgressIndicator fx:id="progressBarIndicator1" maxHeight="20.0" maxWidth="20.0" visible="false" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-            <Button minWidth="75.0" mnemonicParsing="false" text="Show edit history" GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-            <Label fx:id="labelDate1" contentDisplay="CENTER" opacity="0.5" text="Date" textAlignment="RIGHT" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.valignment="BOTTOM">
+            <Button fx:id="buttonShowReplyEditHistory" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#showReplyEditHistory" prefWidth="110.0" text="Show edit history" GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+            <Label fx:id="labelReplyDate" contentDisplay="CENTER" opacity="0.5" text="Date" textAlignment="RIGHT" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.valignment="BOTTOM">
                <font>
                   <Font name="System Italic" size="12.0" />
                </font>
