@@ -18,12 +18,12 @@
       </Label>
       <TextField fx:id="newGameTitle" layoutX="127.0" layoutY="100.0" />
       <TextField fx:id="newGameTags" layoutX="127.0" layoutY="142.0" />
-      <Label layoutX="16.0" layoutY="433.0" prefHeight="26.0" prefWidth="186.0" text="Scieżka do  pliku .zip " wrapText="true" />
+      <Label layoutX="16.0" layoutY="433.0" prefHeight="26.0" prefWidth="186.0" text="Ścieżka do  pliku" wrapText="true" />
       <TextField fx:id="newGamePathZip" layoutX="16.0" layoutY="467.0" prefHeight="26.0" prefWidth="351.0" />
       <Label layoutX="27.0" layoutY="189.0" prefHeight="34.0" prefWidth="82.0" text="Opis" wrapText="true" />
       <TextArea fx:id="newGameDescription" layoutX="126.0" layoutY="189.0" prefHeight="200.0" prefWidth="200.0" />
       <Button layoutX="126.0" layoutY="583.0" mnemonicParsing="false" prefHeight="26.0" onAction="#SendNewGameButton" prefWidth="71.0" text="Wyślij" />
-      <Label layoutX="19.0" layoutY="502.0" prefHeight="34.0" prefWidth="215.0" text="Scieżka do zrzutu ekranu .png" wrapText="true" />
+      <Label layoutX="19.0" layoutY="502.0" prefHeight="34.0" prefWidth="215.0" text="Ścieżka do zrzutu ekranu" wrapText="true" />
       <TextField fx:id="newGamePathScreenshot" layoutX="16.0" layoutY="537.0" prefHeight="26.0" prefWidth="351.0" />
       <Button layoutX="389.0" layoutY="467.0" mnemonicParsing="false" prefHeight="26.0" onAction="#handleDirectoryButtonActionZip" prefWidth="114.0" text="Przeglądaj" />
       <Button layoutX="382.0" layoutY="537.0" mnemonicParsing="false" prefHeight="26.0" onAction="#handleDirectoryButtonActionScreenshot" prefWidth="114.0" text="Przeglądaj" />

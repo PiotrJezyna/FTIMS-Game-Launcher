@@ -254,8 +254,11 @@ public class GameManager {
                 informationWindow("Błędne dane", "Podaj ścieżkę do pliku .png z zrzutem ekranu");
             }
             else{
+                // -----------------------------------------
+                // tutaj zmienne newGamePathZip i newGamePathScreenshot są już wybrane, można pobierać ich wartość
+                // -----------------------------------------
                 CreateProductCard(Login.userSession.getCurrentUser().getId(),  newGameTitle.getText(), 1, newGameDescription.getText(), newGameTags.getText() );
-                informationWindow("Sukces", "Gra poprawnie dodana do platformy FTIMS Game Launcher");
+                informationWindow("Sukces", "Gra została poprawnie dodana do platformy FTIMS Game Launcher");
                 try {
 
                     AnchorPane loadedFxml = FXMLLoader.load( getClass().getResource("/CatalogCard.fxml") );
