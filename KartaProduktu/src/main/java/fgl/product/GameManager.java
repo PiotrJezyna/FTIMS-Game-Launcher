@@ -498,9 +498,14 @@ public class GameManager {
     }
 
     @FXML
-    private void downloadGameButton()
-    {
-        System.out.println("https://www.youtube.com/watch?v=CPhTkU9nHBs");
+    private void downloadGameButton() throws IOException {
+
+        DriveDao driveDao = new DriveDao();
+        driveDao.downloadGame(currentGame.getTitle());
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/LibraryCard.fxml"));
+        root.getChildren().clear();
+        root.getChildren().add(loader.load());
     }
 
     @FXML

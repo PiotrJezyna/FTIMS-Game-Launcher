@@ -180,7 +180,7 @@ public class DriveDao {
         }
 
         java.io.File archive = new java.io.File( "Data/Temp/" + gameTitle + ".zip" );
-        String destination = "Data/Games/";
+        String destination = "C:/FtimsGameLauncher/";
 
         try {
             ZipFile zipFile = new ZipFile( archive );
