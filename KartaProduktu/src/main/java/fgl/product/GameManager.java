@@ -13,6 +13,7 @@ import javafx.scene.control.*;
 import java.awt.image.DirectColorModel;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.AccessDeniedException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -79,6 +80,10 @@ public class GameManager {
         changelogDAO = new ChangelogDAO();
 
         games = dao.getAll();
+    }
+
+    public void initialize() {
+
     }
 
     public Game GetProductCard(String title)

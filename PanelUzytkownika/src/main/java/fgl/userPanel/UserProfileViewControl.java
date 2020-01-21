@@ -26,9 +26,6 @@ public class UserProfileViewControl {
     public TextField surnameField;
 
     @FXML
-    public TextField usernameField;
-
-    @FXML
     public TextField emailField;
 
     @FXML
@@ -38,7 +35,6 @@ public class UserProfileViewControl {
     protected void initialize() {
         nameField.setText(getLoggedInUserName());
         surnameField.setText(getLoggedInUserSurname());
-        usernameField.setText(getLoggedInUserUsername());
         emailField.setText(getLoggedInUserEmail());
     }
 
