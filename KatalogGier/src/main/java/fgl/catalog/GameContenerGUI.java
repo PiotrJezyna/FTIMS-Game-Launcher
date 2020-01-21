@@ -6,6 +6,7 @@
     import fgl.product.*;
     import fgl.userPanel.Login;
 
+    import fgl.userPanel.UserSession;
     import javafx.event.ActionEvent;
     import javafx.event.EventHandler;
     import javafx.fxml.FXML;
@@ -70,13 +71,13 @@ public class GameContenerGUI {
         }
         catch (Exception e) {}
 
-        gc.setUserID(login.getUserSession().getCurrentUser().getId());
+        gc.setUserID(UserSession.getUserSession().getCurrentUser().getId());
         gc.setCategory(0);
         try {
             displayGames();
         } catch (Exception e) {}
 
-        System.out.println(login.getUserSession().getCurrentUser().getId());
+        System.out.println(UserSession.getUserSession().getCurrentUser().getId());
 
         //gc.updateDisplayedGames();
     }

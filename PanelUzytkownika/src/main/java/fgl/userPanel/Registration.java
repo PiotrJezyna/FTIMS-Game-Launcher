@@ -1,5 +1,7 @@
 package fgl.userPanel;
 
+import fgl.communication.MailHandler;
+
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.List;
@@ -18,10 +20,10 @@ public class Registration {
         UserDAO dao = new UserDAO();
 
         if (checkForMailAndUsername(username, email)){
-            String confirmationString = generateRandomString(); //Tego Stringa nalezaloby wyslac na maila uzytkownika i on go sobie skopiuje i wklei zeby weryfikowac konto
+            String confirmationString = generateRandomString();
             User user = new User(name, surname, username, email, password, confirmationString);
-            UserSession.getUserSession().setCurrentUser( user );
-            System.out.println(user.getConfirmationString());
+            UserSession.getUserSession().setConfirmationCode( confirmationString );
+            MailHandler.sendMailWithCode(user.getUsername(), user.getEmail(), "registration", confirmationString);
             dao.insert(user);
 
             return true;

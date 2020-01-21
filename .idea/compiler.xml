@@ -6,8 +6,18 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="PanelUzytkownika" />
+        <module name="GUI" />
+        <module name="KartaOcenGier" />
         <module name="UserProfile — kopia" />
+        <module name="PanelAdministratora" />
+        <module name="KatalogGier" />
+        <module name="DatabaseDAO" />
+        <module name="ModulKomunikacji" />
+        <module name="KartaProduktu" />
+        <module name="DriveDAO" />
         <module name="UserProfile" />
+        <module name="LokalnaBibliotekaGier" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="8" />

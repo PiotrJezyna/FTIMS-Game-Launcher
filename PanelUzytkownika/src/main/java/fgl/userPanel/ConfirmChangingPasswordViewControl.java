@@ -20,18 +20,20 @@ public class ConfirmChangingPasswordViewControl {
 
     private AnchorPane root;
     private AnchorPane menu;
+    private User user;
 
     @FXML
     private TextField confirmationTextField;
 
-    public void init( AnchorPane root, AnchorPane menu ) {
+    public void init( AnchorPane root, AnchorPane menu, User user ) {
         this.root = root;
         this.menu = menu;
+        this.user = user;
     }
 
     public void checkConfirmationString(ActionEvent actionEvent) throws IOException, SQLException {
 
-        String userConfirmationNumber = UserSession.getUserSession().getCurrentUser().getConfirmationString();
+        String userConfirmationNumber = UserSession.getUserSession().getConfirmationCode();
 
         String inputString = confirmationTextField.getText();
 
@@ -41,7 +43,7 @@ public class ConfirmChangingPasswordViewControl {
             FXMLLoader loader = new FXMLLoader(getClass().getResource( "/ChangePasswordView.fxml" ));
             AnchorPane pane = loader.load();
             ChangePasswordViewControl ctrl = loader.getController();
-            ctrl.init( root, menu );
+            ctrl.init( root, menu, user );
 
             double width = pane.getPrefWidth();
             pane.setLayoutX( (root.getPrefWidth() - width) / 2 );

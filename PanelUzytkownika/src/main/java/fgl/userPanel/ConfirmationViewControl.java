@@ -21,6 +21,7 @@ import java.util.Random;
 public class ConfirmationViewControl {
 
     private AnchorPane root;
+    private AnchorPane avatarSpace;
 
     @FXML
     public TextField confirmationTextField;
@@ -28,13 +29,14 @@ public class ConfirmationViewControl {
     @FXML
     public TextField usernameTextField;
 
-    public void init(AnchorPane root) {
+    public void init(AnchorPane root, AnchorPane avatarSpace) {
         this.root = root;
+        this.avatarSpace = avatarSpace;
     }
 
     public void checkConfirmationString(ActionEvent actionEvent) throws IOException, SQLException {
 
-        String userConfirmationNumber = UserSession.getUserSession().getCurrentUser().getConfirmationString();
+        String userConfirmationNumber = UserSession.getUserSession().getConfirmationCode();
 
         String inputString = confirmationTextField.getText();
         System.out.println(inputString);
@@ -42,15 +44,16 @@ public class ConfirmationViewControl {
         if (userConfirmationNumber.equals(inputString)) {
             informationWindow("Information", "Your account is confirmed");
 
-            //*************************************
-            //TODO change
-            Parent root = FXMLLoader.load(getClass().getResource("/LoginView.fxml"));
-            Scene scene = new Scene(root);
-            scene.setFill(Color.TRANSPARENT);
-            Stage window = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
-            window.setScene(scene);
-            //window.initStyle(StageStyle.TRANSPARENT);
-            window.show();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource( "/LoginView.fxml" ));
+            AnchorPane pane = loader.load();
+            LoginViewControl ctrl = loader.getController();
+            ctrl.init( root, avatarSpace );
+
+            double width = pane.getPrefWidth();
+            pane.setLayoutX( (root.getPrefWidth() - width) / 2 );
+
+            root.getChildren().clear();
+            root.getChildren().add( pane );
         } else {
             informationWindow("Information", "Wrong confirmation code");
         }

@@ -1,5 +1,6 @@
 package fgl.userPanel;
 
+import fgl.communication.MailHandler;
 import fgl.drive.DriveDao;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -160,8 +161,6 @@ public class LoginViewControl {
         return hexString.toString();
     }
 
-    ///////////////////////////         IMPORTANT       ////////////////////////////////////
-    ///////////////////////////randomString musi zostac wyslany emailem!!!!!
     public void goToConfirmCodeFromEmail(ActionEvent actionEvent) throws IOException, SQLException {
         UserDAO dao = new UserDAO();
         List<User> allUsers = dao.getAll();
@@ -169,21 +168,22 @@ public class LoginViewControl {
         System.out.println(randomString);
 
         uUsername = username.getText();
+        User user = null;
         if (!uUsername.equals("")) {
             for (int i = 0; i < allUsers.size(); i++) {
                 if (uUsername.equals(allUsers.get(i).getUsername())) {
-                    User user = allUsers.get(i);
+                    user = allUsers.get(i);
                     user.setConfirmationString(randomString);
+                    UserSession.getUserSession().setConfirmationCode(randomString);
 
-                    //***************************************
-                    //TODO think about it
-                    UserSession.getUserSession().setCurrentUser(user);
+                    MailHandler.sendMailWithCode( user.getUsername(), user.getEmail(), "reminder", randomString );
                 }
             }
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource( "/ConfirmChangingPasswordView.fxml" ));
             AnchorPane pane = loader.load();
             ConfirmChangingPasswordViewControl ctrl = loader.getController();
-            ctrl.init( root, avatarSpace );
+            ctrl.init( root, avatarSpace, user );
 
             double width = pane.getPrefWidth();
             pane.setLayoutX( (root.getPrefWidth() - width) / 2 );

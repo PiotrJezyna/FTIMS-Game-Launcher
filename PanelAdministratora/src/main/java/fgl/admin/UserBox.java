@@ -35,11 +35,11 @@ public class UserBox extends HBox {
         if ( user.isBlocked() ) {
           ModerationPanel.unblockUser( user );
           button.setText( "Block user" );
-          MailHandler.sendMail( user, "unblock" );
+          MailHandler.sendMail( user.getUsername(), user.getEmail(), "unblock" );
         } else {
           ModerationPanel.blockUser( user );
           button.setText( "Unblock user" );
-          MailHandler.sendMail( user, "block" );
+          MailHandler.sendMail( user.getUsername(), user.getEmail(), "block" );
         }
       }
     } );

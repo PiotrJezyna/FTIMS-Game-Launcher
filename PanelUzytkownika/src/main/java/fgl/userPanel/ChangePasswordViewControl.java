@@ -18,6 +18,7 @@ public class ChangePasswordViewControl {
 
     private AnchorPane root;
     private AnchorPane avatarSpace;
+    private User user;
 
     @FXML
     private PasswordField passwordField;
@@ -25,9 +26,10 @@ public class ChangePasswordViewControl {
     @FXML
     private PasswordField repeatPasswordField;
 
-    public void init( AnchorPane root, AnchorPane avatarSpace ) {
+    public void init( AnchorPane root, AnchorPane avatarSpace, User user ) {
         this.root = root;
         this.avatarSpace = avatarSpace;
+        this.user = user;
     }
 
     public void changePasswordAction(ActionEvent actionEvent) throws SQLException, IOException, NoSuchAlgorithmException {
@@ -35,7 +37,6 @@ public class ChangePasswordViewControl {
         String repeatPassword = repeatPasswordField.getText();
         UserDAO dao = new UserDAO();
 
-        User user = UserSession.getUserSession().getCurrentUser();
         if (!password.equals("") && !repeatPassword.equals("") && password.equals(repeatPassword)) {
 
             user.setPassword(encryptPassword(password));

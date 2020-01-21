@@ -1,5 +1,6 @@
 package fgl.userPanel;
 
+import fgl.communication.MailHandler;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
@@ -70,15 +71,16 @@ public class RegisterViewControl {
             if (registration.createUser(uUserName, uName, uSurname, uEmail, uPassword)) {
                 informationWindow("Successfully registered", "Please confirm your account");
 
-                //************************************************
-                //TODO change
-                Parent root = FXMLLoader.load(getClass().getResource("/ConfirmationView.fxml"));
-                Scene scene = new Scene(root);
-                scene.setFill(Color.TRANSPARENT);
-                Stage window = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
-                window.setScene(scene);
-                //window.initStyle(StageStyle.TRANSPARENT);
-                window.show();
+                FXMLLoader loader = new FXMLLoader(getClass().getResource( "/ConfirmationView.fxml" ));
+                AnchorPane pane = loader.load();
+                ConfirmationViewControl ctrl = loader.getController();
+                ctrl.init( root, avatarSpace );
+
+                double width = pane.getPrefWidth();
+                pane.setLayoutX( (root.getPrefWidth() - width) / 2 );
+
+                root.getChildren().clear();
+                root.getChildren().add( pane );
             } else
                 warningWindow("Warning", "User with this email/username already exists" );
             }
