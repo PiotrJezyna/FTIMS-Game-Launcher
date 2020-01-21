@@ -14,6 +14,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("/CatalogCard.fxml"));
+        //Parent root = FXMLLoader.load(getClass().getResource("/UserCard.fxml"));
         primaryStage.setTitle("Karta ocen gier");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();

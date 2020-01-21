@@ -1,8 +1,7 @@
-/// TO DO
-// displayChangelogs() - gameDao and labels with game name
 
     package fgl.catalog;
 
+    import fgl.drive.DriveDao;
     import fgl.product.*;
     import fgl.userPanel.Login;
 
@@ -15,11 +14,14 @@
     import javafx.scene.control.Label;
     import javafx.scene.control.ScrollPane;
     import javafx.scene.control.TextField;
+    import javafx.scene.image.Image;
+    import javafx.scene.image.ImageView;
     import javafx.scene.layout.AnchorPane;
     import javafx.scene.layout.HBox;
     import javafx.scene.layout.VBox;
 
-    import javax.swing.text.html.ImageView;
+    //import java.awt.*;
+    import java.io.File;
     import java.io.IOException;
     import java.sql.SQLException;
     import java.util.ArrayList;
@@ -42,16 +44,14 @@ public class GameContenerGUI {
     public Button prevPage;
     public Button nextPage;
 
-    GameContener gc = new GameContener();
+    private GameContener gc = new GameContener();
 
     @FXML
     private AnchorPane root;
-
     @FXML
     private ScrollPane scrollPane;
     @FXML
     private VBox gamesBox;
-
     @FXML
     private TextField phraseField;
     @FXML
@@ -76,7 +76,6 @@ public class GameContenerGUI {
             displayGames();
         } catch (Exception e) {}
 
-        System.out.println(login.getUserSession().getCurrentUser().getId());
 
         //gc.updateDisplayedGames();
     }
@@ -93,7 +92,7 @@ public class GameContenerGUI {
         pageCount = (int)Math.ceil((double) gc.getRecordCount() / recordPerPage);
 
         int start = pageNumber * recordPerPage;
-        int length = ((displayedChangelogs.size() - start) < 5) ? (displayedChangelogs.size() - start) : 5;
+        int length = ((displayedChangelogs.size() - start) < recordPerPage) ? (displayedChangelogs.size() - start) : recordPerPage;
 
         for (int i = start; i < start + length; ++i) {
         //for (Changelog changelog : displayedChangelogs) {
@@ -140,21 +139,54 @@ public class GameContenerGUI {
         }
     };
 
+    private ArrayList<File> downloadScreenshots (List<Game> games) throws Exception {
+        DriveDao driveDao = new DriveDao();
+
+        ArrayList<File> files = new ArrayList<>();
+        ArrayList<Thread> threads = new ArrayList<>();
+
+        for (int i = 0; i < 1; i++) {
+            final int var = i;
+            Runnable runnable = () -> {
+                try {
+                    files.add( var, driveDao.downloadScreenshot(games.get(var).getTitle()));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            };
+            Thread t = new Thread(runnable);
+            threads.add(t);
+            t.start();
+        }
+
+        for (int i = 0; i < threads.size(); i++) {
+            if (threads.get(i).isAlive()) {
+                threads.get(i).join();
+            }
+        }
+
+        return files;
+    }
+
     public void displayGames() throws Exception {
         gamesBox.getChildren().clear();
 
         List<Game> displayedGames = gc.getDisplayedGames();
-        System.out.println(displayedGames.size());
+        //ArrayList<File> files = downloadScreenshots(displayedGames);
+
         pageCount = (int)Math.ceil((double) gc.getRecordCount() / recordPerPage);
 
         int start = pageNumber * recordPerPage;
-        int length = ((displayedGames.size() - start) < 5) ? (displayedGames.size() - start) : 5;
+        int length = ((displayedGames.size() - start) < recordPerPage) ? (displayedGames.size() - start) : recordPerPage;
+
 
 
         for (int i = start; i < start + length; ++i) {
             Game game = displayedGames.get(i);
-            //Image image = new Image( files.get(i).toURI().toString(), 120, 120, true, false );
             HBox gameBox = new HBox();
+
+            //Image image = new Image( files.get(0).toURI().toString(), 120, 120, true, false );
+            //ImageView imageView = new ImageView(image);
 
             Label label = new Label(game.getTitle());
             Button button = new Button("Open Card");
@@ -179,12 +211,13 @@ public class GameContenerGUI {
                 }
             });
 
-            ImageView imageView;
+            //gameBox.getChildren().add(imageView);
             gameBox.getChildren().add(button);
             gameBox.getChildren().add(label);
 
             HBox.setMargin(button, new Insets(0, 10, 0, 10));
             HBox.setMargin(label, new Insets(0, 10, 0, 10));
+            //HBox.setMargin(imageView, new Insets(0, 10, 0, 10));
             VBox.setMargin(gameBox, new Insets(10, 0, 5, 0));
 
             gamesBox.getChildren().add(gameBox);
@@ -218,14 +251,12 @@ public class GameContenerGUI {
                 pageNumber--;
                 dirtyFlag = true;
             }
-            System.out.println("page nr: " + pageNumber);
         }
         if (nextPage.isHover()) {
             if (pageNumber < pageCount - 1) {
                 pageNumber++;
                 dirtyFlag = true;
             }
-            System.out.println("page nr: " + pageNumber);
         }
 
         if (!dirtyFlag)
@@ -270,8 +301,6 @@ public class GameContenerGUI {
 
         pageCount = (int)Math.ceil((double) gc.getRecordCount() / recordPerPage);
 
-
-        System.out.println("page count: " + pageCount);
     }
 
 }
