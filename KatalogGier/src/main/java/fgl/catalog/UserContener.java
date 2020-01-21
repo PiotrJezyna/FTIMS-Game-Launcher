@@ -6,66 +6,55 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static fgl.userPanel.UserType.ADMINISTRATOR;
-
 public class UserContener  implements Cloneable {
-    private static String searchPhrase = new String();
-    private static  UserDAO allUsers = new UserDAO();
-    private static List<User> displayedUsers= new ArrayList<User>();
+    private String searchPhrase = new String();
+    private UserDAO userDao = new UserDAO();
 
-    public void updateDisplayedUsers() throws SQLException {
-        List<User> users = allUsers.getAll();
+    private List<User> displayedUsers = new ArrayList<User>();
 
-        for (User user: users) {
+    public List<User> getDisplayedUsers() throws SQLException {
+        updateDisplayedUsers();
+        return displayedUsers;
+    }
 
-
-            boolean searchnameFlag =false;
-            boolean searchUsernameFlag =false;
-            boolean searchSurnameFlag =false;
-            boolean searchEmailFlag =false;
-
-            if (!searchPhrase.isEmpty())
-            {
-                searchnameFlag = (user.getName() != null) && (user.getName().equals(searchPhrase));
-                searchUsernameFlag = (user.getUsername() != null) && (user.getUsername().equals(searchPhrase));
-                searchSurnameFlag = (user.getSurname() != null) && (user.getSurname().equals(searchPhrase));
-                searchEmailFlag = (user.getEmail() != null) && (user.getEmail().equals(searchPhrase));
-            }
-
-
-
-
-            if ( searchUsernameFlag||searchnameFlag ||searchSurnameFlag||searchEmailFlag )
-                displayedUsers.add(user);
-
-        }
+    public int getRecordCount() {
+        return displayedUsers.size();
     }
 
     public void setSearchPhrase(String searchPhrase) {
         this.searchPhrase = searchPhrase;
     }
-    public List<User> getDisplayedUsers()
-    {
 
-        return displayedUsers;
+    public void main(String[] args ) {
+
     }
 
-    @Override
-    protected Object clone() throws CloneNotSupportedException {
-        return super.clone();
-    }
+    public void updateDisplayedUsers() throws SQLException {
+        List<User> users = userDao.getAll();
+        displayedUsers.clear();
 
-    public static void main(String[] args ) throws SQLException, CloneNotSupportedException {
+        for (User user: users) {
+            boolean searchNameFlag = false;
+            boolean searchUsernameFlag = false;
+            boolean searchSurnameFlag = false;
+            boolean searchEmailFlag = false;
+            boolean emptySearch = false;
 
-        UserContener k1= new UserContener();
-        k1.setSearchPhrase(new String("Piotr"));
+            if (!searchPhrase.isEmpty())
+            {
+                searchNameFlag = (user.getName() != null)           && (user.getName().equals(searchPhrase));
+                searchUsernameFlag = (user.getUsername() != null)   && (user.getUsername().equals(searchPhrase));
+                searchSurnameFlag = (user.getSurname() != null)     && (user.getSurname().equals(searchPhrase));
+                searchEmailFlag = (user.getEmail() != null)         && (user.getEmail().equals(searchPhrase));
+            }
+            else
+                emptySearch = true;
 
+            if ( searchUsernameFlag || searchNameFlag || searchSurnameFlag || searchEmailFlag || emptySearch )
+                displayedUsers.add(user);
 
-        k1.updateDisplayedUsers();
-
-        for (User user: displayedUsers) {
-            System.out.println(user.getName()+user.getSurname());
         }
-
     }
+
+
 }

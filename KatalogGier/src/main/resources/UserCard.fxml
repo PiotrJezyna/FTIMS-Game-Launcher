@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane fx:id="root" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="fgl.catalog.UserContenerGUI">
+  <children>
+    <VBox id="gamesBox" fx:id="usersBox" layoutX="25.0" layoutY="75.0" />
+    <ScrollPane fx:id="scrollPane" layoutX="25.0" layoutY="64.0" prefHeight="299.0" prefWidth="550.0">
+      <content>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
+      </content>
+    </ScrollPane>
+    <TextField fx:id="phraseField" layoutX="74.0" layoutY="36.0" />
+    <Button layoutX="489.0" layoutY="30.0" mnemonicParsing="false" onAction="#buttonOnAction" text="Szukaj" />
+    <Label layoutX="26.0" layoutY="38.0" text="Name:" />
+    <Button fx:id="nextPage" layoutX="155.0" layoutY="369.0" mnemonicParsing="false" onAction="#handlePageButton" prefWidth="120.0" text="Następna strona" />
+    <Button fx:id="prevPage" layoutX="27.0" layoutY="368.0" mnemonicParsing="false" onAction="#handlePageButton" prefHeight="22.0" prefWidth="120.0" text="Poprzednia strona" textAlignment="CENTER" wrapText="true" />
+  </children>
+</AnchorPane>

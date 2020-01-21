@@ -78,8 +78,10 @@ public final class MailHandler {
                 "\n\n This is a JavaMail test...!" );
       }
       Transport.send( message );
+      System.out.println( message );
     } catch ( MessagingException e ) {
-      throw new RuntimeException( e );
+      e.printStackTrace();
+//      throw new RuntimeException( e );
     }
   }
 

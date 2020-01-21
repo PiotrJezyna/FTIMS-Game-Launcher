@@ -13,9 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ModerationPanel {
-
   protected static UserDAO userDAO = new UserDAO();
   protected static GameDAO gameDAO = new GameDAO();
+  protected static GameReportDAO reportDAO = new GameReportDAO();
   private static final String TITLE = "Moderation Panel";
   private static final String PATH = "/ModerationPanel.fxml";
   protected List<User> users;
@@ -39,14 +39,6 @@ public class ModerationPanel {
 
   public String getPath() {
     return PATH;
-  }
-
-  protected UserDAO getUserDAO() {
-    return userDAO;
-  }
-
-  protected GameDAO getGameDAO() {
-    return gameDAO;
   }
 
   public void refresh() {
@@ -107,23 +99,36 @@ public class ModerationPanel {
       return false;
     }
 
+    makeReportedGamesListView();
+
+    return true;
+  }
+
+  private void makeReportedGamesListView() {
     List<ReportedGameBox> list = new ArrayList<>();
+    reportedGamesListView.setItems( null );
 
     for ( Game game : reportedGames ) {
-      list.add( new ReportedGameBox( game ) );
+      list.add( new ReportedGameBox( game, this ) );
     }
 
     ObservableList<ReportedGameBox> myObservableList =
             FXCollections.observableList( list );
     reportedGamesListView.setItems( myObservableList );
-
-    return true;
   }
 
-  public static boolean discardReport( Game game ) {
+  public boolean discardReport( Game game, List<GameReport> reports ) {
     try {
       game.setReported( false );
       gameDAO.update( game );
+
+      for ( GameReport gr : reports ) {
+        gr.setStatus( true );
+        reportDAO.update( gr );
+      }
+
+      reportedGames.remove( game );
+      makeReportedGamesListView();
     } catch ( SQLException e ) {
       e.printStackTrace();
       return false;
@@ -131,9 +136,19 @@ public class ModerationPanel {
     return true;
   }
 
-  public static boolean deleteGame( Game game ) {
+  public boolean deleteGame( Game game, List<GameReport> reports ) {
     try {
-      gameDAO.delete( game );
+      //TODO games 'deleting'
+      game.setDeleted( true );
+      gameDAO.update( game );
+
+      for ( GameReport gr : reports ) {
+        gr.setStatus( true );
+        reportDAO.update( gr );
+      }
+
+      reportedGames.remove( game );
+      makeReportedGamesListView();
     } catch ( SQLException e ) {
       e.printStackTrace();
       return false;
