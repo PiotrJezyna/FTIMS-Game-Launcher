@@ -1,5 +1,6 @@
 package fgl.product;
 
+import fgl.drive.DriveDao;
 import fgl.userPanel.Login;
 import fgl.userPanel.UserSession;
 import fgl.userPanel.UserType;
@@ -271,6 +272,13 @@ public class GameManager {
                 // -----------------------------------------
                 // tutaj zmienne newGamePathZip i newGamePathScreenshot są już wybrane, można pobierać ich wartość
                 // -----------------------------------------
+                DriveDao driveDao = new DriveDao();
+                try {
+                    driveDao.uploadGame(newGameTitle.getText(), newGamePathZip.getText(), newGamePathScreenshot.getText());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
                 CreateProductCard(UserSession.getUserSession().getCurrentUser().getId(),  newGameTitle.getText(), 1, newGameDescription.getText(), newGameTags.getText() );
                 informationWindow("Sukces", "Gra została poprawnie dodana do platformy FTIMS Game Launcher");
                 try {

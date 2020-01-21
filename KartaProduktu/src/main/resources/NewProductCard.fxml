@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="anchorid" prefHeight="695.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fgl.product.GameManager">
+<AnchorPane fx:id="anchorid" prefHeight="695.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fgl.product.GameManager">
    <children>
       <Label layoutX="27.0" layoutY="104.0" prefHeight="18.0" prefWidth="81.0" text="Nazwa gry" />
       <Label layoutX="27.0" layoutY="146.0" prefHeight="18.0" prefWidth="82.0" text="Tagi" />

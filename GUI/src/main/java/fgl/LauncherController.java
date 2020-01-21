@@ -119,6 +119,7 @@ public class LauncherController {
             paneChanger.getChildren().add( loadedFxml );
         }
     }
+
     public void newProductCardButton() {
         if ( userSession.getCurrentUser() == null ) {
             showAlert("Information", "You have to login first!");
@@ -132,8 +133,8 @@ public class LauncherController {
             paneChanger.getChildren().clear();
             paneChanger.getChildren().add( loadedFxml );
         }
-
     }
+
     private void showAlert( String title, String content ) {
         Alert alert = new Alert( Alert.AlertType.WARNING );
         alert.setTitle( title );

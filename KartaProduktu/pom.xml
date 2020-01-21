@@ -22,12 +22,21 @@
             <version>0.0.1</version>
             <scope>compile</scope>
         </dependency>
+
+        <dependency>
+            <groupId>edu.ftims</groupId>
+            <artifactId>DriveDAO</artifactId>
+            <version>0.0.1</version>
+            <scope>compile</scope>
+        </dependency>
+
         <dependency>
             <groupId>edu.ftims</groupId>
             <artifactId>PanelUzytkownika</artifactId>
             <version>0.0.1</version>
             <scope>compile</scope>
         </dependency>
+
         <dependency>
             <groupId>edu.ftims</groupId>
             <artifactId>KartaOcenGier</artifactId>

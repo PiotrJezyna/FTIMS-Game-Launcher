@@ -173,8 +173,8 @@ public class GameDAO extends AbstractDao<Game> {
 
         connectSQL();
 
-        String query = "INSERT INTO Games(UserID, Title, Tags) VALUES (%s, '%s', '%s', '%s')";
-        query = String.format(query, game.getUserId(), game.getTitle(), game.getTags());
+        String query = "INSERT INTO Games(UserID, Title, Version, Description, Tags) VALUES (%s, '%s', '%s', '%s', '%s')";
+        query = String.format( query, game.getUserId(), game.getTitle(), game.getVersion(), game.getDescription(), game.getTags() );
 
         System.out.println( query );
 
