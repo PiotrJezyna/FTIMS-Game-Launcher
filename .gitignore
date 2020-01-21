@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Compiled class file
 *.class
 
@@ -25,8 +24,7 @@ hs_err_pid*
 *.iml
 .idea/
 target/
-=======
+
 # Project exclude paths
 /target/
->>>>>>> Initial commit
 Data/
