@@ -1,29 +1,7 @@
 package fgl.catalog;
 
 import fgl.product.*;
-import fgl.userPanel.Login;
-import fgl.drive.*;
-
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-
-import javax.swing.text.html.ImageView;
-import java.awt.*;
-import java.io.File;
-import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class GameContener {
@@ -36,7 +14,6 @@ public class GameContener {
 
     private List<String> tags = new ArrayList<String>();
     private int category = 0;   // 0 - no category (display all)
-    private int typeOfSort; // 0 - no sort
     private String searchPhrase = new String();
     private Long userID;
 
@@ -77,9 +54,6 @@ public class GameContener {
         this.category = category;
     }
 
-    public void setTypeOfSort(int typeOfSort) {
-        this.typeOfSort = typeOfSort;
-    }
     public void setSearchPhrase(String searchPhrase) {
         this.searchPhrase = searchPhrase;
     }
@@ -107,7 +81,7 @@ public class GameContener {
         }
     }
 
-    public void updateDisplayedChangelogs() throws Exception {
+    private void updateDisplayedChangelogs() throws Exception {
         //displayedChangelogs.clear();
         downloadDataFromDatabase();
 

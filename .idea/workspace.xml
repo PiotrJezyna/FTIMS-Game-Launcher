@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="b891ae40-424e-44b5-9a57-debfed82da84" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/KartaOcenGier/src/main/java/fgl/kartaocen/ReviewCard.java" beforeDir="false" afterPath="$PROJECT_DIR$/KartaOcenGier/src/main/java/fgl/kartaocen/ReviewCard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/KartaOcenGier/src/main/resources/RatingsCard.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/KartaOcenGier/src/main/resources/RatingsCard.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/KartaProduktu/src/main/java/fgl/product/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/KartaProduktu/src/main/java/fgl/product/Game.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/KartaProduktu/src/main/java/fgl/product/GameManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/KartaProduktu/src/main/java/fgl/product/GameManager.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FavoritesManager">
+    <favorites_list name="gamelauncher" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="hiddenUrls">
+      <set>
+        <option value="https://github.com/PiotrJezyna/FTIMS-Game-Launcher.git/" />
+      </set>
+    </option>
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="importAutomatically" value="true" />
+      </MavenImportingSettings>
+    </option>
+  </component>
+  <component name="ProjectId" id="1Uc0Hh9d40JKwYiJ9mXIbmBF1EQ" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/io-checkstyle-settings.xml" />
+    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.0" />
+    <property name="settings.editor.selected.configurable" value="preferences.sourceCode.Java" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\github\PiotrJezyna\FTIMS-Game-Launcher\KartaOcenGier\src\main\resources" />
+      <recent name="E:\github\PiotrJezyna\FTIMS-Game-Launcher\KartaOcenGier\src\main\java" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.ReviewCard">
+    <configuration name="Launcher" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="fgl.Launcher" />
+      <module name="GUI" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="fgl.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Main (1)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="fgl.product.Main" />
+      <module name="KartaProduktu" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="fgl.product.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="fgl.catalog.Main" />
+      <module name="KatalogGier" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="fgl.catalog.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ReviewCard" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="fgl.kartaocen.Main" />
+      <module name="KartaOcenGier" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="fgl.kartaocen.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Application.Launcher" />
+      <item itemvalue="Application.ReviewCard" />
+      <item itemvalue="Application.Main" />
+      <item itemvalue="Application.Main (1)" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.ReviewCard" />
+        <item itemvalue="Application.Launcher" />
+        <item itemvalue="Application.Main (1)" />
+        <item itemvalue="Application.Main" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
+    </option>
+  </component>
+  <component name="StructureViewFactory">
+    <option name="AUTOSCROLL_MODE" value="false" />
+    <option name="ACTIVE_ACTIONS" value=",SHOW_FIELDS,ALPHA_COMPARATOR" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="b891ae40-424e-44b5-9a57-debfed82da84" name="Default Changelist" comment="" />
+      <created>1575640490112</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1575640490112</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="414" y="194" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1579451013077">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="414" y="194" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1080@0.0.1920.1080" timestamp="1579451013077" />
+    <state x="702" y="334" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1575642359246">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="702" y="334" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1080@0.0.1920.1080" timestamp="1575642359246" />
+    <state x="765" y="225" key="#com.intellij.ide.util.MemberChooser" timestamp="1579537128533">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="765" y="225" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1080@0.0.1920.1080" timestamp="1579537128533" />
+    <state x="687" y="188" key="#com.intellij.ide.util.frameworkSupport.AddFrameworkSupportDialog" timestamp="1575642088476">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="687" y="188" key="#com.intellij.ide.util.frameworkSupport.AddFrameworkSupportDialog/0.0.1920.1080@0.0.1920.1080" timestamp="1575642088476" />
+    <state x="640" y="268" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1579444869774">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="640" y="268" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.0.1920.1080@0.0.1920.1080" timestamp="1579444869774" />
+    <state x="478" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1579455622798">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="478" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1920.1080@0.0.1920.1080" timestamp="1579455622798" />
+    <state width="453" height="646" key="DebuggerActiveHint" timestamp="1579546166896">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state width="453" height="646" key="DebuggerActiveHint/0.0.1920.1080@0.0.1920.1080" timestamp="1579546166896" />
+    <state x="740" y="251" key="FileChooserDialogImpl" timestamp="1579530217035">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="740" y="251" key="FileChooserDialogImpl/0.0.1920.1080@0.0.1920.1080" timestamp="1579530217035" />
+    <state width="1898" height="514" key="GridCell.Tab.0.bottom" timestamp="1579573712395">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1898" height="514" key="GridCell.Tab.0.bottom/0.0.1920.1080@0.0.1920.1080" timestamp="1579573712395" />
+    <state width="1898" height="514" key="GridCell.Tab.0.center" timestamp="1579573712395">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1898" height="514" key="GridCell.Tab.0.center/0.0.1920.1080@0.0.1920.1080" timestamp="1579573712395" />
+    <state width="1898" height="514" key="GridCell.Tab.0.left" timestamp="1579573712395">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1898" height="514" key="GridCell.Tab.0.left/0.0.1920.1080@0.0.1920.1080" timestamp="1579573712395" />
+    <state width="1898" height="514" key="GridCell.Tab.0.right" timestamp="1579573712395">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1898" height="514" key="GridCell.Tab.0.right/0.0.1920.1080@0.0.1920.1080" timestamp="1579573712395" />
+    <state width="1898" height="370" key="GridCell.Tab.1.bottom" timestamp="1579572258356">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1898" height="370" key="GridCell.Tab.1.bottom/0.0.1920.1080@0.0.1920.1080" timestamp="1579572258356" />
+    <state width="1898" height="370" key="GridCell.Tab.1.center" timestamp="1579572258356">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1898" height="370" key="GridCell.Tab.1.center/0.0.1920.1080@0.0.1920.1080" timestamp="1579572258356" />
+    <state width="1898" height="370" key="GridCell.Tab.1.left" timestamp="1579572258356">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1898" height="370" key="GridCell.Tab.1.left/0.0.1920.1080@0.0.1920.1080" timestamp="1579572258356" />
+    <state width="1898" height="370" key="GridCell.Tab.1.right" timestamp="1579572258356">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1898" height="370" key="GridCell.Tab.1.right/0.0.1920.1080@0.0.1920.1080" timestamp="1579572258356" />
+    <state x="107" y="71" width="1699" height="738" key="SettingsEditor" timestamp="1579565399732">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="107" y="71" width="1699" height="738" key="SettingsEditor/0.0.1920.1080@0.0.1920.1080" timestamp="1579565399732" />
+    <state x="667" y="366" key="com.intellij.ide.util.TipDialog" timestamp="1575640496495">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="667" y="366" key="com.intellij.ide.util.TipDialog/0.0.1920.1080@0.0.1920.1080" timestamp="1575640496495" />
+    <state x="316" y="119" key="new project wizard" timestamp="1575642191130">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="316" y="119" key="new project wizard/0.0.1920.1080@0.0.1920.1080" timestamp="1575642191130" />
+    <state x="624" y="201" width="672" height="676" key="search.everywhere.popup" timestamp="1579464554394">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="624" y="201" width="672" height="676" key="search.everywhere.popup/0.0.1920.1080@0.0.1920.1080" timestamp="1579464554394" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/KartaOcenGier/src/main/java/fgl/kartaocen/ReviewCard.java</url>
+          <line>455</line>
+          <option name="timeStamp" value="17" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>

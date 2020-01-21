@@ -1,6 +1,5 @@
 package fgl.catalog;
 
-import fgl.userPanel.LoginAndRegister;
 import fgl.userPanel.UserSession;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -22,7 +21,13 @@ public class Main extends Application {
 
 
     public static void main(String[] args) {
+        Login login = new Login();
+        try {
+            login.validate("js", "js");
+        }
+        catch (Exception e) {}
 
+        System.out.println(UserSession.getUserSession().getCurrentUser().getName());
         launch(args);
     }
 }

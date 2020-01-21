@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/DatabaseDAO/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/DriveDAO/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/DriveDAO/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/GUI/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/GUI/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/KartaOcenGier/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/KartaOcenGier/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/KartaProduktu/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/KartaProduktu/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/KatalogGier/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/KatalogGier/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/LokalnaBibliotekaGier/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/LokalnaBibliotekaGier/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ModulKomunikacji/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ModulKomunikacji/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/PanelAdministratora/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/PanelAdministratora/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/PanelUzytkownika/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/PanelUzytkownika/src/main/resources" charset="UTF-8" />
+  </component>
+</project>

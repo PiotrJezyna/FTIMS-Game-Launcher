@@ -16,20 +16,11 @@
     <name>${project.artifactId}-${project.version}</name>
 
     <dependencies>
-
-        <dependency>
-            <groupId>edu.ftims</groupId>
-            <artifactId>PanelUzytkownika</artifactId>
-            <version>0.0.1</version>
-            <scope>compile</scope>
-        </dependency>
         <dependency>
             <groupId>javax.mail</groupId>
             <artifactId>mail</artifactId>
             <version>1.4.7</version>
         </dependency>
-
-
     </dependencies>
 
     <build>

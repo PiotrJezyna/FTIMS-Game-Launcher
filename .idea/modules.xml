@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/DatabaseDAO/DatabaseDAO.iml" filepath="$PROJECT_DIR$/DatabaseDAO/DatabaseDAO.iml" />
+      <module fileurl="file://$PROJECT_DIR$/DriveDAO/DriveDAO.iml" filepath="$PROJECT_DIR$/DriveDAO/DriveDAO.iml" />
+      <module fileurl="file://$PROJECT_DIR$/GUI/GUI.iml" filepath="$PROJECT_DIR$/GUI/GUI.iml" />
+      <module fileurl="file://$PROJECT_DIR$/KartaOcenGier/KartaOcenGier.iml" filepath="$PROJECT_DIR$/KartaOcenGier/KartaOcenGier.iml" />
+      <module fileurl="file://$PROJECT_DIR$/KartaProduktu/KartaProduktu.iml" filepath="$PROJECT_DIR$/KartaProduktu/KartaProduktu.iml" />
+      <module fileurl="file://$PROJECT_DIR$/KatalogGier/KatalogGier.iml" filepath="$PROJECT_DIR$/KatalogGier/KatalogGier.iml" />
+      <module fileurl="file://$PROJECT_DIR$/LokalnaBibliotekaGier/LokalnaBibliotekaGier.iml" filepath="$PROJECT_DIR$/LokalnaBibliotekaGier/LokalnaBibliotekaGier.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ModulKomunikacji/ModulKomunikacji.iml" filepath="$PROJECT_DIR$/ModulKomunikacji/ModulKomunikacji.iml" />
+      <module fileurl="file://$PROJECT_DIR$/PanelAdministratora/PanelAdministratora.iml" filepath="$PROJECT_DIR$/PanelAdministratora/PanelAdministratora.iml" />
+      <module fileurl="file://$PROJECT_DIR$/PanelUzytkownika/PanelUzytkownika.iml" filepath="$PROJECT_DIR$/PanelUzytkownika/PanelUzytkownika.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gamelauncher.iml" filepath="$PROJECT_DIR$/gamelauncher.iml" />
+    </modules>
+  </component>
+</project>
