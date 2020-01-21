@@ -1,6 +1,5 @@
 package fgl.communication;
 
-import fgl.userPanel.User;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
@@ -37,13 +36,13 @@ public final class MailHandler {
             } );
   }
 
-  public static void sendMailWithCode( User to, String type, String confirmCode ) {
+  public static void sendMailWithCode( String to, String email, String type, String confirmCode ) {
     Session session = makeSession();
     try {
       Message message = new MimeMessage( session );
       message.setFrom( new InternetAddress( EMAIL ) );
       message.setRecipients( Message.RecipientType.TO,
-              InternetAddress.parse( to.getEmail() ) );
+              InternetAddress.parse( email ) );
 
       if ( type.compareTo( "registration" ) == 0 ) {
         message.setSubject( "Rejestracja" );
@@ -59,13 +58,13 @@ public final class MailHandler {
     }
   }
 
-  public static void sendMail( User to, String type ) {
+  public static void sendMail( String to, String email, String type ) {
     Session session = makeSession();
     try {
       Message message = new MimeMessage( session );
       message.setFrom( new InternetAddress( EMAIL ) );
       message.setRecipients( Message.RecipientType.TO,
-              InternetAddress.parse( to.getEmail() ) );
+              InternetAddress.parse( email ) );
       if ( type.compareTo( "block" ) == 0 ) {
         message.setSubject( "Account Blocked" );
         message.setText( blockText( to ) );
@@ -85,27 +84,27 @@ public final class MailHandler {
     }
   }
 
-  public static String blockText( User to ) {
-    return "Witaj " + to.getUsername() + "," +
+  public static String blockText( String to ) {
+    return "Witaj " + to + "," +
             "\n\n Your accont on Ftims Game Luncher has been blocked." +
             FOOTER;
   }
 
-  public static String unblockText( User to ) {
-    return "Witaj " + to.getUsername() + "," +
+  public static String unblockText( String to ) {
+    return "Witaj " + to + "," +
             "\n\n Your accont on Ftims Game Luncher has been unblocked." +
             FOOTER;
   }
 
-  public static String registrationText( User to, String confirmCode ) {
-    return "Witaj " + to.getUsername() + "," +
+  public static String registrationText( String to, String confirmCode ) {
+    return "Witaj " + to + "," +
             "\n\n Aby dokończyć proces rejestracji prosimy " +
             "wpisać ten kod potwierdzający: " + confirmCode +
             FOOTER;
   }
 
-  public static String reminderText( User to, String reminderCode ) {
-    return "Witaj " + to.getUsername() + "," +
+  public static String reminderText( String to, String reminderCode ) {
+    return "Witaj " + to + "," +
             "\n\n Aby przypomnieć hasło prosimy " +
             "wpisać ten kod potwierdzający: " + reminderCode +
             FOOTER;

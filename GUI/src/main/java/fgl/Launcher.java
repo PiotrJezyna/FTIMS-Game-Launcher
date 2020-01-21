@@ -19,6 +19,7 @@ public class Launcher extends Application {
 
         Parent root = FXMLLoader.load(getClass().getResource("/Launcher.fxml"));
         primaryStage.setTitle("FTIMS Game Launcher");
+        primaryStage.setResizable(false);
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
     }

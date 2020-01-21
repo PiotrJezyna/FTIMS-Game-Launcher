@@ -1,8 +1,9 @@
 package fgl;
 
 import fgl.admin.AdminPageController;
+import fgl.userPanel.LoginViewControl;
+import fgl.userPanel.UserProfileViewControl;
 import fgl.userPanel.UserSession;
-import fgl.userPanel.Login;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,6 +21,9 @@ public class LauncherController {
     private AnchorPane loadedFxml;
 
     @FXML
+    private AnchorPane avatarSpace;
+
+    @FXML
     private AnchorPane paneChanger;
 
     @FXML
@@ -30,14 +34,25 @@ public class LauncherController {
     }
 
     public void initialize() {
+        boolean load = false;
         try {
-            AnchorPane pain = FXMLLoader.load( getClass().getResource( "/LoginView.fxml" ) );
-            loginPanel.getChildren().add( pain );
+            FXMLLoader loader = new FXMLLoader(getClass().getResource( "/LoginView.fxml" ));
+            loadedFxml = loader.load();
+            LoginViewControl ctrl = loader.getController();
+            load = ctrl.init( loginPanel, avatarSpace );
         } catch ( IOException e ) {
             e.printStackTrace();
         }
 
-        userSession = Login.userSession;
+        if ( !load ) {
+            double width = loadedFxml.getPrefWidth();
+            loadedFxml.setLayoutX( (loginPanel.getPrefWidth() - width) / 2 );
+
+            loginPanel.getChildren().clear();
+            loginPanel.getChildren().add( loadedFxml );
+        }
+
+        userSession = UserSession.getUserSession();
     }
 
     public void adminButton() {
@@ -56,7 +71,22 @@ public class LauncherController {
     }
 
     public void userButton() {
+        if ( userSession.getCurrentUser() == null ) {
+            showAlert( "Information", "You have to login first!" );
+        } else {
 
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource( "/UserProfileView.fxml" ));
+                loadedFxml = loader.load();
+                UserProfileViewControl ctrl = loader.getController();
+                ctrl.init( paneChanger, avatarSpace );
+            } catch ( IOException e ) {
+                e.printStackTrace();
+            }
+
+            paneChanger.getChildren().clear();
+            paneChanger.getChildren().add( loadedFxml );
+        }
     }
 
     public void catalogButton() {
