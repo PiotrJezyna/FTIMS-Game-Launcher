@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="DatabaseDAO" />
+        <module name="GUI" />
+        <module name="PanelAdministratora" />
+        <module name="PanelUzytkownika" />
+        <module name="ModulKomunikacji" />
+        <module name="DriveDAO" />
+        <module name="KatalogGier" />
+        <module name="LokalnaBibliotekaGier" />
+      </profile>
+      <profile name="Disabled">
+        <module name="KartaProduktu" />
+        <module name="KartaOcenGier" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="DatabaseDAO" target="1.8" />
+      <module name="DriveDAO" target="1.8" />
+      <module name="gamelauncher" target="8" />
+      <module name="GUI" target="1.8" />
+      <module name="KartaOcenGier" target="1.8" />
+      <module name="KartaProduktu" target="1.8" />
+      <module name="KatalogGier" target="1.8" />
+      <module name="LokalnaBibliotekaGier" target="1.8" />
+      <module name="ModulKomunikacji" target="1.8" />
+      <module name="PanelAdministratora" target="1.8" />
+      <module name="PanelUzytkownika" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
