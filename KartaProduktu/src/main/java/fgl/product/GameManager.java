@@ -52,6 +52,13 @@ public class GameManager {
     @FXML private TextArea changelog;
     @FXML private Label changelogDate;
 
+    @FXML private Label pathZipLabel;
+    @FXML private Label pathScreenshotLabel;
+    @FXML private Button pathZipButton;
+    @FXML private Button pathScreenshotButton;
+
+    @FXML private TextField updatedGamePathZip;
+    @FXML private TextField updatedGamePathScreenshot;
 
     @FXML private AnchorPane anchorid;
     @FXML private TextField newGameTitle;
@@ -59,6 +66,8 @@ public class GameManager {
     @FXML private TextField newGamePathZip;
     @FXML private TextField newGamePathScreenshot;
     @FXML private TextArea newGameDescription;
+
+
 
 
     public GameManager() throws SQLException {
@@ -247,11 +256,11 @@ public class GameManager {
             }
             else if(newGamePathZip.getText().isEmpty())  {
 
-                informationWindow("Błędne dane", "Podaj ścieżkę do pliku .zip z grą");
+                informationWindow("Błędne dane", "Podaj ścieżkę do pliku z grą");
             }
             else if(newGamePathScreenshot.getText().isEmpty())  {
 
-                informationWindow("Błędne dane", "Podaj ścieżkę do pliku .png z zrzutem ekranu");
+                informationWindow("Błędne dane", "Podaj ścieżkę do pliku z zrzutem ekranu");
             }
             else{
                 // -----------------------------------------
@@ -278,7 +287,7 @@ public class GameManager {
         }
     }
     @FXML
-    private void handleDirectoryButtonActionZip(ActionEvent event)
+    private void newGamePathZipButton(ActionEvent event)
     {
         final FileChooser filChooser = new FileChooser();
 
@@ -292,7 +301,7 @@ public class GameManager {
     }
 
     @FXML
-    private void handleDirectoryButtonActionScreenshot(ActionEvent event)
+    private void newGamePathScreenshotButton(ActionEvent event)
     {
         final FileChooser filChooser = new FileChooser();
 
@@ -304,6 +313,33 @@ public class GameManager {
             newGamePathScreenshot.setText(file.getAbsolutePath());
         }
     }
+    @FXML
+    private void updatedGamePathZipButton(ActionEvent event)
+    {
+        final FileChooser filChooser = new FileChooser();
+
+        Stage stage = (Stage) root.getScene().getWindow();
+
+        File file = filChooser.showOpenDialog(stage);
+        if(file != null)
+        {
+            updatedGamePathZip.setText(file.getAbsolutePath());
+        }
+    }
+    @FXML
+    private void updatedGamePathScreenshotButton(ActionEvent event)
+    {
+        final FileChooser filChooser = new FileChooser();
+
+        Stage stage = (Stage) root.getScene().getWindow();
+
+        File file = filChooser.showOpenDialog(stage);
+        if(file != null)
+        {
+            updatedGamePathScreenshot.setText(file.getAbsolutePath());
+        }
+    }
+
 
     @FXML
     private void buttonEditProductCard(ActionEvent event) throws Exception {
@@ -326,6 +362,15 @@ public class GameManager {
 
         changelog.setText("");
         changelog.setEditable(true);
+
+        pathZipLabel.setVisible(true);
+        pathScreenshotLabel.setVisible(true);
+        pathZipButton.setVisible(true);
+        pathScreenshotButton.setVisible(true);
+
+        updatedGamePathZip.setVisible(true);
+        updatedGamePathScreenshot.setVisible(true);
+
     }
 
     @FXML
@@ -351,6 +396,14 @@ public class GameManager {
 
         buttonBack.setVisible(false);
         saveButton.setVisible(false);
+
+        pathZipLabel.setVisible(false);
+        pathScreenshotLabel.setVisible(false);
+        pathZipButton.setVisible(false);
+        pathScreenshotButton.setVisible(false);
+
+        updatedGamePathZip.setVisible(false);
+        updatedGamePathScreenshot.setVisible(false);
 
         try
         {
