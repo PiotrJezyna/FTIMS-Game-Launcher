@@ -82,21 +82,30 @@ public class EditUserProfileViewControl {
         UserDAO dao = new UserDAO();
         DriveDao driveDao = new DriveDao();
 
-        driveDao.uploadAvatar(UserSession.getUserSession().getCurrentUser().getUsername(), newAvatarPath.getAbsolutePath());
-        File imagePath = driveDao.downloadAvatar(UserSession.getUserSession().getCurrentUser().getUsername());
+        avatarSpace.getChildren().clear();
+        File imagePath;
+        if ( newAvatarPath == null ) {
+            imagePath = new File(System.getProperty("user.dir"), "//Data//Avatars//" + getLoggedInUserUsername() + "Avatar.png");
+        } else {
+            driveDao.uploadAvatar(UserSession.getUserSession().getCurrentUser().getUsername(), newAvatarPath.getAbsolutePath());
+            imagePath = driveDao.downloadAvatar(UserSession.getUserSession().getCurrentUser().getUsername());
+        }
+
         Image image = new Image( imagePath.toURI().toString(),
                 120, 120, true, false );
-
-        String name = nameEditField.getText();
-        String surname = surnameEditField.getText();
-        String username = usernameEditField.getText();
-        String email = emailEditField.getText();
 
         Circle clip = new Circle(avatarSpace.getPrefWidth() / 2, 80, 52);
         ImageView avatar = new ImageView(image);
         avatar.setX(33);
         avatar.setY(20);
         avatar.setClip(clip);
+
+        avatarSpace.getChildren().add( avatar );
+
+        String name = nameEditField.getText();
+        String surname = surnameEditField.getText();
+        String username = usernameEditField.getText();
+        String email = emailEditField.getText();
 
         Text usernameText = new Text();
         usernameText.setFont( Font.font( "Verdana", FontWeight.NORMAL, FontPosture.REGULAR, 18 ) );
@@ -105,10 +114,7 @@ public class EditUserProfileViewControl {
         double width = usernameText.getLayoutBounds().getWidth();
         usernameText.setX( (avatarSpace.getPrefWidth() - width) / 2 );
 
-        avatarSpace.getChildren().clear();
-        avatarSpace.getChildren().add( avatar );
         avatarSpace.getChildren().add( usernameText );
-
 
         User user = UserSession.getUserSession().getCurrentUser();
         //user = new User(name, surname, username, email);
