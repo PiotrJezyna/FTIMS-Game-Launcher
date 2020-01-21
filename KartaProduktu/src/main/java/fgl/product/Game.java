@@ -20,11 +20,12 @@ public class Game {
         this.description = description;
     }
 
-    public Game(Long id, Long userId, String title, String tags, String genre, String description, Integer userCount, boolean isReported) {
+    public Game(Long id, Long userId, String title, Integer version, String tags, String genre, String description, Integer userCount, boolean isReported) {
 
         this.id = id;
         this.userId = userId;
         this.title = title;
+        this.version = version;
         this.tags = tags;
         this.genre = genre;
         this.description = description;

@@ -1,84 +1,35 @@
 package fgl.admin;
 
-import fgl.communication.MailHandler;
 import fgl.product.Game;
 import fgl.product.GameDAO;
 import fgl.userPanel.User;
 import fgl.userPanel.UserDAO;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ModerationPanel {
 
-  public class UserBox extends HBox {
-    User user;
-    Label label = new Label();
-    Button button = new Button();
-
-    UserBox( User user ) {
-      super();
-
-      this.user = user;
-      label.setText( user.getUsername() );
-      label.setMaxWidth(Double.MAX_VALUE);
-      HBox.setHgrow(label, Priority.ALWAYS);
-
-      if ( user.isBlocked() ) {
-        button = new Button( "Unblock user" );
-      } else {
-        button = new Button( "Block user" );
-      }
-
-      button.setOnAction( new EventHandler<ActionEvent>() {
-        @Override
-        public void handle( ActionEvent event ) {
-          if ( user.isBlocked() ) {
-            unblockUser( user );
-            button.setText( "Block user" );
-            MailHandler.sendMail( user, "unblock" );
-          } else {
-            blockUser( user );
-            button.setText( "Unblock user" );
-            MailHandler.sendMail( user, "block" );
-          }
-        }
-      });
-
-      this.getChildren().addAll(label, button);
-    }
-  }
-
-  // Data
+  protected static UserDAO userDAO = new UserDAO();
+  protected static GameDAO gameDAO = new GameDAO();
   private static final String TITLE = "Moderation Panel";
   private static final String PATH = "/ModerationPanel.fxml";
-  private UserDAO userDAO;
-  private GameDAO gameDAO;
-  private List<User> users;
-  private List<Game> reportedGames;
-
+  protected List<User> users;
+  protected List<Game> reportedGames;
   @FXML
-  private ListView<UserBox> usersListView;
+  protected ListView<UserBox> usersListView;
+  @FXML
+  protected ListView<ReportedGameBox> reportedGamesListView;
 
   public ModerationPanel() {
-    userDAO = new UserDAO();
-    gameDAO = new GameDAO();
   }
 
   @FXML
-  void initialize(){
+  void initialize() {
     refresh();
   }
 
@@ -112,7 +63,7 @@ public class ModerationPanel {
   /**
    * Load information about all users from DB into list in this class
    *
-   * @return if loading has succeed or not
+   * @return if loading has succeed
    */
   public boolean loadAllUsersFromDB() {
     try {
@@ -124,8 +75,8 @@ public class ModerationPanel {
 
     List<UserBox> list = new ArrayList<>();
 
-    for (User user: users) {
-      list.add(new UserBox( user ));
+    for ( User user : users ) {
+      list.add( new UserBox( user, false ) );
     }
 
     ObservableList<UserBox> myObservableList = FXCollections.observableList( list );
@@ -137,13 +88,14 @@ public class ModerationPanel {
   /**
    * Load information about reported games from DB into list in this class
    *
-   * @return if loading has succeed or not
+   * @return if loading has succeed
    */
   public boolean loadReportedGamesFromDB() {
     try {
       reportedGames = new ArrayList<>();
 
       List<Game> allGames = gameDAO.getAll();
+      reportedGames = new ArrayList<>();
       for ( Game g : allGames ) {
         if ( g.isReported() ) {
           reportedGames.add( g );
@@ -154,15 +106,21 @@ public class ModerationPanel {
       e.printStackTrace();
       return false;
     }
+
+    List<ReportedGameBox> list = new ArrayList<>();
+
+    for ( Game game : reportedGames ) {
+      list.add( new ReportedGameBox( game ) );
+    }
+
+    ObservableList<ReportedGameBox> myObservableList =
+            FXCollections.observableList( list );
+    reportedGamesListView.setItems( myObservableList );
+
     return true;
   }
 
-  /**
-   *
-   * @param game
-   * @return
-   */
-  public boolean discardReport( Game game ) {
+  public static boolean discardReport( Game game ) {
     try {
       game.setReported( false );
       gameDAO.update( game );
@@ -173,12 +131,7 @@ public class ModerationPanel {
     return true;
   }
 
-  /**
-   *
-   * @param game
-   * @return
-   */
-  public boolean deleteGame( Game game ) {
+  public static boolean deleteGame( Game game ) {
     try {
       gameDAO.delete( game );
     } catch ( SQLException e ) {
@@ -188,12 +141,7 @@ public class ModerationPanel {
     return true;
   }
 
-  /**
-   *
-   * @param user
-   * @return
-   */
-  public boolean blockUser( User user ) {
+  public static boolean blockUser( User user ) {
     try {
       user.setBlocked( true );
       userDAO.update( user );
@@ -204,12 +152,7 @@ public class ModerationPanel {
     return true;
   }
 
-  /**
-   *
-   * @param user
-   * @return
-   */
-  public boolean unblockUser( User user ) {
+  public static boolean unblockUser( User user ) {
     try {
       user.setBlocked( false );
       userDAO.update( user );

@@ -29,7 +29,7 @@ public class LocalGamesDAO extends AbstractDao<Game> {
             {
                 connectSQL();
 
-                String query = "SELECT ID, UserID, Tags, UserCount, IsReported  FROM Games WHERE Title = '" + pathname + "'";
+                String query = "SELECT ID, UserID, Version, Tags, UserCount, IsReported  FROM Games WHERE Title = '" + pathname + "'";
 
                 stmt = conn.createStatement();
                 rs = stmt.executeQuery( query );
@@ -39,11 +39,12 @@ public class LocalGamesDAO extends AbstractDao<Game> {
 
                     Long gameId = rs.getLong("ID");
                     Long userId = rs.getLong("UserID");
+                    Integer version = rs.getInt("Version");
                     String tags = rs.getString("Tags");
                     Integer userCount = rs.getInt("UserCount");
                     boolean isReported = rs.getBoolean("IsReported");
 
-                    localGames.add(new Game(gameId, userId, pathname, tags, null, null, userCount, isReported));
+                    localGames.add(new Game(gameId, userId, pathname, version, tags, null, null, userCount, isReported));
                 }
 
                 disconnectSQL();
