@@ -5,6 +5,7 @@
     import fgl.product.*;
     import fgl.userPanel.Login;
 
+    import fgl.userPanel.UserSession;
     import javafx.event.ActionEvent;
     import javafx.event.EventHandler;
     import javafx.fxml.FXML;
@@ -69,7 +70,7 @@ public class GameContenerGUI {
         }
         catch (Exception e) {}
 
-        gameContener.setUserID(login.getUserSession().getCurrentUser().getId());
+        gameContener.setUserID(UserSession.getUserSession().getCurrentUser().getId());
         gameContener.setCategory(0);
         try {
             displayGames();
