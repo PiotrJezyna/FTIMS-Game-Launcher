@@ -38,7 +38,7 @@
       <Separator prefWidth="200.0" GridPane.rowIndex="1" />
       <GridPane hgap="10.0" vgap="10.0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
         <columnConstraints>
-          <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="275.0" minWidth="10.0" prefWidth="175.0" />
+          <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" />
             <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="20.0" />
           <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="564.0" minWidth="10.0" prefWidth="535.0" />
         </columnConstraints>
@@ -54,7 +54,7 @@
                   <Button fx:id="buttonNext" minWidth="75.0" mnemonicParsing="false" onAction="#nextEdit" text="Next" />
                </children>
             </HBox>
-            <Label text="/ Your review /" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.rowSpan="3" GridPane.valignment="CENTER">
+            <Label fx:id="labelReviewUsername" text="/ Your review" textAlignment="RIGHT" wrapText="true" GridPane.halignment="CENTER" GridPane.rowSpan="3" GridPane.valignment="CENTER">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
@@ -81,7 +81,7 @@
                </font></Button>
             <ProgressBar fx:id="progressBar" progress="0.0" visible="false" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
             <ProgressIndicator fx:id="progressBarIndicator" maxHeight="20.0" maxWidth="20.0" visible="false" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
-            <Label fx:id="labelDate" opacity="0.5" text="Date" textAlignment="RIGHT" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+            <Label fx:id="labelReviewDate" opacity="0.5" text="Date" textAlignment="RIGHT" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
                <font>
                   <Font name="System Italic" size="12.0" />
                </font>
@@ -126,7 +126,7 @@
                   <Button minWidth="75.0" mnemonicParsing="false" text="Next" />
                </children>
             </HBox>
-            <Label text="\\ Author's reply \" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowSpan="2" GridPane.valignment="CENTER">
+            <Label text="\\ Author's reply" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowSpan="2" GridPane.valignment="CENTER">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
@@ -153,7 +153,7 @@
             <Label contentDisplay="CENTER" disable="true" text="/ Choose review to show" />
          </children>
       </HBox>
-      <Label alignment="CENTER" disable="true" text="8 / 10 (based on 23 reviews)" GridPane.halignment="LEFT" GridPane.valignment="BOTTOM">
+      <Label fx:id="labelAverageRating" alignment="CENTER" disable="true" text="8 / 10 (based on 23 reviews)" GridPane.halignment="LEFT" GridPane.valignment="BOTTOM">
          <font>
             <Font name="System Italic" size="12.0" />
          </font>
@@ -167,7 +167,7 @@
       <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="20.0" />
       <RowConstraints maxHeight="150.0" minHeight="150.0" prefHeight="150.0" valignment="CENTER" vgrow="ALWAYS" />
       <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="20.0" />
-      <RowConstraints fx:id="authorsReplyConstraints" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="100.0" />
+      <RowConstraints fx:id="rowConstraintsAuthorsReply" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="100.0" />
       <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="20.0" valignment="CENTER" />
       <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" valignment="CENTER" />
       <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="10.0" vgrow="ALWAYS" />
