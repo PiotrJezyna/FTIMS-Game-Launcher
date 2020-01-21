@@ -2,10 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b891ae40-424e-44b5-9a57-debfed82da84" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/KartaOcenGier/src/main/java/fgl/kartaocen/ReviewCard.java" beforeDir="false" afterPath="$PROJECT_DIR$/KartaOcenGier/src/main/java/fgl/kartaocen/ReviewCard.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/KartaOcenGier/src/main/resources/RatingsCard.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/KartaOcenGier/src/main/resources/RatingsCard.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/KartaProduktu/src/main/java/fgl/product/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/KartaProduktu/src/main/java/fgl/product/Game.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/KartaProduktu/src/main/java/fgl/product/ChangelogDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/KartaProduktu/src/main/java/fgl/product/ChangelogDAO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/KartaProduktu/src/main/java/fgl/product/GameManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/KartaProduktu/src/main/java/fgl/product/GameManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LokalnaBibliotekaGier/src/main/java/LocalGamesDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/LokalnaBibliotekaGier/src/main/java/LocalGamesDAO.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,7 +58,7 @@
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
-    <property name="settings.editor.selected.configurable" value="preferences.sourceCode.Java" />
+    <property name="settings.editor.selected.configurable" value="reference.projectsettings.compiler.annotationProcessors" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -193,42 +196,42 @@
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="740" y="251" key="FileChooserDialogImpl/0.0.1920.1080@0.0.1920.1080" timestamp="1579530217035" />
-    <state width="1898" height="514" key="GridCell.Tab.0.bottom" timestamp="1579573712395">
+    <state width="1898" height="514" key="GridCell.Tab.0.bottom" timestamp="1579579434565">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1898" height="514" key="GridCell.Tab.0.bottom/0.0.1920.1080@0.0.1920.1080" timestamp="1579573712395" />
-    <state width="1898" height="514" key="GridCell.Tab.0.center" timestamp="1579573712395">
+    <state width="1898" height="514" key="GridCell.Tab.0.bottom/0.0.1920.1080@0.0.1920.1080" timestamp="1579579434565" />
+    <state width="1898" height="514" key="GridCell.Tab.0.center" timestamp="1579579434565">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1898" height="514" key="GridCell.Tab.0.center/0.0.1920.1080@0.0.1920.1080" timestamp="1579573712395" />
-    <state width="1898" height="514" key="GridCell.Tab.0.left" timestamp="1579573712395">
+    <state width="1898" height="514" key="GridCell.Tab.0.center/0.0.1920.1080@0.0.1920.1080" timestamp="1579579434565" />
+    <state width="1898" height="514" key="GridCell.Tab.0.left" timestamp="1579579434565">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1898" height="514" key="GridCell.Tab.0.left/0.0.1920.1080@0.0.1920.1080" timestamp="1579573712395" />
-    <state width="1898" height="514" key="GridCell.Tab.0.right" timestamp="1579573712395">
+    <state width="1898" height="514" key="GridCell.Tab.0.left/0.0.1920.1080@0.0.1920.1080" timestamp="1579579434565" />
+    <state width="1898" height="514" key="GridCell.Tab.0.right" timestamp="1579579434565">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1898" height="514" key="GridCell.Tab.0.right/0.0.1920.1080@0.0.1920.1080" timestamp="1579573712395" />
-    <state width="1898" height="370" key="GridCell.Tab.1.bottom" timestamp="1579572258356">
+    <state width="1898" height="514" key="GridCell.Tab.0.right/0.0.1920.1080@0.0.1920.1080" timestamp="1579579434565" />
+    <state width="1898" height="370" key="GridCell.Tab.1.bottom" timestamp="1579578647251">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1898" height="370" key="GridCell.Tab.1.bottom/0.0.1920.1080@0.0.1920.1080" timestamp="1579572258356" />
-    <state width="1898" height="370" key="GridCell.Tab.1.center" timestamp="1579572258356">
+    <state width="1898" height="370" key="GridCell.Tab.1.bottom/0.0.1920.1080@0.0.1920.1080" timestamp="1579578647251" />
+    <state width="1898" height="370" key="GridCell.Tab.1.center" timestamp="1579578647251">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1898" height="370" key="GridCell.Tab.1.center/0.0.1920.1080@0.0.1920.1080" timestamp="1579572258356" />
-    <state width="1898" height="370" key="GridCell.Tab.1.left" timestamp="1579572258356">
+    <state width="1898" height="370" key="GridCell.Tab.1.center/0.0.1920.1080@0.0.1920.1080" timestamp="1579578647251" />
+    <state width="1898" height="370" key="GridCell.Tab.1.left" timestamp="1579578647251">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1898" height="370" key="GridCell.Tab.1.left/0.0.1920.1080@0.0.1920.1080" timestamp="1579572258356" />
-    <state width="1898" height="370" key="GridCell.Tab.1.right" timestamp="1579572258356">
+    <state width="1898" height="370" key="GridCell.Tab.1.left/0.0.1920.1080@0.0.1920.1080" timestamp="1579578647251" />
+    <state width="1898" height="370" key="GridCell.Tab.1.right" timestamp="1579578647251">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1898" height="370" key="GridCell.Tab.1.right/0.0.1920.1080@0.0.1920.1080" timestamp="1579572258356" />
-    <state x="107" y="71" width="1699" height="738" key="SettingsEditor" timestamp="1579565399732">
+    <state width="1898" height="370" key="GridCell.Tab.1.right/0.0.1920.1080@0.0.1920.1080" timestamp="1579578647251" />
+    <state x="107" y="71" width="1699" height="738" key="SettingsEditor" timestamp="1579574479861">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state x="107" y="71" width="1699" height="738" key="SettingsEditor/0.0.1920.1080@0.0.1920.1080" timestamp="1579565399732" />
+    <state x="107" y="71" width="1699" height="738" key="SettingsEditor/0.0.1920.1080@0.0.1920.1080" timestamp="1579574479861" />
     <state x="667" y="366" key="com.intellij.ide.util.TipDialog" timestamp="1575640496495">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
@@ -247,7 +250,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/KartaOcenGier/src/main/java/fgl/kartaocen/ReviewCard.java</url>
-          <line>455</line>
+          <line>491</line>
           <option name="timeStamp" value="17" />
         </line-breakpoint>
       </breakpoints>

@@ -92,7 +92,7 @@ public class ChangelogDAO extends AbstractDao<Changelog> {
 
         try {
 
-            String query = "SELECT ID, GameID, Version, Description, Date FROM Changelog ORDER BY ID DESC";
+            String query = "SELECT ID, GameID, Version, Description, Date FROM Changelog";
             stmt = conn.createStatement();
             rs = stmt.executeQuery( query );
 

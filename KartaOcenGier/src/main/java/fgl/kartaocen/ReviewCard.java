@@ -45,7 +45,7 @@ public class ReviewCard {
 
     private Review getCurrentGameReview() {
         if (currentGameReviewIterator.nextIndex() !=
-                currentGameReviews.size() - 1) {
+                currentGameReviews.size()) {
             Review review = currentGameReviewIterator.next();
             currentGameReviewIterator.previous();
             return review;
@@ -62,11 +62,12 @@ public class ReviewCard {
             Comment comment = currentGamesCurrentCommentIterator.next();
             currentGamesCurrentCommentIterator.previous();
             return comment;
-        } else {
+        } else if (currentGamesCurrentCommentIterator.hasPrevious()) {
             Comment comment = currentGamesCurrentCommentIterator.previous();
             currentGamesCurrentCommentIterator.next();
             return comment;
         }
+        return null;
     }
 
     private Comment getCurrentGamesCurrentReply() {
@@ -75,11 +76,12 @@ public class ReviewCard {
             Comment comment = currentGamesCurrentReplyIterator.next();
             currentGamesCurrentReplyIterator.previous();
             return comment;
-        } else {
+        } else if (currentGamesCurrentReplyIterator.hasPrevious()) {
             Comment comment = currentGamesCurrentReplyIterator.previous();
             currentGamesCurrentReplyIterator.next();
             return comment;
         }
+        return null;
     }
 
     private boolean doesCurrentGameReviewBelongToLoggedUser() {
@@ -111,6 +113,11 @@ public class ReviewCard {
                         getCurrentGameReview()).isEmpty());
 
         // .................................................................. //
+        // Show reviews' slider only if needed
+        setRowVisibility(mainGrid, 5, currentGameReviews.size() > 1);
+        setRowVisibility(mainGrid, 6, currentGameReviews.size() > 1);
+
+        // .................................................................. //
         // Set review's username information
         if (doesCurrentGameReviewBelongToLoggedUser()) {
             labelReviewUsername.setText("/ Your review");
@@ -138,8 +145,10 @@ public class ReviewCard {
 
         // .................................................................. //
         // Set comment's content
-        textAreaReview.setText(getCurrentGamesCurrentComment().getContent());
-        textAreaReply.setText(getCurrentGamesCurrentReply().getContent());
+        textAreaReview.setText(getCurrentGamesCurrentComment() == null ? "" :
+                getCurrentGamesCurrentComment().getContent());
+        textAreaReply.setText(getCurrentGamesCurrentReply() == null ? "" :
+                getCurrentGamesCurrentReply().getContent());
 
         // .................................................................. //
         // Disable comment's content if showing edit history
@@ -149,9 +158,13 @@ public class ReviewCard {
         // .................................................................. //
         // Set comment's submission date
         labelReviewDate.setText(
-                getCurrentGamesCurrentComment().getSubmissionDate().toString());
+                getCurrentGamesCurrentComment() == null ? "" :
+                        getCurrentGamesCurrentComment().getSubmissionDate().
+                                toString());
         labelReplyDate.setText(
-                getCurrentGamesCurrentReply().getSubmissionDate().toString());
+                getCurrentGamesCurrentReply() == null ? "" :
+                        getCurrentGamesCurrentReply().getSubmissionDate().
+                                toString());
 
         // .................................................................. //
         // Set edit history buttons' content
@@ -180,6 +193,11 @@ public class ReviewCard {
         // Set submission button's visibility
         buttonSubmitReview.setVisible(!showReviewEditHistory);
 
+        // .................................................................. //
+        // Set reviews' slider
+        sliderReviews.setMin(1);
+        sliderReviews.setMax(currentGameReviews.size());
+        sliderReviews.setValue(currentGameReviewIterator.nextIndex() + 1);
 
         // .................................................................. //
         // If user has more than one comment
@@ -272,6 +290,32 @@ public class ReviewCard {
         }
     }
 
+    private void resetReviewIterator() {
+        currentGameReviewIterator = currentGameReviews.listIterator();
+        while (currentGameReviewIterator.hasNext()) {
+            if (getCurrentGameReview().getUser().getId().equals(
+                    loggedUser.getId())) {
+                break;
+            }
+            currentGameReviewIterator.next();
+        }
+    }
+
+    private void resetCommentIterators() {
+        currentGamesCurrentCommentIterator = userCommentsPerReview.get(
+                getCurrentGameReview()).listIterator(
+                userCommentsPerReview.get(getCurrentGameReview()).isEmpty() ?
+                        0 : userCommentsPerReview.get(
+                        getCurrentGameReview()).size() - 1);
+
+        currentGamesCurrentReplyIterator = authorRepliesPerReview.get(
+                getCurrentGameReview()).listIterator(
+                authorRepliesPerReview.get(
+                        getCurrentGameReview()).isEmpty() ? 0 :
+                        authorRepliesPerReview.get(
+                                getCurrentGameReview()).size() - 1);
+    }
+
 
     //    @FXML
     public void init() throws SQLException {
@@ -284,16 +328,8 @@ public class ReviewCard {
         getCurrentGamesReviews();
         getCurrentGamesComments();
         organizeUserCommentsAndAuthorsRepliesPerReview();
-
-        currentGameReviewIterator = currentGameReviews.listIterator();
-        currentGamesCurrentCommentIterator = userCommentsPerReview.get(
-                getCurrentGameReview()).listIterator(
-                userCommentsPerReview.get(
-                        getCurrentGameReview()).size() - 1);
-        currentGamesCurrentReplyIterator = authorRepliesPerReview.get(
-                getCurrentGameReview()).listIterator(
-                authorRepliesPerReview.get(
-                        getCurrentGameReview()).size() - 1);
+        resetReviewIterator();
+        resetCommentIterators();
 
         //--------------------------------------------------
         // Set label
@@ -604,6 +640,25 @@ public class ReviewCard {
     }
 
     @FXML
+    private void goBackToUsersReview() {
+        resetReviewIterator();
+        resetCommentIterators();
+
+        updateUserInterface();
+    }
+
+    @FXML
+    private void chooseReviewToShow() {
+        currentGameReviewIterator = currentGameReviews.listIterator(
+                (int) Math.round(sliderReviews.getValue()) - 1);
+        resetCommentIterators();
+        showReviewEditHistory = false;
+        showReplyEditHistory = false;
+
+        updateUserInterface();
+    }
+
+    @FXML
     private void reviewPreviousEdit() {
         if (currentGamesCurrentCommentIterator.hasPrevious()) {
             currentGamesCurrentCommentIterator.previous();
@@ -821,6 +876,8 @@ public class ReviewCard {
     @FXML private Button buttonShowReplyEditHistory;
     @FXML private Button buttonReplyPreviousEdit;
     @FXML private Button buttonReplyNextEdit;
+
+    @FXML private Slider sliderReviews;
 
     @FXML
     private Button buttonSubmitReview;

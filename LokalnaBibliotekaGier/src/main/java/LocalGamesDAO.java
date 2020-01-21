@@ -6,6 +6,7 @@ import javafx.stage.Stage;
 import java.io.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class LocalGamesDAO extends AbstractDao<Game> {
@@ -103,7 +104,7 @@ public class LocalGamesDAO extends AbstractDao<Game> {
                 String tags = rs.getString("Tags");
                 Integer userCount = rs.getInt("UserCount");
                 boolean isReported = rs.getBoolean("IsReported");
-                localGames.add(new Game(gameId, userId, gameNames[i], tags, null, null, userCount, isReported));
+//                localGames.add(new Game(gameId, userId, gameNames[i], tags, null, null, userCount, isReported));
             }
             disconnectSQL();
         }

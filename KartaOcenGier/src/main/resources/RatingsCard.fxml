@@ -148,8 +148,8 @@
       <Separator prefWidth="200.0" GridPane.rowIndex="5" />
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.rowIndex="6">
          <children>
-            <Button mnemonicParsing="false" text="Go back to your review" />
-            <Slider blockIncrement="1.0" majorTickUnit="10.0" max="20.0" minorTickCount="9" showTickLabels="true" showTickMarks="true" snapToTicks="true" HBox.hgrow="ALWAYS" />
+            <Button mnemonicParsing="false" onAction="#goBackToUsersReview" text="Go back to your review" />
+            <Slider fx:id="sliderReviews" blockIncrement="1.0" majorTickUnit="1.0" max="20.0" minorTickCount="0" onMouseClicked="#chooseReviewToShow" onMouseDragged="#chooseReviewToShow" onMousePressed="#chooseReviewToShow" onMouseReleased="#chooseReviewToShow" showTickLabels="true" showTickMarks="true" snapToTicks="true" HBox.hgrow="ALWAYS" />
             <Label contentDisplay="CENTER" disable="true" text="/ Choose review to show" />
          </children>
       </HBox>
