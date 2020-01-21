@@ -1,6 +1,7 @@
 package fgl.product;
 
 import fgl.userPanel.Login;
+import fgl.userPanel.UserSession;
 import fgl.userPanel.UserType;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -171,7 +172,11 @@ public class GameManager {
         {
             if(games.get(i).getTitle().equals(title))
             {
-                dao.delete(games.get(i));
+                //dao.delete(games.get(i));
+
+                games.get(i).setDeleted(true);
+                dao.update(games.get(i));
+
                 games.remove(i);
 
                 System.out.println("Game " + title + " successfully deleted.");
@@ -266,7 +271,7 @@ public class GameManager {
                 // -----------------------------------------
                 // tutaj zmienne newGamePathZip i newGamePathScreenshot są już wybrane, można pobierać ich wartość
                 // -----------------------------------------
-                CreateProductCard(Login.userSession.getCurrentUser().getId(),  newGameTitle.getText(), 1, newGameDescription.getText(), newGameTags.getText() );
+                CreateProductCard(UserSession.getUserSession().getCurrentUser().getId(),  newGameTitle.getText(), 1, newGameDescription.getText(), newGameTags.getText() );
                 informationWindow("Sukces", "Gra została poprawnie dodana do platformy FTIMS Game Launcher");
                 try {
 
@@ -532,8 +537,8 @@ public class GameManager {
 
     private void AddAdditionalButtons(Game game)
     {
-        if(Login.userSession.getCurrentUser().getId() != game.getUserId()
-            && Login.userSession.getCurrentUser().getType() == UserType.USER)
+        if(UserSession.getUserSession().getCurrentUser().getId() != game.getUserId()
+            && UserSession.getUserSession().getCurrentUser().getType() == UserType.USER)
         {
             editButton.setVisible(false);
 
