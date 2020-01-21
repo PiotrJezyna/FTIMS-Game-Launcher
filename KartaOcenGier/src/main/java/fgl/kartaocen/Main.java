@@ -10,11 +10,11 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("/RatingsCard.fxml"));
+//        Parent root = FXMLLoader.load(getClass().getResource("/RatingsCard.fxml"));
 
         //todo:only test
-//        FXMLLoader loader = new FXMLLoader(getClass().getResource("/RatingsCard.fxml"));
-//        Parent root = loader.load();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/RatingsCard.fxml"));
+        Parent root = loader.load();
 
         primaryStage.setTitle("Karta ocen gier");
         primaryStage.setScene(new Scene(root));
@@ -22,8 +22,8 @@ public class Main extends Application {
 
 
 //        //todo:only test
-//        ReviewCard r = loader.getController();
-//        r.init();
+        ReviewCard r = loader.getController();
+        r.init();
     }
 
 

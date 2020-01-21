@@ -403,11 +403,12 @@ public class ReviewCard {
     }
 
 
-    @FXML
-    public void initialize() throws SQLException {
+//    @FXML
+    public void init() throws SQLException {
         //--------------------------------------------------
         // todo: remove this
-        setLoggedUser(93L);
+        setGame(1L);
+        setLoggedUser(1L);
 //        loggedUser = (new UserDAO()).get(2L);
 //        game = (new GameDAO()).get(4L);
 
