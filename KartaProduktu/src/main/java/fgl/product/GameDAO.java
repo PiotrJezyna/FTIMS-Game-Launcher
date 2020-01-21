@@ -165,7 +165,7 @@ public class GameDAO extends AbstractDao<Game> {
                         "Version = %s, " +
                         "Tags = '%s', " +
                         "UserCount = %s, " +
-                        "IsReported = %s " +
+                        "IsReported = %s, " +
                         "IsDeleted = %s " +
                         "WHERE ID = " + game.getId();
 
