@@ -14,7 +14,6 @@
     import javafx.scene.control.Label;
     import javafx.scene.control.ScrollPane;
     import javafx.scene.control.TextField;
-    import javafx.scene.image.Image;
     import javafx.scene.image.ImageView;
     import javafx.scene.layout.AnchorPane;
     import javafx.scene.layout.HBox;
@@ -44,7 +43,7 @@ public class GameContenerGUI {
     public Button prevPage;
     public Button nextPage;
 
-    private GameContener gc = new GameContener();
+    private GameContener gameContener = new GameContener();
 
     @FXML
     private AnchorPane root;
@@ -70,26 +69,26 @@ public class GameContenerGUI {
         }
         catch (Exception e) {}
 
-        gc.setUserID(login.getUserSession().getCurrentUser().getId());
-        gc.setCategory(0);
+        gameContener.setUserID(login.getUserSession().getCurrentUser().getId());
+        gameContener.setCategory(0);
         try {
             displayGames();
         } catch (Exception e) {}
 
 
-        //gc.updateDisplayedGames();
+        //gameContener.updateDisplayedGames();
     }
 
     @FXML
     public void setSearchPhrase(String searchPhrase) {
-        gc.setSearchPhrase(searchPhrase);
+        gameContener.setSearchPhrase(searchPhrase);
     }
 
     public void displayChangelogs() throws  Exception {
         gamesBox.getChildren().clear();
 
-        List<Changelog> displayedChangelogs = gc.getDisplayedChangelogs();
-        pageCount = (int)Math.ceil((double) gc.getRecordCount() / recordPerPage);
+        List<Changelog> displayedChangelogs = gameContener.getDisplayedChangelogs();
+        pageCount = (int)Math.ceil((double) gameContener.getRecordCount() / recordPerPage);
 
         int start = pageNumber * recordPerPage;
         int length = ((displayedChangelogs.size() - start) < recordPerPage) ? (displayedChangelogs.size() - start) : recordPerPage;
@@ -171,10 +170,10 @@ public class GameContenerGUI {
     public void displayGames() throws Exception {
         gamesBox.getChildren().clear();
 
-        List<Game> displayedGames = gc.getDisplayedGames();
+        List<Game> displayedGames = gameContener.getDisplayedGames();
         //ArrayList<File> files = downloadScreenshots(displayedGames);
 
-        pageCount = (int)Math.ceil((double) gc.getRecordCount() / recordPerPage);
+        pageCount = (int)Math.ceil((double) gameContener.getRecordCount() / recordPerPage);
 
         int start = pageNumber * recordPerPage;
         int length = ((displayedGames.size() - start) < recordPerPage) ? (displayedGames.size() - start) : recordPerPage;
@@ -231,9 +230,9 @@ public class GameContenerGUI {
 
         if (tagsField.getText().isEmpty() == false) {
             String[] tags = tagsField.getText().split(",");
-            gc.setTags(Arrays.asList(tags));
+            gameContener.setTags(Arrays.asList(tags));
         } else {
-            gc.setTags(new ArrayList<String>());
+            gameContener.setTags(new ArrayList<String>());
         }
 
         pageNumber = 0;
@@ -262,7 +261,7 @@ public class GameContenerGUI {
         if (!dirtyFlag)
             return;
 
-        if (gc.getCategory() != 4)
+        if (gameContener.getCategory() != 4)
             displayGames();
         else
             displayChangelogs();
@@ -278,19 +277,19 @@ public class GameContenerGUI {
         boolean showChangelogs = false;
 
         if (wszystkie.isHover()) {
-            gc.setCategory(0);
+            gameContener.setCategory(0);
         }
         if (naCzasie.isHover()) {
-            gc.setCategory(1);
+            gameContener.setCategory(1);
         }
         if (polecane.isHover()) {
-            gc.setCategory(2);
+            gameContener.setCategory(2);
         }
         if (historia.isHover()) {
-            gc.setCategory(3);
+            gameContener.setCategory(3);
         }
         if (panelAkt.isHover()) {
-            gc.setCategory(4);
+            gameContener.setCategory(4);
             showChangelogs = true;
         }
 
@@ -299,7 +298,7 @@ public class GameContenerGUI {
         else
             displayChangelogs();
 
-        pageCount = (int)Math.ceil((double) gc.getRecordCount() / recordPerPage);
+        pageCount = (int)Math.ceil((double) gameContener.getRecordCount() / recordPerPage);
 
     }
 
