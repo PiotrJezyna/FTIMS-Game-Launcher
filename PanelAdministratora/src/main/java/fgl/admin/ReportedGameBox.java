@@ -22,23 +22,13 @@ import java.util.List;
 public class ReportedGameBox extends HBox {
   ReportedGameBox( Game game, ModerationPanel mp ) {
     super();
-
     Label label = new Label();
     label.setText( game.getTitle() );
     label.setMaxWidth( Double.MAX_VALUE );
     HBox.setHgrow( label, Priority.ALWAYS );
-
-    List<GameReport> reports = new ArrayList<>();
-    try {
-      reports = ModerationPanel.reportDAO.getAllFor( game.getId() );
-    } catch ( SQLException e ) {
-      //TODO hande sql exception
-      e.printStackTrace();
-    }
-    List<GameReport> finalReports = reports;
-
+    List<GameReport> finalReports = makeReportsListFor( game );
     Button discard = new Button( "Discard" );
-    discard.setOnAction(new EventHandler<ActionEvent>() {
+    discard.setOnAction( new EventHandler<ActionEvent>() {
       @Override
       public void handle( ActionEvent event ) {
         mp.discardReport( game, finalReports );
@@ -52,31 +42,7 @@ public class ReportedGameBox extends HBox {
         mp.deleteGame( game, finalReports );
       }
     } );
-
-    Button showWhy = new Button( "Powody zgłoszeń" );
-    showWhy.setOnAction( new EventHandler<ActionEvent>() {
-      @Override
-      public void handle( ActionEvent event ) {
-        Alert alert = new Alert( Alert.AlertType.INFORMATION );
-        alert.setTitle( "Powody zgłoszeń" );
-        alert.setHeaderText( null );
-        StringBuilder sb = new StringBuilder();
-        for ( GameReport report : finalReports ) {
-          for ( User u : mp.users )
-          {
-            if ( u.getId().equals( report.getUserID() ) ) {
-              sb.append( u.getUsername() );
-              sb.append( " pisze:\n" );
-            }
-          }
-          sb.append( report.getExplanation() );
-          sb.append( "\n" );
-        }
-        alert.setContentText( sb.toString() );
-        alert.showAndWait();
-      }
-    } );
-
+    Button showWhy = makeShowWhyButton( finalReports, mp );
     Button show = new Button( "Show game card" );
     show.setOnAction( new EventHandler<ActionEvent>() {
       @Override
@@ -101,7 +67,43 @@ public class ReportedGameBox extends HBox {
         }
       }
     } );
-
     this.getChildren().addAll( label, discard, delete, showWhy, show );
   }
+
+  private List<GameReport> makeReportsListFor( Game game ) {
+    List<GameReport> reports = new ArrayList<>();
+    try {
+      reports = ModerationPanel.reportDAO.getAllFor( game.getId() );
+    } catch ( SQLException e ) {
+      e.printStackTrace();
+    }
+    return reports;
+  }
+
+  private Button makeShowWhyButton( List<GameReport> finalReports, ModerationPanel mp ) {
+    Button showWhy = new Button( "Powody zgłoszeń" );
+    showWhy.setOnAction( new EventHandler<ActionEvent>() {
+      @Override
+      public void handle( ActionEvent event ) {
+        Alert alert = new Alert( Alert.AlertType.INFORMATION );
+        alert.setTitle( "Powody zgłoszeń" );
+        alert.setHeaderText( null );
+        StringBuilder sb = new StringBuilder();
+        for ( GameReport report : finalReports ) {
+          for ( User u : mp.users ) {
+            if ( u.getId().equals( report.getUserID() ) ) {
+              sb.append( u.getUsername() );
+              sb.append( " pisze:\n" );
+            }
+          }
+          sb.append( report.getExplanation() );
+          sb.append( "\n" );
+        }
+        alert.setContentText( sb.toString() );
+        alert.showAndWait();
+      }
+    } );
+    return showWhy;
+  }
+
 }

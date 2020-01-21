@@ -122,8 +122,10 @@ public class GameReportDAO extends AbstractDao<GameReport> {
   protected void insert( GameReport gameReport ) throws SQLException {
     connectSQL();
 
-    String query = "INSERT INTO ReportedGames(UserID, GameID, Explanation, Status) VALUES (%s, %s, '%s', %s)";
-    query = String.format( query, gameReport.getUserID(), gameReport.getGameID(), gameReport.getExplanation(), gameReport.getStatus() );
+    String query = "INSERT INTO ReportedGames(UserID, GameID, Explanation, Status)" +
+            " VALUES (%s, %s, '%s', %s)";
+    query = String.format( query, gameReport.getUserID(), gameReport.getGameID(),
+            gameReport.getExplanation(), gameReport.getStatus() );
 
     System.out.println( query );
 
@@ -157,7 +159,8 @@ public class GameReportDAO extends AbstractDao<GameReport> {
                     "WHERE UserID = " + gameReport.getUserID() +
                     " AND GameID = " + gameReport.getGameID();
 
-    query = String.format( query, gameReport.getUserID(), gameReport.getGameID(), gameReport.getExplanation(), gameReport.getStatus() );
+    query = String.format( query, gameReport.getUserID(), gameReport.getGameID(),
+            gameReport.getExplanation(), gameReport.getStatus() );
     query = query.replace( "false", "0" );
     query = query.replace( "true", "1" );
 
