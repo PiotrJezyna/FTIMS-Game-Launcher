@@ -2,13 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b891ae40-424e-44b5-9a57-debfed82da84" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/KartaOcenGier/src/main/java/fgl/kartaocen/ReviewCard.java" beforeDir="false" afterPath="$PROJECT_DIR$/KartaOcenGier/src/main/java/fgl/kartaocen/ReviewCard.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/KartaOcenGier/src/main/resources/RatingsCard.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/KartaOcenGier/src/main/resources/RatingsCard.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/KartaProduktu/src/main/java/fgl/product/ChangelogDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/KartaProduktu/src/main/java/fgl/product/ChangelogDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/KartaProduktu/src/main/java/fgl/product/GameManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/KartaProduktu/src/main/java/fgl/product/GameManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LokalnaBibliotekaGier/src/main/java/LocalGamesDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/LokalnaBibliotekaGier/src/main/java/LocalGamesDAO.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -196,22 +192,22 @@
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="740" y="251" key="FileChooserDialogImpl/0.0.1920.1080@0.0.1920.1080" timestamp="1579530217035" />
-    <state width="1898" height="514" key="GridCell.Tab.0.bottom" timestamp="1579579434565">
+    <state width="1898" height="514" key="GridCell.Tab.0.bottom" timestamp="1579582390148">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1898" height="514" key="GridCell.Tab.0.bottom/0.0.1920.1080@0.0.1920.1080" timestamp="1579579434565" />
-    <state width="1898" height="514" key="GridCell.Tab.0.center" timestamp="1579579434565">
+    <state width="1898" height="514" key="GridCell.Tab.0.bottom/0.0.1920.1080@0.0.1920.1080" timestamp="1579582390148" />
+    <state width="1898" height="514" key="GridCell.Tab.0.center" timestamp="1579582390148">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1898" height="514" key="GridCell.Tab.0.center/0.0.1920.1080@0.0.1920.1080" timestamp="1579579434565" />
-    <state width="1898" height="514" key="GridCell.Tab.0.left" timestamp="1579579434565">
+    <state width="1898" height="514" key="GridCell.Tab.0.center/0.0.1920.1080@0.0.1920.1080" timestamp="1579582390148" />
+    <state width="1898" height="514" key="GridCell.Tab.0.left" timestamp="1579582390148">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1898" height="514" key="GridCell.Tab.0.left/0.0.1920.1080@0.0.1920.1080" timestamp="1579579434565" />
-    <state width="1898" height="514" key="GridCell.Tab.0.right" timestamp="1579579434565">
+    <state width="1898" height="514" key="GridCell.Tab.0.left/0.0.1920.1080@0.0.1920.1080" timestamp="1579582390148" />
+    <state width="1898" height="514" key="GridCell.Tab.0.right" timestamp="1579582390148">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1898" height="514" key="GridCell.Tab.0.right/0.0.1920.1080@0.0.1920.1080" timestamp="1579579434565" />
+    <state width="1898" height="514" key="GridCell.Tab.0.right/0.0.1920.1080@0.0.1920.1080" timestamp="1579582390148" />
     <state width="1898" height="370" key="GridCell.Tab.1.bottom" timestamp="1579578647251">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
@@ -250,7 +246,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/KartaOcenGier/src/main/java/fgl/kartaocen/ReviewCard.java</url>
-          <line>491</line>
+          <line>493</line>
           <option name="timeStamp" value="17" />
         </line-breakpoint>
       </breakpoints>

@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.chart.BarChart?>
-<?import javafx.scene.chart.CategoryAxis?>
-<?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ProgressBar?>
@@ -15,7 +12,6 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <GridPane fx:id="mainGrid" alignment="CENTER" hgap="10.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" vgap="10.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fgl.kartaocen.ReviewCard">
@@ -92,22 +88,7 @@
             <Button fx:id="buttonShowReviewEditHistory" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#showReviewEditHistory" prefWidth="110.0" text="Show edit history" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
          </children>
       </GridPane>
-      <VBox fx:id="boxReviews" prefHeight="153.0" prefWidth="536.0" spacing="10.0" visible="false" GridPane.rowIndex="6">
-         <Button fx:id="buttonShowReview" mnemonicParsing="false" onAction="#test" text="Show review" GridPane.rowIndex="4" />
-         <Label fx:id="labelReview" text="Authors Reply" GridPane.rowIndex="5" />
-         <TextArea fx:id="textAreaReply" GridPane.rowIndex="7" />
-         <TextArea fx:id="textAreaID" GridPane.rowIndex="6" />
-         <Button fx:id="buttonAddReply" mnemonicParsing="false" onAction="#authorsReply" text="Add Reply" GridPane.rowIndex="8" />
-      </VBox>
       <Separator prefWidth="200.0" GridPane.rowIndex="3" />
-      <BarChart visible="false" GridPane.rowIndex="7" GridPane.vgrow="ALWAYS">
-        <xAxis>
-          <CategoryAxis side="BOTTOM" />
-        </xAxis>
-        <yAxis>
-          <NumberAxis autoRanging="false" side="LEFT" upperBound="10.0" />
-        </yAxis>
-      </BarChart>
       <GridPane hgap="10.0" vgap="10.0" GridPane.rowIndex="4">
          <columnConstraints>
             <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="275.0" minWidth="10.0" prefWidth="64.0" />
@@ -170,7 +151,6 @@
       <RowConstraints fx:id="rowConstraintsAuthorsReply" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="100.0" />
       <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="20.0" valignment="CENTER" />
       <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" valignment="CENTER" />
-      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="10.0" vgrow="ALWAYS" />
    </rowConstraints>
    <opaqueInsets>
       <Insets />

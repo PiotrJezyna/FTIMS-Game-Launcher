@@ -49,11 +49,12 @@ public class ReviewCard {
             Review review = currentGameReviewIterator.next();
             currentGameReviewIterator.previous();
             return review;
-        } else {
+        } else if (currentGameReviewIterator.hasPrevious()) {
             Review review = currentGameReviewIterator.previous();
             currentGameReviewIterator.next();
             return review;
         }
+        return null;
     }
 
     private Comment getCurrentGamesCurrentComment() {
@@ -91,6 +92,10 @@ public class ReviewCard {
 
     // ========================================================= Behaviour == //
     private void updateUserInterface() {
+        // .................................................................. //
+        // Set game title
+        labelGameTitle.setText(game.getTitle());
+
         // .................................................................. //
         // Update average rating information
         if (currentGameReviews.size() > 0) {
@@ -136,7 +141,7 @@ public class ReviewCard {
         // .................................................................. //
         // Set appropriate star rating
         for (int i = 0; i < ratingButtons.size(); ++i) {
-            if (i < getCurrentGameReview().getRating()) {
+            if (i < rating) {
                 ratingButtons.get(i).setText(Character.toString('\u2605'));
             } else {
                 ratingButtons.get(i).setText(Character.toString('\u2606'));
@@ -191,7 +196,9 @@ public class ReviewCard {
 
         // .................................................................. //
         // Set submission button's visibility
-        buttonSubmitReview.setVisible(!showReviewEditHistory);
+        buttonSubmitReview.setVisible(!showReviewEditHistory &&
+                getCurrentGameReview().getUser().getId().equals(
+                        loggedUser.getId()));
 
         // .................................................................. //
         // Set reviews' slider
@@ -322,7 +329,7 @@ public class ReviewCard {
         //--------------------------------------------------
         // todo: remove this
         loggedUser = (new UserDAO()).get(8L);
-        game = (new GameDAO()).get(9L);
+        game = (new GameDAO()).get(55L);
 
         // .................................................................. //
         getCurrentGamesReviews();
@@ -331,11 +338,11 @@ public class ReviewCard {
         resetReviewIterator();
         resetCommentIterators();
 
-        //--------------------------------------------------
-        // Set label
-        labelGameTitle.setText(game.getTitle());
+        rating = getCurrentGameReview() == null ? 10 :
+                getCurrentGameReview().getRating();
 
-        // Create button reference
+        // .................................................................. //
+        // Create button list
         ratingButtons = new ArrayList<>();
         ratingButtons.add(buttonRating1);
         ratingButtons.add(buttonRating2);
@@ -348,40 +355,37 @@ public class ReviewCard {
         ratingButtons.add(buttonRating9);
         ratingButtons.add(buttonRating10);
 
-//        progressBar.setVisible(false);
-
-
         // .................................................................. //
-        if (isUserAuthor()) {
-            //todo
-        } else {
-            if (hasUserReviewedBefore()) {
-                Review userReview = null;
-                for (Review review : currentGameReviews) {
-                    if (loggedUser.getId().equals(review.getUser().getId())) {
-                        userReview = review;
-                        rating = userReview.getRating();
-                        unhover();
-                    }
-                }
-
-                if (userCommentsPerReview.get(getCurrentUserReview()).size() > 1) {
-                    buttonShowReviewEditHistory.setVisible(true);
-                } else {
-                    buttonShowReviewEditHistory.setVisible(false);
-                    hboxNavigation.getChildren().get(0).setVisible(false);
-                    hboxNavigation.getChildren().get(1).setVisible(false);
-                }
-
-            } else {
-                labelReviewDate.setText("");
-                buttonShowReviewEditHistory.setVisible(false);
-                hboxNavigation.getChildren().get(0).setVisible(false);
-                hboxNavigation.getChildren().get(1).setVisible(false);
-//                authorsReplyConstraints.setPrefHeight(0.0);
-//                deleteRow(mainGrid, 4);
-            }
-        }
+//        if (isUserAuthor()) {
+//            //todo
+//        } else {
+//            if (hasUserReviewedBefore()) {
+//                Review userReview = null;
+//                for (Review review : currentGameReviews) {
+//                    if (loggedUser.getId().equals(review.getUser().getId())) {
+//                        userReview = review;
+//                        rating = userReview.getRating();
+//                        unhover();
+//                    }
+//                }
+//
+//                if (userCommentsPerReview.get(getCurrentUserReview()).size() > 1) {
+//                    buttonShowReviewEditHistory.setVisible(true);
+//                } else {
+//                    buttonShowReviewEditHistory.setVisible(false);
+//                    hboxNavigation.getChildren().get(0).setVisible(false);
+//                    hboxNavigation.getChildren().get(1).setVisible(false);
+//                }
+//
+//            } else {
+//                labelReviewDate.setText("");
+//                buttonShowReviewEditHistory.setVisible(false);
+//                hboxNavigation.getChildren().get(0).setVisible(false);
+//                hboxNavigation.getChildren().get(1).setVisible(false);
+////                authorsReplyConstraints.setPrefHeight(0.0);
+////                deleteRow(mainGrid, 4);
+//            }
+//        }
 
         updateUserInterface();
     }
@@ -442,7 +446,7 @@ public class ReviewCard {
         return ((double) sumOfRatings) / currentGameReviews.size();
     }
 
-    private int editNumber() {
+    private int numberOfEdits() {
         if (getCurrentUserReview() != null) {
             return userCommentsPerReview.get(getCurrentUserReview()).size();
         }
@@ -452,9 +456,11 @@ public class ReviewCard {
     @FXML
     private void addReview() throws SQLException {
         Review review = new Review(0L, game, loggedUser, rating);
-        Comment comment = new Comment(0L, review, textAreaReview.getText(), null, false);
+        Comment comment = new Comment(0L, review,
+                textAreaReview.getText() == null ? "" : textAreaReview.getText(),
+                null, false);
 
-        if (editNumber() == 0) {
+        if (numberOfEdits() == 0) {
             reviewDao.insert(review);
             currentGameReviews.add(review);
         } else {
@@ -463,20 +469,16 @@ public class ReviewCard {
             getCurrentUserReview().setRating(review.getRating());
         }
 
-//        if (getCurrentUserReview() == null
-//                || !userCommentsPerReview.get(getCurrentUserReview())
-//                .get(0).getContent().equals(textAreaReview.getText())) {
-        commentDao.insert(comment);
-        currentGameComments.add(comment);
-
-        labelReviewDate.setVisible(true);
-        labelReviewDate.setText(comment.getSubmissionDate().toString());
-//        }
+        if (getCurrentGamesCurrentComment() == null ||
+                !comment.getContent().equals(
+                        getCurrentGamesCurrentComment().getContent())) {
+            commentDao.insert(comment);
+            currentGameComments.add(comment);
+        }
 
         organizeUserCommentsAndAuthorsRepliesPerReview();
-
-//        labelStatus.setText("written correctly");
-
+        resetReviewIterator();
+        resetCommentIterators();
 
         updateUserInterface();
     }
@@ -516,46 +518,6 @@ public class ReviewCard {
     private void notifyAuthor() {
     }
 
-    //Now we use test()
-   /* @FXML
-    private void readReview() throws ClassNotFoundException, SQLException  {
-        Class.forName(JDBC_DRIVER);
-        Connection connection;
-        Statement statement;
-
-        connection = DriverManager.getConnection(DB_URL, USER, PASS);
-        statement = connection.createStatement();
-        String sql = "SELECT * from Opinions";
-        ResultSet resultSet = statement.executeQuery(sql);
-
-        while (resultSet.next()){
-            int id = resultSet.getInt("id");
-            int userID = resultSet.getInt("UserID");
-            int gameID = resultSet.getInt("GameID");
-            int rate = resultSet.getInt("Rate");
-            String comment = resultSet.getString("Comment");
-
-            for (int i = 0; i < 1; i++){
-                if ((long)gameID == game) {
-                    boxReviews.getChildren().add(new Label("id: " + Integer.toString(id) + " UserID: " + Integer.toString(userID) + " GameID: " +  Integer.toString(gameID) + " user's rate:  " + rate + " user's commentt: " + comment));
-                }
-            }
-        }
-    }*/
-    @FXML
-    private void test() throws ClassNotFoundException, SQLException {
-
-//        for (int i = 1; i < reviews.size(); i++) {
-//            review = reviews.get(i);
-//            for (int j = 0; j < 1; j++) {
-//                boxReviews.getChildren().add(new Label("ID: " + review.getId() + " " + "date: " + new java.sql.Date(Calendar.getInstance().getTime().getTime()) + " UserID: " + review.getUser() + " GameID: " + review.getGame() + " user's rate:  " + review.getRating() + " user's commentt: " + review.getComment()));
-//            }
-//        }
-    }
-
-    @FXML
-    private void test1(Review review) throws SQLException {
-    }
 
     @FXML
     private void authorsReply() throws SQLException {
@@ -570,9 +532,8 @@ public class ReviewCard {
     }
 
 
-    // TODO: Definitely refactor this!
-    private void setRating(int r) {
-        rating = r;
+    private void setRating(int value) {
+        rating = value;
 
         updateUserInterface();
     }
@@ -580,7 +541,9 @@ public class ReviewCard {
     private void unhover() {
         hover(rating);
 
+        String tempContent = textAreaReview.getText();
         updateUserInterface();
+        textAreaReview.setText(tempContent == null ? "" : tempContent);
     }
 
     private void hover(int stars) {
@@ -596,46 +559,14 @@ public class ReviewCard {
     @FXML
     private void showReviewEditHistory() {
         showReviewEditHistory = !showReviewEditHistory;
-//        if (showReviewEditHistory) {
-//            currentGamesCurrentCommentIterator = userCommentsPerReview.get(getCurrentUserReview()).listIterator(
-//                    userCommentsPerReview.get(getCurrentUserReview()).size()
-//            );
-//
-//            buttonShowReviewEditHistory.setText("Hide edit history");
-//            hboxNavigation.getChildren().get(0).setVisible(true);
-//            hboxNavigation.getChildren().get(1).setVisible(true);
-////            textAreaReview.setEditable(false);
-//            buttonSubmitReview.setVisible(false);
-//        } else {
-//            buttonShowReviewEditHistory.setText("Show edit history");
-//            hboxNavigation.getChildren().get(0).setVisible(false);
-//            hboxNavigation.getChildren().get(1).setVisible(false);
-////            textAreaReview.setEditable(true);
-//            buttonSubmitReview.setVisible(true);
-//        }
+
         updateUserInterface();
     }
 
     @FXML
     private void showReplyEditHistory() {
         showReplyEditHistory = !showReplyEditHistory;
-//        if (showReviewEditHistory) {
-//            currentGamesCurrentCommentIterator = userCommentsPerReview.get(getCurrentUserReview()).listIterator(
-//                    userCommentsPerReview.get(getCurrentUserReview()).size()
-//            );
-//
-//            buttonShowReviewEditHistory.setText("Hide edit history");
-//            hboxNavigation.getChildren().get(0).setVisible(true);
-//            hboxNavigation.getChildren().get(1).setVisible(true);
-////            textAreaReview.setEditable(false);
-//            buttonSubmitReview.setVisible(false);
-//        } else {
-//            buttonShowReviewEditHistory.setText("Show edit history");
-//            hboxNavigation.getChildren().get(0).setVisible(false);
-//            hboxNavigation.getChildren().get(1).setVisible(false);
-////            textAreaReview.setEditable(true);
-//            buttonSubmitReview.setVisible(true);
-//        }
+
         updateUserInterface();
     }
 
@@ -643,6 +574,8 @@ public class ReviewCard {
     private void goBackToUsersReview() {
         resetReviewIterator();
         resetCommentIterators();
+        showReviewEditHistory = false;
+        showReplyEditHistory = false;
 
         updateUserInterface();
     }
@@ -654,6 +587,7 @@ public class ReviewCard {
         resetCommentIterators();
         showReviewEditHistory = false;
         showReplyEditHistory = false;
+        rating = getCurrentGameReview().getRating();
 
         updateUserInterface();
     }
