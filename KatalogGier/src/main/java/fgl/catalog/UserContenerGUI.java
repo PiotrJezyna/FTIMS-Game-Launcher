@@ -1,36 +1,22 @@
 package fgl.catalog;
 
-import fgl.drive.DriveDao;
-import fgl.product.*;
-import fgl.userPanel.Login;
-
 import fgl.userPanel.User;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-//import java.awt.*;
-import java.io.File;
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class UserContenerGUI {
 
-    private UserContener uc = new UserContener();
+    private UserContener userContener = new UserContener();
 
     private int recordPerPage = 5;
     private int pageNumber = 0;
@@ -50,7 +36,7 @@ public class UserContenerGUI {
 
     @FXML
     public void setSearchPhrase(String searchPhrase) {
-        uc.setSearchPhrase(searchPhrase);
+        userContener.setSearchPhrase(searchPhrase);
     }
 
     public void initialize() throws Exception {
@@ -65,9 +51,9 @@ public class UserContenerGUI {
     public void displayUsers() throws Exception {
         usersBox.getChildren().clear();
 
-        List<User> displayedUsers = uc.getDisplayedUsers();
+        List<User> displayedUsers = userContener.getDisplayedUsers();
 
-        pageCount = (int)Math.ceil((double) uc.getRecordCount() / recordPerPage);
+        pageCount = (int)Math.ceil((double) userContener.getRecordCount() / recordPerPage);
 
         int start = pageNumber * recordPerPage;
         int length = ((displayedUsers.size() - start) < recordPerPage) ? (displayedUsers.size() - start) : recordPerPage;
