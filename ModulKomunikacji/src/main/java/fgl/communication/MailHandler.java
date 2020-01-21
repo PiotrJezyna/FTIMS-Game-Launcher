@@ -78,8 +78,10 @@ public final class MailHandler {
                 "\n\n This is a JavaMail test...!" );
       }
       Transport.send( message );
+      System.out.println( message );
     } catch ( MessagingException e ) {
-      throw new RuntimeException( e );
+      e.printStackTrace();
+//      throw new RuntimeException( e );
     }
   }
 
@@ -107,6 +109,11 @@ public final class MailHandler {
             "\n\n Aby przypomnieć hasło prosimy " +
             "wpisać ten kod potwierdzający: " + reminderCode +
             FOOTER;
+  }
+
+  public static void main(String[] args) {
+    User u = new User( "ble", "216894@edu.p.lodz.pl" );
+    sendMail( u, "block" );
   }
 
 }

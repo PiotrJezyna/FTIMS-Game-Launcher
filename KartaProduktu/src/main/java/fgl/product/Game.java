@@ -11,6 +11,7 @@ public class Game {
     private String description;
     private Integer userCount;
     private boolean isReported;
+    private boolean isDeleted;
 
     public Game(Long userId, String title, String tags, String genre, String description) {
         this.userId = userId;
@@ -31,6 +32,21 @@ public class Game {
         this.description = description;
         this.userCount = userCount;
         this.isReported = isReported;
+        this.isDeleted = false;
+    }
+
+    public Game( Long id, Long userId, String title, Integer version, String tags, String genre, String description, Integer userCount, boolean isReported, boolean isDeleted ) {
+
+        this.id = id;
+        this.userId = userId;
+        this.title = title;
+        this.version = version;
+        this.tags = tags;
+        this.genre = genre;
+        this.description = description;
+        this.userCount = userCount;
+        this.isReported = isReported;
+        this.isDeleted = isDeleted;
     }
 
     public Long getId() {
@@ -68,6 +84,11 @@ public class Game {
         return isReported;
     }
 
+    public boolean isDeleted() {
+
+        return isDeleted;
+    }
+
     public void setTitle(String title) {
 
         this.title = title;
@@ -96,6 +117,11 @@ public class Game {
     public void setReported(boolean reported) {
 
         isReported = reported;
+    }
+
+    public void setDeleted(boolean deleted) {
+
+        isDeleted = deleted;
     }
 
     public Integer getVersion()

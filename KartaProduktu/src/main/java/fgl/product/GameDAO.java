@@ -1,7 +1,6 @@
 package fgl.product;
 
 import fgl.database.AbstractDao;
-
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +14,7 @@ public class GameDAO extends AbstractDao<Game> {
 
         try {
 
-            String query = "SELECT UserID, Title, Version, Tags, UserCount, IsReported " +
+            String query = "SELECT UserID, Title, Version, Tags, UserCount, IsReported, IsDeleted " +
                            "FROM Games WHERE ID = %s";
             query = String.format(query, id);
 
@@ -31,8 +30,9 @@ public class GameDAO extends AbstractDao<Game> {
             String tags = rs.getString("Tags");
             Integer userCount = rs.getInt("UserCount");
             boolean isReported = rs.getBoolean("IsReported");
+            boolean isDeleted = rs.getBoolean("IsDeleted");
 
-            return new Game(id, userId, title, version, tags, null, null, userCount, isReported);
+            return new Game( id, userId, title, version, tags, null, null, userCount, isReported, isDeleted );
 
         } catch ( SQLException e ) {
 
@@ -53,7 +53,7 @@ public class GameDAO extends AbstractDao<Game> {
 
         try {
 
-            String query = "SELECT ID, UserID, Title, Version, Tags, UserCount, IsReported FROM Games";
+            String query = "SELECT ID, UserID, Title, Version, Tags, UserCount, IsReported, IsDeleted FROM Games";
             stmt = conn.createStatement();
             rs = stmt.executeQuery( query );
 
@@ -68,8 +68,9 @@ public class GameDAO extends AbstractDao<Game> {
                 String tags = rs.getString("Tags");
                 Integer userCount = rs.getInt("UserCount");
                 boolean isReported = rs.getBoolean("IsReported");
+                boolean isDeleted = rs.getBoolean("IsDeleted");
 
-                Game game = new Game(gameId, userId, title, version, tags, null, null, userCount, isReported);
+                Game game = new Game( gameId, userId, title, version, tags, null, null, userCount, isReported, isDeleted );
                 games.add( game );
             }
 
@@ -108,8 +109,9 @@ public class GameDAO extends AbstractDao<Game> {
                 String tags = rs.getString("Tags");
                 Integer userCount = rs.getInt("UserCount");
                 boolean isReported = rs.getBoolean("IsReported");
+                boolean isDeleted = rs.getBoolean("IsDeleted");
 
-                Game game = new Game(gameId, userId, title, version, tags, null, null, userCount, isReported);
+                Game game = new Game( gameId, userId, title, version, tags, null, null, userCount, isReported, isDeleted );
                 games.add( game );
             }
 
@@ -166,11 +168,12 @@ public class GameDAO extends AbstractDao<Game> {
                         "Tags = '%s', " +
                         "UserCount = %s, " +
                         "IsReported = %s " +
+                        "IsDeleted = %s " +
                         "WHERE ID = " + game.getId();
 
-        query = String.format(query, game.getUserId(), game.getTitle(), game.getVersion(), game.getTags(), game.getUserCount(), game.isReported());
-        query = query.replace("false", "0");
-        query = query.replace("true", "1");
+        query = String.format( query, game.getUserId(), game.getTitle(), game.getVersion(), game.getTags(), game.getUserCount(), game.isReported(), game.isDeleted() );
+        query = query.replace( "false", "0" );
+        query = query.replace( "true", "1" );
 
         System.out.println( query );
 
@@ -181,7 +184,7 @@ public class GameDAO extends AbstractDao<Game> {
 
         } catch ( SQLException e ) {
 
-            throw new SQLException(e.getMessage());
+            throw new SQLException( e.getMessage() );
 
         } finally {
 
@@ -195,7 +198,7 @@ public class GameDAO extends AbstractDao<Game> {
         connectSQL();
 
         String query = "DELETE FROM Games WHERE ID = %s";
-        query = String.format(query, game.getId());
+        query = String.format( query, game.getId() );
 
         System.out.println( query );
 
