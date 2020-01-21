@@ -14,8 +14,8 @@ public class GameDAO extends AbstractDao<Game> {
 
         try {
 
-            String query = "SELECT UserID, Title, Version, Tags, UserCount, IsReported, IsDeleted " +
-                           "FROM Games WHERE ID = %s";
+            String query = "SELECT UserID, Title, Version, Tags, UserCount, IsReported " +
+                           "FROM Games WHERE ID = %s AND IsDeleted = 0";
             query = String.format(query, id);
 
             System.out.println(query);
@@ -30,9 +30,8 @@ public class GameDAO extends AbstractDao<Game> {
             String tags = rs.getString("Tags");
             Integer userCount = rs.getInt("UserCount");
             boolean isReported = rs.getBoolean("IsReported");
-            boolean isDeleted = rs.getBoolean("IsDeleted");
 
-            return new Game( id, userId, title, version, tags, null, null, userCount, isReported, isDeleted );
+            return new Game( id, userId, title, version, tags, null, null, userCount, isReported );
 
         } catch ( SQLException e ) {
 
@@ -53,7 +52,8 @@ public class GameDAO extends AbstractDao<Game> {
 
         try {
 
-            String query = "SELECT ID, UserID, Title, Version, Tags, UserCount, IsReported, IsDeleted FROM Games";
+            String query = "SELECT ID, UserID, Title, Version, Tags, UserCount, IsReported FROM Games " +
+                    "WHERE IsDeleted = 0";
             stmt = conn.createStatement();
             rs = stmt.executeQuery( query );
 
@@ -68,9 +68,8 @@ public class GameDAO extends AbstractDao<Game> {
                 String tags = rs.getString("Tags");
                 Integer userCount = rs.getInt("UserCount");
                 boolean isReported = rs.getBoolean("IsReported");
-                boolean isDeleted = rs.getBoolean("IsDeleted");
 
-                Game game = new Game( gameId, userId, title, version, tags, null, null, userCount, isReported, isDeleted );
+                Game game = new Game( gameId, userId, title, version, tags, null, null, userCount, isReported );
                 games.add( game );
             }
 
@@ -109,9 +108,8 @@ public class GameDAO extends AbstractDao<Game> {
                 String tags = rs.getString("Tags");
                 Integer userCount = rs.getInt("UserCount");
                 boolean isReported = rs.getBoolean("IsReported");
-                boolean isDeleted = rs.getBoolean("IsDeleted");
 
-                Game game = new Game( gameId, userId, title, version, tags, null, null, userCount, isReported, isDeleted );
+                Game game = new Game( gameId, userId, title, version, tags, null, null, userCount, isReported );
                 games.add( game );
             }
 
@@ -192,6 +190,12 @@ public class GameDAO extends AbstractDao<Game> {
         }
     }
 
+    /**
+     * DEPRACATED, DO NOT USE
+     * @param game
+     * @throws SQLException
+     */
+    @Deprecated
     @Override
     public void delete( Game game ) throws SQLException {
 
