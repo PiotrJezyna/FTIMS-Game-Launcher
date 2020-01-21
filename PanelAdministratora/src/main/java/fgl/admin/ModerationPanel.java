@@ -1,42 +1,27 @@
 package fgl.admin;
 
-import fgl.communication.MailHandler;
 import fgl.product.Game;
 import fgl.product.GameDAO;
 import fgl.userPanel.User;
 import fgl.userPanel.UserDAO;
-
-import fgl.userPanel.UserType;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ModerationPanel {
-
-  // Data
-  private static final String TITLE = "Moderation Panel";
-  private static final String PATH = "/ModerationPanel.fxml";
   protected static UserDAO userDAO = new UserDAO();
   protected static GameDAO gameDAO = new GameDAO();
+  protected static GameReportDAO reportDAO = new GameReportDAO();
+  private static final String TITLE = "Moderation Panel";
+  private static final String PATH = "/ModerationPanel.fxml";
   protected List<User> users;
   protected List<Game> reportedGames;
-
   @FXML
   protected ListView<UserBox> usersListView;
-
   @FXML
   protected ListView<ReportedGameBox> reportedGamesListView;
 
@@ -44,7 +29,7 @@ public class ModerationPanel {
   }
 
   @FXML
-  void initialize(){
+  void initialize() {
     refresh();
   }
 
@@ -54,14 +39,6 @@ public class ModerationPanel {
 
   public String getPath() {
     return PATH;
-  }
-
-  protected UserDAO getUserDAO() {
-    return userDAO;
-  }
-
-  protected GameDAO getGameDAO() {
-    return gameDAO;
   }
 
   public void refresh() {
@@ -122,22 +99,36 @@ public class ModerationPanel {
       return false;
     }
 
-    List<ReportedGameBox> list = new ArrayList<>();
-
-    for ( Game game : reportedGames ) {
-      list.add( new ReportedGameBox( game ) );
-    }
-
-    ObservableList<ReportedGameBox> myObservableList = FXCollections.observableList( list );
-    reportedGamesListView.setItems( myObservableList );
+    makeReportedGamesListView();
 
     return true;
   }
 
-  public static boolean discardReport( Game game ) {
+  private void makeReportedGamesListView() {
+    List<ReportedGameBox> list = new ArrayList<>();
+    reportedGamesListView.setItems( null );
+
+    for ( Game game : reportedGames ) {
+      list.add( new ReportedGameBox( game, this ) );
+    }
+
+    ObservableList<ReportedGameBox> myObservableList =
+            FXCollections.observableList( list );
+    reportedGamesListView.setItems( myObservableList );
+  }
+
+  public boolean discardReport( Game game, List<GameReport> reports ) {
     try {
       game.setReported( false );
       gameDAO.update( game );
+
+      for ( GameReport gr : reports ) {
+        gr.setStatus( true );
+        reportDAO.update( gr );
+      }
+
+      reportedGames.remove( game );
+      makeReportedGamesListView();
     } catch ( SQLException e ) {
       e.printStackTrace();
       return false;
@@ -145,9 +136,19 @@ public class ModerationPanel {
     return true;
   }
 
-  public static boolean deleteGame( Game game ) {
+  public boolean deleteGame( Game game, List<GameReport> reports ) {
     try {
-      gameDAO.delete( game );
+      //TODO games 'deleting'
+      game.setDeleted( true );
+      gameDAO.update( game );
+
+      for ( GameReport gr : reports ) {
+        gr.setStatus( true );
+        reportDAO.update( gr );
+      }
+
+      reportedGames.remove( game );
+      makeReportedGamesListView();
     } catch ( SQLException e ) {
       e.printStackTrace();
       return false;

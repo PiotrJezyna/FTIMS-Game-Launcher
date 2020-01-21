@@ -12,7 +12,7 @@ import java.util.List;
 public class ChangelogDAO extends AbstractDao<Changelog> {
 
     @Override
-    protected Changelog get(Long id) throws SQLException {
+    public Changelog get(Long id) throws SQLException {
 
         String query = "SELECT ID, GameID, Version, Description, Date " +
                 "FROM Changelog WHERE ID = %s";
@@ -86,7 +86,7 @@ public class ChangelogDAO extends AbstractDao<Changelog> {
     }
 
     @Override
-    protected List<Changelog> getAll() throws SQLException {
+    public List<Changelog> getAll() throws SQLException {
 
         connectSQL();
 
@@ -125,7 +125,7 @@ public class ChangelogDAO extends AbstractDao<Changelog> {
     }
 
     @Override
-    protected void insert(Changelog changelog) throws SQLException {
+    public void insert(Changelog changelog) throws SQLException {
 
         connectSQL();
 
@@ -150,7 +150,7 @@ public class ChangelogDAO extends AbstractDao<Changelog> {
     }
 
     @Override
-    protected void update(Changelog changelog) throws SQLException {
+    public void update(Changelog changelog) throws SQLException {
 
         connectSQL();
 
@@ -183,7 +183,7 @@ public class ChangelogDAO extends AbstractDao<Changelog> {
     }
 
     @Override
-    protected void delete(Changelog changelog) throws SQLException {
+    public void delete(Changelog changelog) throws SQLException {
 
 
         connectSQL();

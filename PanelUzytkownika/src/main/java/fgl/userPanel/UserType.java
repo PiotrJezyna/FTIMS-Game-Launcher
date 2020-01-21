@@ -1,17 +1,13 @@
 package fgl.userPanel;
 
 public enum UserType {
-  ADMINISTRATOR( "ADMINISTRATOR" ),
-  MODERATOR( "MODERATOR" ),
-  USER( "USER" );
+    ADMINISTRATOR( "ADMINISTRATOR" ),
+    MODERATOR( "MODERATOR" ),
+    USER( "USER" );
 
-  private String name;
+    String name;
 
-  UserType( String name ) {
-    this.name = name;
-  }
-
-  public String getName() {
-    return name;
-  }
+    private UserType(String name) {
+        this.name = name;
+    }
 }
