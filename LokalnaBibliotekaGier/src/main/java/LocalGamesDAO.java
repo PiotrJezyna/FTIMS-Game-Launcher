@@ -94,16 +94,18 @@ public class LocalGamesDAO extends AbstractDao<Game> {
         for(int i = 0; i <= games.size(); i++)
         {
             connectSQL();
-            String query = "SELECT ID, UserID, Tags, UserCount, IsReported FROM Games WHERE Title = '" + gameNames[i] + "'";
+            String query = "SELECT ID, UserID, Version, Tags, UserCount, IsReported, IsDeleted FROM Games WHERE Title = '" + gameNames[i] + "'";
             stmt = conn.createStatement();
             rs = stmt.executeQuery(query);
             if (rs.next()) {
                 Long gameId = rs.getLong("ID");
                 Long userId = rs.getLong("UserID");
+                Integer version = rs.getInt("Version");
                 String tags = rs.getString("Tags");
                 Integer userCount = rs.getInt("UserCount");
                 boolean isReported = rs.getBoolean("IsReported");
-                localGames.add(new Game(gameId, userId, gameNames[i], tags, null, null, userCount, isReported));
+                boolean isDeleted = rs.getBoolean("IsDeleted");
+                localGames.add(new Game(gameId, userId, gameNames[i], version, tags, null, null, userCount, isReported, isDeleted));
             }
             disconnectSQL();
         }
