@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="root" prefHeight="788.0" prefWidth="632.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fgl.product.GameManager">
    <children>
@@ -49,11 +52,11 @@
       <TextArea fx:id="changelog" editable="false" layoutX="43.0" layoutY="525.0" prefHeight="119.0" prefWidth="494.0" />
       <Label fx:id="changelogDate" layoutX="488.0" layoutY="644.0" text="01-01-2001" />
       <Button layoutX="489.0" layoutY="447.0" mnemonicParsing="false" onAction="#downloadGameButton" text="Pobierz!" />
-      <TextField fx:id="updatedGamePathZip" layoutX="54.0" layoutY="676.0" prefHeight="26.0" prefWidth="282.0" visible="false" />
-      <TextField fx:id="updatedGamePathScreenshot" layoutX="54.0" layoutY="727.0" prefHeight="26.0" prefWidth="282.0" visible="false" />
-      <Label fx:id="pathZipLabel" layoutX="54.0" layoutY="652.0" prefHeight="18.0" prefWidth="210.0" text="Ścieżka do pliku z grą" visible="false" />
-      <Label fx:id="pathScreenshotLabel" layoutX="54.0" layoutY="709.0" prefHeight="18.0" prefWidth="210.0" text="Ścieżka do zrzutu ekranu" visible="false" />
-      <Button fx:id="pathZipButton" layoutX="347.0" layoutY="676.0" mnemonicParsing="false" onAction="#updatedGamePathZipButton" prefHeight="26.0" prefWidth="94.0" text="Przeglądaj" visible="false" />
-      <Button fx:id="pathScreenshotButton" layoutX="347.0" layoutY="727.0" mnemonicParsing="false" onAction="#updatedGamePathScreenshotButton" prefHeight="26.0" prefWidth="94.0" text="Przeglądaj" visible="false" />
+      <TextField fx:id="updatedGamePathZip" layoutX="263.0" layoutY="196.0" prefHeight="26.0" prefWidth="255.0" visible="false" />
+      <TextField fx:id="updatedGamePathScreenshot" layoutX="263.0" layoutY="247.0" prefHeight="26.0" prefWidth="255.0" visible="false" />
+      <Label fx:id="pathZipLabel" layoutX="263.0" layoutY="172.0" prefHeight="18.0" prefWidth="210.0" text="Ścieżka do pliku z grą" visible="false" />
+      <Label fx:id="pathScreenshotLabel" layoutX="263.0" layoutY="229.0" prefHeight="18.0" prefWidth="210.0" text="Ścieżka do zrzutu ekranu" visible="false" />
+      <Button fx:id="pathZipButton" layoutX="529.0" layoutY="196.0" mnemonicParsing="false" onAction="#updatedGamePathZipButton" prefHeight="26.0" prefWidth="94.0" text="Przeglądaj" visible="false" />
+      <Button fx:id="pathScreenshotButton" layoutX="529.0" layoutY="247.0" mnemonicParsing="false" onAction="#updatedGamePathScreenshotButton" prefHeight="26.0" prefWidth="94.0" text="Przeglądaj" visible="false" />
    </children>
 </AnchorPane>

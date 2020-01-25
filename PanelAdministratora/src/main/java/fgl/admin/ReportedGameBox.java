@@ -59,10 +59,8 @@ public class ReportedGameBox extends HBox {
           GameManager gm = fxmlLoader.getController();
           gm.ShowProductCard( game );
         } catch ( IOException e ) {
-          //TODO hande io exception
           e.printStackTrace();
         } catch ( SQLException e ) {
-          //TODO hande sql exception
           e.printStackTrace();
         }
       }

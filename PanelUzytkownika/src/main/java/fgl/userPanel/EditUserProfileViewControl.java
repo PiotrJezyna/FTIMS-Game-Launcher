@@ -37,9 +37,6 @@ public class EditUserProfileViewControl {
     public TextField surnameEditField;
 
     @FXML
-    public TextField usernameEditField;
-
-    @FXML
     public TextField emailEditField;
 
     @FXML
@@ -52,7 +49,6 @@ public class EditUserProfileViewControl {
     protected void initialize() {
         nameEditField.setText(getLoggedInUserName());
         surnameEditField.setText(getLoggedInUserSurname());
-        usernameEditField.setText(getLoggedInUserUsername());
         emailEditField.setText(getLoggedInUserEmail());
     }
 
@@ -104,7 +100,7 @@ public class EditUserProfileViewControl {
 
         String name = nameEditField.getText();
         String surname = surnameEditField.getText();
-        String username = usernameEditField.getText();
+        String username = getLoggedInUserUsername();
         String email = emailEditField.getText();
 
         Text usernameText = new Text();

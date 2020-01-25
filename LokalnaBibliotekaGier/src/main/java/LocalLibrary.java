@@ -1,5 +1,6 @@
 import fgl.product.Game;
 import fgl.product.GameManager;
+import fgl.userPanel.UserSession;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -115,7 +116,6 @@ public class LocalLibrary {
                         preparedStatement.setLong(1, userID);
                         preparedStatement.setLong(2, game.getId());
                         final ResultSet resultSet = preparedStatement.executeQuery();
-                        System.out.println(resultSet.next());
                         while(resultSet.next()){
                             statsString[0] = "" + resultSet.getDouble(3);
                             System.out.println(resultSet.getDouble(3));
@@ -194,7 +194,7 @@ public class LocalLibrary {
     }
 
     public LocalLibrary() throws ClassNotFoundException {
-        this.userID = 1L;
+        this.userID = UserSession.getUserSession().getCurrentUser().getId();
         gameList = new ArrayList<Statistics>();
 
         Class.forName(JDBC_DRIVER);

@@ -48,10 +48,4 @@ public class AdminPageController {
     this.panel = panel;
   }
 
-  public void showGameCard( Game game ) {
-    // TODO ProductCard integration
-    // ProductCard pd = new ProductCard( game );
-    // pd.show();
-  }
-
 }

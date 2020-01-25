@@ -43,11 +43,9 @@ public class ModerationPanel {
 
   public void refresh() {
     if ( !loadAllUsersFromDB() ) {
-      // TODO show error window
       System.out.println( "Users data was not loaded." );
     }
     if ( !loadReportedGamesFromDB() ) {
-      // TODO show error window
       System.out.println( "Reported games data was not loaded." );
     }
   }
@@ -138,7 +136,6 @@ public class ModerationPanel {
 
   public boolean deleteGame( Game game, List<GameReport> reports ) {
     try {
-      //TODO games 'deleting'
       game.setDeleted( true );
       gameDAO.update( game );
 

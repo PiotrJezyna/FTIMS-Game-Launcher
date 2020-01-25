@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="218.0" prefWidth="286.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fgl.userPanel.UserProfileViewControl">
+<AnchorPane prefHeight="218.0" prefWidth="286.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fgl.userPanel.UserProfileViewControl">
    <children>
       <TextField fx:id="nameField" editable="false" layoutX="71.0" layoutY="30.0" />
-      <TextField fx:id="surnameField" editable="false" layoutX="71.0" layoutY="60.0" />
-      <TextField fx:id="usernameField" editable="false" layoutX="71.0" layoutY="90.0" />
-      <TextField fx:id="emailField" editable="false" layoutX="71.0" layoutY="120.0" />
-      <Button fx:id="buttonEditProfile" layoutX="137.0" layoutY="159.0" mnemonicParsing="false" onAction="#goToEditProfile" prefHeight="25.0" prefWidth="83.0" text="Edit profile" />
-      <Button layoutX="71.0" layoutY="159.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="59.0" text="Logout" onAction="#logoutUser" />
+      <TextField fx:id="surnameField" editable="false" layoutX="71.0" layoutY="77.0" />
+      <TextField fx:id="emailField" editable="false" layoutX="71.0" layoutY="128.0" />
+      <Button fx:id="buttonEditProfile" layoutX="137.0" layoutY="167.0" mnemonicParsing="false" onAction="#goToEditProfile" prefHeight="25.0" prefWidth="83.0" text="Edit profile" />
+      <Button layoutX="71.0" layoutY="167.0" mnemonicParsing="false" onAction="#logoutUser" prefHeight="25.0" prefWidth="59.0" text="Logout" />
+      <Label layoutX="71.0" layoutY="14.0" text="Name:" />
+      <Label layoutX="71.0" layoutY="60.0" text="Surname:" />
+      <Label layoutX="71.0" layoutY="109.0" text="Email:" />
    </children>
 </AnchorPane>
