@@ -1,5 +1,6 @@
 package fgl.communication;
 
+import fgl.product.Game;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
@@ -43,18 +44,38 @@ public final class MailHandler {
       message.setFrom( new InternetAddress( EMAIL ) );
       message.setRecipients( Message.RecipientType.TO,
               InternetAddress.parse( email ) );
-
       if ( type.compareTo( "registration" ) == 0 ) {
         message.setSubject( "Rejestracja" );
         message.setText( registrationText( to, confirmCode ) );
       } else if ( type.compareTo( "reminder" ) == 0 ) {
         message.setSubject( "Przypomnienie hasła" );
         message.setText( reminderText( to, confirmCode ) );
+      } else {
+        throw new MessagingException( "Message type not found" );
       }
-
       Transport.send( message );
     } catch ( MessagingException e ) {
       throw new RuntimeException( e );
+    }
+  }
+
+  public static void sendMailWithGame( String to, String email, String type, Game game ) {
+    Session session = makeSession();
+    try {
+      Message message = new MimeMessage( session );
+      message.setFrom( new InternetAddress( EMAIL ) );
+      message.setRecipients( Message.RecipientType.TO,
+              InternetAddress.parse( email ) );
+      if ( type.compareTo( "game_delete" ) == 0 ) {
+        message.setSubject( "Twoje gra została usunięta" );
+        message.setText( deleteGameText( to, game ) );
+      } else {
+        throw new MessagingException( "Message type not found" );
+      }
+      Transport.send( message );
+      System.out.println( message );
+    } catch ( MessagingException e ) {
+      e.printStackTrace();
     }
   }
 
@@ -66,49 +87,52 @@ public final class MailHandler {
       message.setRecipients( Message.RecipientType.TO,
               InternetAddress.parse( email ) );
       if ( type.compareTo( "block" ) == 0 ) {
-        message.setSubject( "Account Blocked" );
+        message.setSubject( "Twoje konto zostało zablokowane" );
         message.setText( blockText( to ) );
       } else if ( type.compareTo( "unblock" ) == 0 ) {
-        message.setSubject( "Account Unblocked" );
+        message.setSubject( "Twoje konto zostało odblokowane" );
         message.setText( unblockText( to ) );
       } else {
-        message.setSubject( "Testing Subject" );
-        message.setText( "Hello this is not spam," +
-                "\n\n This is a JavaMail test...!" );
+        throw new MessagingException( "Message type not found" );
       }
       Transport.send( message );
       System.out.println( message );
     } catch ( MessagingException e ) {
       e.printStackTrace();
-//      throw new RuntimeException( e );
     }
   }
 
-  public static String blockText( String to ) {
+  private static String blockText( String to ) {
     return "Witaj " + to + "," +
-            "\n\n Your accont on Ftims Game Luncher has been blocked." +
+            "\n\n Twoje konto na Ftims Game Luncher zostało zablokowane." +
             FOOTER;
   }
 
-  public static String unblockText( String to ) {
+  private static String unblockText( String to ) {
     return "Witaj " + to + "," +
-            "\n\n Your accont on Ftims Game Luncher has been unblocked." +
+            "\n\n Twoje konto na Ftims Game Luncher zostało odblokowane." +
             FOOTER;
   }
 
-  public static String registrationText( String to, String confirmCode ) {
+  private static String registrationText( String to, String confirmCode ) {
     return "Witaj " + to + "," +
             "\n\n Aby dokończyć proces rejestracji prosimy " +
             "wpisać ten kod potwierdzający: " + confirmCode +
             FOOTER;
   }
 
-  public static String reminderText( String to, String reminderCode ) {
+  private static String reminderText( String to, String reminderCode ) {
     return "Witaj " + to + "," +
             "\n\n Aby przypomnieć hasło prosimy " +
             "wpisać ten kod potwierdzający: " + reminderCode +
             FOOTER;
   }
 
+  private static String deleteGameText(String to, Game game) {
+    return "Witaj " + to + "," +
+            "\n\n Twoja gra " + game.getTitle() +
+            " została usunięta z naszej biblioteki gier." +
+            FOOTER;
+  }
 }
 

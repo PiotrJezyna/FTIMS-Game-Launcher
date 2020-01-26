@@ -1,5 +1,6 @@
 package fgl.admin;
 
+import fgl.communication.MailHandler;
 import fgl.product.Game;
 import fgl.product.GameManager;
 import fgl.userPanel.User;
@@ -27,7 +28,7 @@ public class ReportedGameBox extends HBox {
     label.setMaxWidth( Double.MAX_VALUE );
     HBox.setHgrow( label, Priority.ALWAYS );
     List<GameReport> finalReports = makeReportsListFor( game );
-    Button discard = new Button( "Discard" );
+    Button discard = new Button( "Oddal zgłoszenie" );
     discard.setOnAction( new EventHandler<ActionEvent>() {
       @Override
       public void handle( ActionEvent event ) {
@@ -35,15 +36,21 @@ public class ReportedGameBox extends HBox {
       }
     } );
 
-    Button delete = new Button( "Delete" );
+    Button delete = new Button( "Usuń grę z biblioteki" );
     delete.setOnAction( new EventHandler<ActionEvent>() {
       @Override
       public void handle( ActionEvent event ) {
         mp.deleteGame( game, finalReports );
+        try {
+          User author = mp.getUserDAO().get( game.getUserId() );
+          MailHandler.sendMailWithGame( author.getUsername(), author.getEmail(), "game_delete", game );
+        } catch (SQLException e) {
+          e.printStackTrace();
+        }
       }
     } );
     Button showWhy = makeShowWhyButton( finalReports, mp );
-    Button show = new Button( "Show game card" );
+    Button show = new Button( "Pokaż kartę gry" );
     show.setOnAction( new EventHandler<ActionEvent>() {
       @Override
       public void handle( ActionEvent event ) {
@@ -53,7 +60,7 @@ public class ReportedGameBox extends HBox {
           );
           Parent root = fxmlLoader.load();
           Stage stage = new Stage();
-          stage.setTitle( "Reported Game Product Card" );
+          stage.setTitle( "Karta zgłoszonej gry" );
           stage.setScene( new Scene( root ) );
           stage.show();
           GameManager gm = fxmlLoader.getController();

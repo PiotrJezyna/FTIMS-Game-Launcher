@@ -41,6 +41,14 @@ public class ModerationPanel {
     return PATH;
   }
 
+  public static UserDAO getUserDAO() {
+    return userDAO;
+  }
+
+  public static GameDAO getGameDAO() {
+    return gameDAO;
+  }
+
   public void refresh() {
     if ( !loadAllUsersFromDB() ) {
       System.out.println( "Users data was not loaded." );

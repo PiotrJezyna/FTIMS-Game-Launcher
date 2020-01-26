@@ -25,20 +25,20 @@ public class UserBox extends HBox {
 
     button = new Button();
     if ( user.isBlocked() ) {
-      button = new Button( "Unblock user" );
+      button = new Button( "Odblokuj użytkownika" );
     } else {
-      button = new Button( "Block user" );
+      button = new Button( "Zablokuj użytkownika" );
     }
     button.setOnAction( new EventHandler<ActionEvent>() {
       @Override
       public void handle( ActionEvent event ) {
         if ( user.isBlocked() ) {
           ModerationPanel.unblockUser( user );
-          button.setText( "Block user" );
+          button.setText( "Zablokuj użytkownika" );
           MailHandler.sendMail( user.getUsername(), user.getEmail(), "unblock" );
         } else {
           ModerationPanel.blockUser( user );
-          button.setText( "Unblock user" );
+          button.setText( "Odblokuj użytkownika" );
           MailHandler.sendMail( user.getUsername(), user.getEmail(), "block" );
         }
       }
@@ -52,8 +52,6 @@ public class UserBox extends HBox {
       choiceBox.getSelectionModel().selectedItemProperty().addListener(
               ( ObservableValue<? extends UserType> observable,
                 UserType oldValue, UserType newValue ) -> {
-                System.out.println( newValue );
-                user.setType( newValue );
                 AdministrationPanel.changePermissions( user, newValue );
               } );
       this.getChildren().addAll( label, button, choiceBox );
