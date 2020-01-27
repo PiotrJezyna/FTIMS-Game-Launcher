@@ -16,7 +16,7 @@ public abstract class AbstractDao<T> {
     static final String USER = "5VexXpVWzU";
     static final String PASS = "apQqybLdoW";
 
-    protected Connection conn = null;
+    static protected Connection conn = null;
     protected Statement stmt = null;
     protected ResultSet rs = null;
 
@@ -33,7 +33,9 @@ public abstract class AbstractDao<T> {
             e.printStackTrace();
         }
 
-        conn = DriverManager.getConnection( DB_URL, USER, PASS );
+        if (conn == null) {
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+        }
     }
 
     /**
@@ -42,7 +44,9 @@ public abstract class AbstractDao<T> {
      * @throws SQLException
      */
     public void disconnectSQL() throws SQLException {
-        conn.close();
+        // IMPORTANT: Commenting this line out is only a temporary solution!
+        // TODO: Implement database connection closing when user quits the app.
+        // conn.close();
     }
 
     protected abstract T get( Long id ) throws SQLException;
