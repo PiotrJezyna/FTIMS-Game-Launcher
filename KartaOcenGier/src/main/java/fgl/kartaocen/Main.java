@@ -21,8 +21,15 @@ public class Main extends Application {
         primaryStage.show();
 
 
-//        //todo:only test
+        //todo:only test
 //        ReviewCard r = loader.getController();
+//        r.setGame(1L); //nottetris
+//        r.setGame(2L); //witcher
+//        r.setLoggedUser(1L);//author
+//        r.setLoggedUser(2L);
+//        r.setLoggedUser(91L);
+//        r.setLoggedUser(92L);
+//        r.setLoggedUser(93L);
 //        r.init();
     }
 

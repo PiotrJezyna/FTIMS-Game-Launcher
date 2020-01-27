@@ -3,24 +3,24 @@ package fgl.kartaocen;
 
 // ////////////////////////////////////////////////////////////////// Imports //
 // ================================================================ JavaFX == //
-import fgl.communication.MailHandler;
 import fgl.product.Game;
 import fgl.product.GameDAO;
 import fgl.userPanel.User;
 import fgl.userPanel.UserDAO;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
-import org.w3c.dom.UserDataHandler;
 
-// ================================================================= Other == //
-import javax.jws.soap.SOAPBinding;
-import java.sql.*;
+import java.sql.SQLException;
 import java.util.*;
+
 
 // //////////////////////////////////////////////////////// Class: ReviewCard //
 public class ReviewCard {
@@ -111,11 +111,8 @@ public class ReviewCard {
 
         // .................................................................. //
         // Update average rating information
-        if (currentGameReviews.size() > 0) {
-            int size = currentGameReviews.size();
-            if (currentGameReviews.get(0).getId().equals(0L)) {
-                size--;
-            }
+        if (getRealNumberOfCurrentGameReviews() > 0) {
+            int size = getRealNumberOfCurrentGameReviews();
             labelAverageRating.setText(
                     (int) getAverageRating(game) +
                             " / 10 (based on " +
@@ -140,11 +137,22 @@ public class ReviewCard {
 
         // .................................................................. //
         // Show reviews' slider only if needed
-        setRowVisibility(mainGrid, 5, currentGameReviews.size() > 0);
-        setRowVisibility(mainGrid, 6, currentGameReviews.size() > 0);
+        if (isUserAuthor()) {
+            setRowVisibility(mainGrid, 5, getRealNumberOfCurrentGameReviews() > 1);
+            setRowVisibility(mainGrid, 6, getRealNumberOfCurrentGameReviews() > 1);
+        } else if (getRealNumberOfCurrentGameReviews() == 0) {
+            setRowVisibility(mainGrid, 5, false);
+            setRowVisibility(mainGrid, 6, false);
+        } else if (getRealNumberOfCurrentGameReviews() > 1 || !hasUserReviewedBefore()) {
+            setRowVisibility(mainGrid, 5, true);
+            setRowVisibility(mainGrid, 6, true);
+        } else {
+            setRowVisibility(mainGrid, 5, false);
+            setRowVisibility(mainGrid, 6, false);
+        }
 
         // .................................................................. //
-        // Set review's username information
+        // Set username information
         if (doesCurrentGameReviewBelongToLoggedUser()) {
             labelReviewUsername.setText("/ Your review");
         } else {
@@ -155,6 +163,12 @@ public class ReviewCard {
             } else {
                 labelReviewUsername.setText("/ Your review");
             }
+        }
+
+        if (isUserAuthor()) {
+            labelReplyUsername.setText("/ Your reply");
+        } else {
+            labelReplyUsername.setText("/ Author's reply");
         }
 
         // .................................................................. //
@@ -182,8 +196,8 @@ public class ReviewCard {
 
         // .................................................................. //
         // Disable comment's content if showing edit history
-        textAreaReview.setEditable(!showReviewEditHistory);
-        textAreaReply.setEditable(!showReplyEditHistory);
+        textAreaReview.setEditable(!showReviewEditHistory && !isUserAuthor());
+        textAreaReply.setEditable(!showReplyEditHistory && isUserAuthor());
 
         // .................................................................. //
         // Set comment's submission date
@@ -198,6 +212,9 @@ public class ReviewCard {
 
         // .................................................................. //
         // Set edit history buttons' content
+        buttonShowReviewEditHistory.setVisible(numberOfReviewEdits() > 1);
+        buttonShowReplyEditHistory.setVisible(numberOfReplyEdits() > 1);
+
         buttonShowReviewEditHistory.setText((showReviewEditHistory ?
                 "Hide" : "Show") + " edit history");
         buttonShowReplyEditHistory.setText((showReplyEditHistory ?
@@ -242,7 +259,7 @@ public class ReviewCard {
             buttonSubmitReview.setVisible(!showReviewEditHistory);
         }
 
-        buttonSubmitReply.setVisible(!showReplyEditHistory);
+        buttonSubmitReply.setVisible(!showReplyEditHistory && isUserAuthor());
 
         // .................................................................. //
         // Set reviews' slider
@@ -254,7 +271,7 @@ public class ReviewCard {
         // Author's things
         buttonGoBackToReview.setVisible(!isUserAuthor());
 
-        if (currentGameReviews.isEmpty() && isUserAuthor()) {
+        if (getRealNumberOfCurrentGameReviews() == 0 && isUserAuthor()) {
             setRowVisibility(mainGrid, 2, false);
             setRowVisibility(mainGrid, 3, false);
             setRowVisibility(mainGrid, 4, false);
@@ -312,7 +329,8 @@ public class ReviewCard {
 
     private boolean hasUserReviewedBefore() {
         for (Review review : currentGameReviews) {
-            if (loggedUser.getId().equals(review.getUser().getId())) {
+            if (loggedUser.getId().equals(review.getUser().getId())
+                    && review.getId() != 0) {
                 return true;
             }
         }
@@ -333,8 +351,16 @@ public class ReviewCard {
         }
 
         if (!isUserAuthor() && !hasUserReviewedBefore()) {
-            currentGameReviews.add(0, new Review(game, loggedUser, rating));
+            currentGameReviews.add(currentGameReviews.size(), new Review(game, loggedUser, rating));
         }
+    }
+
+    private int getRealNumberOfCurrentGameReviews() {
+        int result = currentGameReviews.size();
+        if (!isUserAuthor() && !hasUserReviewedBefore()) {
+            result--;
+        }
+        return result;
     }
 
     private void getCurrentGamesComments() throws SQLException {
@@ -528,9 +554,16 @@ public class ReviewCard {
         return ((double) sumOfRatings) / (currentGameReviews.size() - (newReview ? 1 : 0));
     }
 
-    private int numberOfEdits() {
-        if (getCurrentUserReview() != null) {
-            return userCommentsPerReview.get(getCurrentUserReview()).size();
+    private int numberOfReviewEdits() {
+        if (getCurrentGameReview() != null) {
+            return userCommentsPerReview.get(getCurrentGameReview()).size();
+        }
+        return 0;
+    }
+
+    private int numberOfReplyEdits() {
+        if (getCurrentGamesCurrentReply() != null) {
+            return authorRepliesPerReview.get(getCurrentGameReview()).size();
         }
         return 0;
     }
@@ -542,9 +575,11 @@ public class ReviewCard {
                 textAreaReview.getText() == null ? "" : textAreaReview.getText(),
                 null, false);
 
-        if (numberOfEdits() == 0) {
+//        if (numberOfReviewEdits() == 0) {
+        if (!hasUserReviewedBefore()) {
             reviewDao.insert(review);
             currentGameReviews.add(review);
+            resetReviewIterator();
         } else {
             review.setId(getCurrentUserReview().getId());
             reviewDao.update(review);
@@ -555,8 +590,20 @@ public class ReviewCard {
 //            if (getCurrentGamesCurrentComment() == null ||
 //                    !comment.getContent().equals(
 //                            getCurrentGamesCurrentComment().getContent())) {
-        commentDao.insert(comment);
-        currentGameComments.add(comment);
+//        if (currentComment == null ||
+//        !currentComment.getContent().equals(comment)) {
+//            if (!comment.getContent().isEmpty()) {
+//                commentDao.insert(comment);
+//                currentGameComments.add(comment);
+//            }
+//        }
+        Comment currentComment = getCurrentGamesCurrentComment();
+        if (
+                (currentComment == null && !comment.getContent().isEmpty()) ||
+                (currentComment != null && !currentComment.getContent().equals(comment.getContent()))) {
+            commentDao.insert(comment);
+            currentGameComments.add(comment);
+        }
 //            }
 //        }
 
@@ -630,8 +677,12 @@ public class ReviewCard {
                 null, true);
 
 
-        commentDao.insert(comment);
-        currentGameComments.add(comment);
+        Comment currentComment = getCurrentGamesCurrentReply();
+        if ((currentComment == null && !comment.getContent().isEmpty()) ||
+            (currentComment != null && !currentComment.getContent().equals(comment.getContent()))) {
+            commentDao.insert(comment);
+            currentGameComments.add(comment);
+        }
 
 //        getCurrentGamesReviews();
         getCurrentGamesComments();
@@ -901,6 +952,7 @@ public class ReviewCard {
     @FXML private Label labelGameTitle;
     @FXML private Label labelReviewUsername;
     @FXML private Label labelReviewDate;
+    @FXML private Label labelReplyUsername;
     @FXML private Label labelReplyDate;
 
     @FXML private TextArea textAreaReview;

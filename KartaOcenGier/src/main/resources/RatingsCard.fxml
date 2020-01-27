@@ -107,7 +107,7 @@
                   <Button fx:id="buttonReplyNextEdit" minWidth="75.0" mnemonicParsing="false" onAction="#replyNextEdit" text="Next" />
                </children>
             </HBox>
-            <Label text="\\ Author's reply" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowSpan="2" GridPane.valignment="CENTER">
+            <Label fx:id="labelReplyUsername" text="\\ Author's reply" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowSpan="2" GridPane.valignment="CENTER">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
