@@ -42,7 +42,7 @@ public class UserBox extends HBox {
                 AdministrationPanel.changePermissions( user, newValue );
                 if ( newValue.equals( UserType.ADMINISTRATOR ) ||
                         newValue.equals( UserType.MODERATOR ) ) {
-                  this.getChildren().remove( 1 );
+                  this.getChildren().remove( button );
                 } else {
                   makeBlockUnblockButton( user );
                 }
