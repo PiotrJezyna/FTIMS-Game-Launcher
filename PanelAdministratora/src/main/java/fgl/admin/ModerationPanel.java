@@ -41,6 +41,14 @@ public class ModerationPanel {
     return PATH;
   }
 
+  public static UserDAO getUserDAO() {
+    return userDAO;
+  }
+
+  public static GameDAO getGameDAO() {
+    return gameDAO;
+  }
+
   public void refresh() {
     if ( !loadAllUsersFromDB() ) {
       System.out.println( "Users data was not loaded." );
@@ -158,6 +166,7 @@ public class ModerationPanel {
       user.setBlocked( true );
       userDAO.update( user );
     } catch ( SQLException e ) {
+      user.setBlocked( false );
       e.printStackTrace();
       return false;
     }
@@ -169,6 +178,7 @@ public class ModerationPanel {
       user.setBlocked( false );
       userDAO.update( user );
     } catch ( SQLException e ) {
+      user.setBlocked( true );
       e.printStackTrace();
       return false;
     }

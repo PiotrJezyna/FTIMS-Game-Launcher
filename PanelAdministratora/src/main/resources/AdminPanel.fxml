@@ -12,16 +12,16 @@
    <children>
       <MenuBar prefHeight="25.0" prefWidth="600.0">
          <menus>
-            <Menu mnemonicParsing="false" text="List">
+            <Menu mnemonicParsing="false" text="Opcje">
                <items>
-                  <MenuItem fx:id="refreshMenuItem" mnemonicParsing="false" onAction="#refresh" text="Refresh all" />
+                  <MenuItem fx:id="refreshMenuItem" mnemonicParsing="false" onAction="#refresh" text="Odśwież wszystkie listy" />
                </items>
             </Menu>
          </menus>
       </MenuBar>
       <TabPane layoutY="25.0" prefHeight="375.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE">
          <tabs>
-            <Tab text="            Users            ">
+            <Tab text="            Użytkownicy            ">
                <content>
                   <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="171.0" prefWidth="380.0">
                      <children>
@@ -30,7 +30,7 @@
                   </AnchorPane>
                </content>
             </Tab>
-            <Tab text="            Games            ">
+            <Tab text="            Zgłoszone gry            ">
                <content>
                   <AnchorPane fx:id="testZ" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>

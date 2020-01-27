@@ -1,6 +1,5 @@
 package fgl.admin;
 
-import fgl.product.Game;
 import fgl.userPanel.User;
 import fgl.userPanel.UserSession;
 import fgl.userPanel.UserType;
