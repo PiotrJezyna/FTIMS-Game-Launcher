@@ -15,6 +15,7 @@ import javafx.scene.layout.Priority;
 
 public class UserBox extends HBox {
   private Button button;
+  private ChoiceBox<UserType> choiceBox;
 
   UserBox( User user, boolean isAdminPage ) {
     super();
@@ -32,7 +33,7 @@ public class UserBox extends HBox {
     }
 
     if ( isAdminPage ) {
-      ChoiceBox<UserType> choiceBox = new ChoiceBox<>();
+      choiceBox = new ChoiceBox<>();
       choiceBox.getItems().addAll(
               UserType.USER, UserType.MODERATOR, UserType.ADMINISTRATOR );
       choiceBox.setValue( user.getType() );
@@ -47,6 +48,7 @@ public class UserBox extends HBox {
                   makeBlockUnblockButton( user );
                 }
               } );
+      choiceBox.setDisable( user.isBlocked() );
       this.getChildren().add( choiceBox );
     }
   }
@@ -64,6 +66,7 @@ public class UserBox extends HBox {
         if ( user.isBlocked() ) {
           ModerationPanel.unblockUser( user );
           button.setText( "Zablokuj użytkownika" );
+          choiceBox.setDisable( false );
           if ( MailHandler.sendMail( user.getUsername(), user.getEmail(), "unblock" ) ) {
             Alert alert =  new Alert( Alert.AlertType.WARNING );
             alert.setTitle( "Nie udało się wysłać maila" );
@@ -75,6 +78,7 @@ public class UserBox extends HBox {
         } else {
           ModerationPanel.blockUser( user );
           button.setText( "Odblokuj użytkownika" );
+          choiceBox.setDisable( true );
           if ( MailHandler.sendMail( user.getUsername(), user.getEmail(), "block" ) ) {
             Alert alert =  new Alert( Alert.AlertType.WARNING );
             alert.setTitle( "Nie udało się wysłać maila" );
