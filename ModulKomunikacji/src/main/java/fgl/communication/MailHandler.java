@@ -63,7 +63,7 @@ public final class MailHandler {
   }
 
   public static boolean sendMailWithGame(
-          String to, String email, String type, Game game ) {
+          String to, String email, String type, String gameTitle ) {
     Session session = makeSession();
     try {
       Message message = new MimeMessage( session );
@@ -72,10 +72,30 @@ public final class MailHandler {
               InternetAddress.parse( email ) );
       if ( type.compareTo( "game_delete" ) == 0 ) {
         message.setSubject( "Twoje gra została usunięta" );
-        message.setText( deleteGameText( to, game ) );
+        message.setText( deleteGameText( to, gameTitle ) );
       } else {
         throw new MessagingException( "Message type not found" );
       }
+      Transport.send( message );
+    } catch ( MessagingException e ) {
+      e.printStackTrace();
+      return false;
+    }
+    return true;
+  }
+
+  public static boolean sendMailWithNewUserType(
+          String to, String email, String userType ) {
+    Session session = makeSession();
+    try {
+      Message message = new MimeMessage( session );
+      message.setFrom( new InternetAddress( EMAIL ) );
+      message.setRecipients( Message.RecipientType.TO,
+              InternetAddress.parse( email ) );
+
+      message.setSubject( "Twoje uprawnienia zostały zmodyfikowane" );
+      message.setText( usetTypeText( to, userType ) );
+
       Transport.send( message );
     } catch ( MessagingException e ) {
       e.printStackTrace();
@@ -134,10 +154,17 @@ public final class MailHandler {
             FOOTER;
   }
 
-  private static String deleteGameText( String to, Game game ) {
+  private static String deleteGameText( String to, String gameTitle ) {
     return "Witaj " + to + "," +
-            "\n\n Twoja gra " + game.getTitle() +
+            "\n\n Twoja gra " + gameTitle +
             " została usunięta z naszej biblioteki gier." +
+            FOOTER;
+  }
+
+  private static String usetTypeText( String to, String userType ) {
+    return "Witaj " + to + "," +
+            "\n\n Twojemu kontu został przypisany nowy poziom uprawnień: " +
+            userType + "." +
             FOOTER;
   }
 }

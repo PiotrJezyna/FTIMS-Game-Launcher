@@ -40,12 +40,14 @@ public class UserBox extends HBox {
       choiceBox.getSelectionModel().selectedItemProperty().addListener(
               ( ObservableValue<? extends UserType> observable,
                 UserType oldValue, UserType newValue ) -> {
-                AdministrationPanel.changePermissions( user, newValue );
-                if ( newValue.equals( UserType.ADMINISTRATOR ) ||
-                        newValue.equals( UserType.MODERATOR ) ) {
-                  this.getChildren().remove( button );
-                } else {
-                  makeBlockUnblockButton( user );
+                boolean result = AdministrationPanel.changePermissions( user, newValue );
+                if (result) {
+                  if ( newValue.equals( UserType.ADMINISTRATOR ) ||
+                          newValue.equals( UserType.MODERATOR ) ) {
+                    this.getChildren().remove( button );
+                  } else {
+                    makeBlockUnblockButton( user );
+                  }
                 }
               } );
       choiceBox.setDisable( user.isBlocked() );
