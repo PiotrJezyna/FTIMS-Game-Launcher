@@ -9,13 +9,12 @@ import fgl.product.GameDAO;
 import fgl.userPanel.User;
 import fgl.userPanel.UserDAO;
 
-// ================================================================= Other == //
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
+
+// ================================================================= Other == //
 
 // ///////////////////////////////////////////////////////// Class: ReviewDao //
 public class ReviewDao
@@ -27,16 +26,17 @@ public class ReviewDao
             throws SQLException {
         connectSQL();
 
-        try (PreparedStatement statement = conn.prepareStatement("SELECT * FROM Reviews WHERE ID = ?")) {
+        try (PreparedStatement statement = conn
+                .prepareStatement("SELECT * FROM Reviews WHERE ID = ?")) {
             List<Review> reviews = new ArrayList<>();
 
             statement.setLong(1, id);
             rs = statement.executeQuery();
 
-            GameDAO gameDao = new GameDAO();
-            UserDAO userDao = new UserDAO();
-            List<Game> games = gameDao.getAll();
-            List<User> users = userDao.getAll();
+            GameDAO    gameDao = new GameDAO();
+            UserDAO    userDao = new UserDAO();
+            List<Game> games   = gameDao.getAll();
+            List<User> users   = userDao.getAll();
             while (rs.next()) {
                 Game game = null;
                 User user = null;
@@ -54,12 +54,8 @@ public class ReviewDao
                     }
                 }
 
-                reviews.add(new Review(
-                        rs.getLong("ID"),
-                        game,
-                        user,
-                        rs.getInt("Rating")
-                ));
+                reviews.add(new Review(rs.getLong("ID"), game, user,
+                                       rs.getInt("Rating")));
             }
 
             return reviews.get(0);
@@ -78,15 +74,16 @@ public class ReviewDao
             throws SQLException {
         connectSQL();
 
-        try (PreparedStatement statement = conn.prepareStatement("SELECT * FROM Reviews")) {
+        try (PreparedStatement statement = conn
+                .prepareStatement("SELECT * FROM Reviews")) {
             List<Review> reviews = new ArrayList<>();
 
             rs = statement.executeQuery();
 
-            GameDAO gameDao = new GameDAO();
-            UserDAO userDao = new UserDAO();
-            List<Game> games = gameDao.getAll();
-            List<User> users = userDao.getAll();
+            GameDAO    gameDao = new GameDAO();
+            UserDAO    userDao = new UserDAO();
+            List<Game> games   = gameDao.getAll();
+            List<User> users   = userDao.getAll();
             while (rs.next()) {
                 Game game = null;
                 User user = null;
@@ -104,12 +101,8 @@ public class ReviewDao
                     }
                 }
 
-                reviews.add(new Review(
-                        rs.getLong("ID"),
-                        game,
-                        user,
-                        rs.getInt("Rating")
-                ));
+                reviews.add(new Review(rs.getLong("ID"), game, user,
+                                       rs.getInt("Rating")));
             }
 
             return reviews;
@@ -147,7 +140,8 @@ public class ReviewDao
     }
 
     @Override
-    protected void update(Review review) throws SQLException {
+    protected void update(Review review)
+            throws SQLException {
         connectSQL();
 
         try (PreparedStatement statement = conn.prepareStatement(

@@ -13,12 +13,9 @@ public class Review {
     private Long id;
     private Game game;
     private User user;
-    private int rating; // TODO: Add new class for rating
+    private int  rating; // TODO: Add new class for rating
 
     // ========================================================= Behaviour == //
-    public Review() {
-    }
-
     public Review(Game game, User user, int rating) {
         this.id = 0L;
         this.game = game;
@@ -33,14 +30,6 @@ public class Review {
         this.rating = rating;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public Game getGame() {
         return game;
     }
@@ -49,12 +38,12 @@ public class Review {
         this.game = game;
     }
 
-    public User getUser() {
-        return user;
+    public Long getId() {
+        return id;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public int getRating() {
@@ -63,6 +52,14 @@ public class Review {
 
     public void setRating(int rating) {
         this.rating = rating;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
 

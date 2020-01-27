@@ -70,7 +70,7 @@
                   <Button fx:id="buttonRating10" mnemonicParsing="false" onAction="#setRating10" onMouseEntered="#hover10" onMouseExited="#unhover10" text="★" />
                </children>
             </HBox>
-            <TextArea fx:id="textAreaReview" onKeyReleased="#writtenComment" promptText="You can write your comments here! (optional)" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <TextArea fx:id="textAreaReview" promptText="You can write your comments here! (optional)" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="1" />
             <Button fx:id="buttonSubmitReview" minWidth="75.0" mnemonicParsing="false" onAction="#addReview" text="Submit" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                <font>
                   <Font name="System Bold" size="12.0" />

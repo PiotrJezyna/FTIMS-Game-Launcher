@@ -9,23 +9,28 @@ import java.sql.Timestamp;
 public class Comment {
 
     // ============================================================== Data == //
-    private Long id;
-    private Review review;
-    private String content;
+    private Long      id;
+    private Review    review;
+    private String    content;
     private Timestamp submissionDate;
-    private boolean isReply;
+    private boolean   isReply;
 
     // ========================================================= Behaviour == //
-    public Comment(Long id,
-                   Review review,
-                   String content,
-                   Timestamp submissionDate,
-                   boolean isReply) {
+    public Comment(Long id, Review review, String content,
+                   Timestamp submissionDate, boolean isReply) {
         this.id = id;
         this.review = review;
         this.content = content;
         this.submissionDate = submissionDate;
         this.isReply = isReply;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = String.copyValueOf(content.toCharArray());
     }
 
     public Long getId() {
@@ -42,14 +47,6 @@ public class Comment {
 
     public void setReview(Review review) {
         this.review = review;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = String.copyValueOf(content.toCharArray());
     }
 
     public Timestamp getSubmissionDate() {

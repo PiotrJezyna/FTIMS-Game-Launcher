@@ -6,11 +6,18 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class Main extends Application {
+public class Main
+        extends Application {
+
+    public static void main(String[] args) {
+        launch(args);
+    }
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("/RatingsCard.fxml"));
+    public void start(Stage primaryStage)
+            throws Exception {
+        Parent root = FXMLLoader
+                .load(getClass().getResource("/RatingsCard.fxml"));
 
         //todo:only test
 //        FXMLLoader loader = new FXMLLoader(getClass().getResource("/RatingsCard.fxml"));
@@ -31,10 +38,5 @@ public class Main extends Application {
 //        r.setLoggedUser(92L);
 //        r.setLoggedUser(93L);
 //        r.init();
-    }
-
-
-    public static void main(String[] args) {
-        launch(args);
     }
 }
