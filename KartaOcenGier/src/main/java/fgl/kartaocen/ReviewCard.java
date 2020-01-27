@@ -3,6 +3,7 @@ package fgl.kartaocen;
 
 // ////////////////////////////////////////////////////////////////// Imports //
 // ================================================================ JavaFX == //
+import fgl.communication.MailHandler;
 import fgl.product.Game;
 import fgl.product.GameDAO;
 import fgl.userPanel.User;
@@ -130,8 +131,7 @@ public class ReviewCard {
             throws SQLException {
         UserDAO userDAO = new UserDAO();
         User    user    = userDAO.get(game.getUserId());
-        //todo bring it back when integrating
-//        MailHandler.sendMail(user.getUsername(), user.getEmail(), "review added");
+        MailHandler.sendMail(user.getUsername(), user.getEmail(), "review added");
     }
 
     @FXML
