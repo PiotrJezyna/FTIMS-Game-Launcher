@@ -89,6 +89,21 @@ public class GameContenerGUI {
         gamesBox.getChildren().clear();
 
         List<Changelog> displayedChangelogs = gameContener.getDisplayedChangelogs();
+
+        if (displayedChangelogs.size() == 0)
+        {
+            Label label = new Label("Brak wyników");
+            HBox gameBox = new HBox();
+            gameBox.getChildren().add(label);
+
+            HBox.setMargin(label, new Insets(0, 10, 0, 10));
+            VBox.setMargin(gameBox, new Insets(10, 0, 5, 0));
+
+            gamesBox.getChildren().add(gameBox);
+            return;
+        }
+
+
         pageCount = (int)Math.ceil((double) gameContener.getRecordCount() / recordPerPage);
 
         int start = pageNumber * recordPerPage;
@@ -173,6 +188,19 @@ public class GameContenerGUI {
 
         List<Game> displayedGames = gameContener.getDisplayedGames();
         //ArrayList<File> files = downloadScreenshots(displayedGames);
+
+        if (displayedGames.size() == 0)
+        {
+            Label label = new Label("Brak wyników");
+            HBox gameBox = new HBox();
+            gameBox.getChildren().add(label);
+
+            HBox.setMargin(label, new Insets(0, 10, 0, 10));
+            VBox.setMargin(gameBox, new Insets(10, 0, 5, 0));
+
+            gamesBox.getChildren().add(gameBox);
+            return;
+        }
 
         pageCount = (int)Math.ceil((double) gameContener.getRecordCount() / recordPerPage);
 

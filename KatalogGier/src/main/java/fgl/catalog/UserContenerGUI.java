@@ -53,6 +53,19 @@ public class UserContenerGUI {
 
         List<User> displayedUsers = userContener.getDisplayedUsers();
 
+        if (displayedUsers.size() == 0)
+        {
+            Label label = new Label("Brak wyników");
+            HBox gameBox = new HBox();
+            gameBox.getChildren().add(label);
+
+            HBox.setMargin(label, new Insets(0, 10, 0, 10));
+            VBox.setMargin(gameBox, new Insets(10, 0, 5, 0));
+
+            usersBox.getChildren().add(gameBox);
+            return;
+        }
+
         pageCount = (int)Math.ceil((double) userContener.getRecordCount() / recordPerPage);
 
         int start = pageNumber * recordPerPage;
