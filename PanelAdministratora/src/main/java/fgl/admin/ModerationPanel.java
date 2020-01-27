@@ -166,6 +166,7 @@ public class ModerationPanel {
       user.setBlocked( true );
       userDAO.update( user );
     } catch ( SQLException e ) {
+      user.setBlocked( false );
       e.printStackTrace();
       return false;
     }
@@ -177,6 +178,7 @@ public class ModerationPanel {
       user.setBlocked( false );
       userDAO.update( user );
     } catch ( SQLException e ) {
+      user.setBlocked( true );
       e.printStackTrace();
       return false;
     }
