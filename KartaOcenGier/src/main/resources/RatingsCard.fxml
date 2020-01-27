@@ -1,42 +1,166 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
 
-<GridPane alignment="center" hgap="10" vgap="10" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fgl.kartaocen.ReviewCard">
+<GridPane fx:id="mainGrid" alignment="CENTER" hgap="10.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" vgap="10.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fgl.kartaocen.ReviewCard">
    <children>
-      <Label fx:id="labelGameTitle" text="Game title" />
-       <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.rowIndex="1">
+      <HBox alignment="CENTER_RIGHT" spacing="15.0">
          <children>
-            <Button fx:id="buttonRating1" mnemonicParsing="false" onAction="#setRating1" text="1" />
-            <Button fx:id="buttonRating2" mnemonicParsing="false" onAction="#setRating2" text="2" />
-            <Button fx:id="buttonRating3" mnemonicParsing="false" onAction="#setRating3" text="3" />
-            <Button fx:id="buttonRating4" mnemonicParsing="false" onAction="#setRating4" text="4" />
-            <Button fx:id="buttonRating5" mnemonicParsing="false" onAction="#setRating5" text="5" />
-            <Button fx:id="buttonRating6" mnemonicParsing="false" onAction="#setRating6" text="6" />
-            <Button fx:id="buttonRating7" mnemonicParsing="false" onAction="#setRating7" text="7" />
-            <Button fx:id="buttonRating8" mnemonicParsing="false" onAction="#setRating8" text="8" />
-            <Button fx:id="buttonRating9" mnemonicParsing="false" onAction="#setRating9" text="9" />
-            <Button fx:id="buttonRating10" mnemonicParsing="false" onAction="#setRating10" text="10" />
-            <Label fx:id="labelRating" text="0/10" />
-            <Label fx:id="labelStatus" text="Status" />
-         </children></HBox>
-      <TextArea fx:id="textAreaReview" prefHeight="37.0" prefWidth="705.0" GridPane.rowIndex="2" />
-      <Button fx:id="buttonAddReview" mnemonicParsing="false" onAction="#addReview" text="Add review" GridPane.rowIndex="3" />
-      <VBox fx:id="boxReviews" prefHeight="100.0" prefWidth="150.0" spacing="10.0" GridPane.rowIndex="4">
-         <children>
-            <Button fx:id="buttonShowReview" mnemonicParsing="false" onAction="#readReview" text="Show review" GridPane.rowIndex="4" />
-            <Label fx:id="labelReview" text="" GridPane.rowIndex="5"/>
+            <Label fx:id="labelGameTitle" alignment="CENTER" text="Game title" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <Separator orientation="VERTICAL" />
+            <Label text="Reviews">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
          </children>
-      </VBox>
+      </HBox>
+      <Separator prefWidth="200.0" GridPane.rowIndex="1" />
+      <GridPane hgap="10.0" vgap="10.0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+        <columnConstraints>
+          <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" />
+            <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="20.0" />
+          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="564.0" minWidth="10.0" prefWidth="535.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints valignment="CENTER" />
+          <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
+          <RowConstraints />
+        </rowConstraints>
+         <children>
+            <HBox fx:id="hboxNavigation" alignment="CENTER_RIGHT" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+               <children>
+                  <Button fx:id="buttonReviewPreviousEdit" minWidth="75.0" mnemonicParsing="false" onAction="#reviewPreviousEdit" text="Previous" />
+                  <Button fx:id="buttonReviewNextEdit" minWidth="75.0" mnemonicParsing="false" onAction="#reviewNextEdit" text="Next" />
+               </children>
+            </HBox>
+            <Label fx:id="labelReviewUsername" text="/ Your review" textAlignment="RIGHT" wrapText="true" GridPane.halignment="CENTER" GridPane.rowSpan="3" GridPane.valignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+             <HBox alignment="CENTER_RIGHT" spacing="10.0" GridPane.columnIndex="2" GridPane.halignment="CENTER">
+               <children>
+                  <Label alignment="CENTER" contentDisplay="CENTER" disable="true" text="Rating /" textAlignment="CENTER" />
+                  <Button fx:id="buttonRating1" alignment="CENTER" mnemonicParsing="false" onAction="#setRating1" onMouseEntered="#hover1" onMouseExited="#unhover1" text="★" />
+                  <Button fx:id="buttonRating2" mnemonicParsing="false" onAction="#setRating2" onMouseEntered="#hover2" onMouseExited="#unhover2" text="★" />
+                  <Button fx:id="buttonRating3" mnemonicParsing="false" onAction="#setRating3" onMouseEntered="#hover3" onMouseExited="#unhover3" text="★" />
+                  <Button fx:id="buttonRating4" mnemonicParsing="false" onAction="#setRating4" onMouseEntered="#hover4" onMouseExited="#unhover4" text="★" />
+                  <Button fx:id="buttonRating5" mnemonicParsing="false" onAction="#setRating5" onMouseEntered="#hover5" onMouseExited="#unhover5" text="★" />
+                  <Button fx:id="buttonRating6" mnemonicParsing="false" onAction="#setRating6" onMouseEntered="#hover6" onMouseExited="#unhover6" text="★" />
+                  <Button fx:id="buttonRating7" mnemonicParsing="false" onAction="#setRating7" onMouseEntered="#hover7" onMouseExited="#unhover7" text="★" />
+                  <Button fx:id="buttonRating8" mnemonicParsing="false" onAction="#setRating8" onMouseEntered="#hover8" onMouseExited="#unhover8" text="★" />
+                  <Button fx:id="buttonRating9" mnemonicParsing="false" onAction="#setRating9" onMouseEntered="#hover9" onMouseExited="#unhover9" text="★" />
+                  <Button fx:id="buttonRating10" mnemonicParsing="false" onAction="#setRating10" onMouseEntered="#hover10" onMouseExited="#unhover10" text="★" />
+               </children>
+            </HBox>
+            <TextArea fx:id="textAreaReview" promptText="You can write your comments here! (optional)" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <Button fx:id="buttonSubmitReview" minWidth="75.0" mnemonicParsing="false" onAction="#addReview" text="Submit" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font></Button>
+            <ProgressBar fx:id="progressBar" progress="0.0" visible="false" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+            <ProgressIndicator fx:id="progressBarIndicator" maxHeight="20.0" maxWidth="20.0" visible="false" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+            <Label fx:id="labelReviewDate" opacity="0.5" text="Date" textAlignment="RIGHT" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+               <font>
+                  <Font name="System Italic" size="12.0" />
+               </font>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding></Label>
+            <Separator orientation="VERTICAL" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowSpan="3" GridPane.valignment="CENTER" />
+            <Button fx:id="buttonShowReviewEditHistory" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#showReviewEditHistory" prefWidth="110.0" text="Show edit history" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+         </children>
+      </GridPane>
+      <Separator prefWidth="200.0" GridPane.rowIndex="3" />
+      <GridPane hgap="10.0" vgap="10.0" GridPane.rowIndex="4">
+         <columnConstraints>
+            <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="275.0" minWidth="10.0" prefWidth="64.0" />
+            <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" />
+            <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="20.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="400.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
+            <RowConstraints />
+         </rowConstraints>
+         <children>
+            <HBox alignment="CENTER_RIGHT" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+               <children>
+                  <Button fx:id="buttonReplyPreviousEdit" minWidth="75.0" mnemonicParsing="false" onAction="#replyPreviousEdit" text="Previous" />
+                  <Button fx:id="buttonReplyNextEdit" minWidth="75.0" mnemonicParsing="false" onAction="#replyNextEdit" text="Next" />
+               </children>
+            </HBox>
+            <Label fx:id="labelReplyUsername" text="\\ Author's reply" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowSpan="2" GridPane.valignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+            <TextArea fx:id="textAreaReply" promptText="You can write your reply here!" wrapText="true" GridPane.columnIndex="3" />
+            <ProgressBar fx:id="progressBar1" progress="0.0" visible="false" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+            <ProgressIndicator fx:id="progressBarIndicator1" maxHeight="20.0" maxWidth="20.0" visible="false" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+            <Button fx:id="buttonShowReplyEditHistory" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#showReplyEditHistory" prefWidth="110.0" text="Show edit history" GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+            <Label fx:id="labelReplyDate" contentDisplay="CENTER" opacity="0.5" text="Date" textAlignment="RIGHT" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.valignment="BOTTOM">
+               <font>
+                  <Font name="System Italic" size="12.0" />
+               </font>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </Label>
+            <Button fx:id="buttonSubmitReply" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#authorsReply" prefWidth="75.0" text="Submit" textAlignment="CENTER" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Button>
+         </children>
+      </GridPane>
+      <Separator prefWidth="200.0" GridPane.rowIndex="5" />
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.rowIndex="6">
+         <children>
+            <Button fx:id="buttonGoBackToReview" mnemonicParsing="false" onAction="#goBackToUsersReview" text="Go back to your review" />
+            <Slider fx:id="sliderReviews" blockIncrement="1.0" majorTickUnit="1.0" max="20.0" minorTickCount="0" onMouseClicked="#chooseReviewToShow" onMouseDragged="#chooseReviewToShow" onMousePressed="#chooseReviewToShow" onMouseReleased="#chooseReviewToShow" showTickLabels="true" showTickMarks="true" snapToTicks="true" HBox.hgrow="ALWAYS" />
+            <Label contentDisplay="CENTER" disable="true" text="/ Choose review to show" />
+         </children>
+      </HBox>
+      <Label fx:id="labelAverageRating" alignment="CENTER" disable="true" text="8 / 10 (based on 23 reviews)" GridPane.halignment="LEFT" GridPane.valignment="BOTTOM">
+         <font>
+            <Font name="System Italic" size="12.0" />
+         </font>
+      </Label>
    </children>
    <columnConstraints>
-      <ColumnConstraints />
+      <ColumnConstraints hgrow="ALWAYS" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="700.0" />
    </columnConstraints>
    <rowConstraints>
-      <RowConstraints />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" />
+      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" vgrow="NEVER" />
+      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="20.0" />
+      <RowConstraints maxHeight="150.0" minHeight="150.0" prefHeight="150.0" valignment="CENTER" vgrow="ALWAYS" />
+      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="20.0" />
+      <RowConstraints fx:id="rowConstraintsAuthorsReply" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="100.0" />
+      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="20.0" valignment="CENTER" />
+      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" valignment="CENTER" />
    </rowConstraints>
+   <opaqueInsets>
+      <Insets />
+   </opaqueInsets>
+   <padding>
+      <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
+   </padding>
 </GridPane>

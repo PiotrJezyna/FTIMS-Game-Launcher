@@ -1,30 +1,49 @@
+// ////////////////////////////////////////////////////////////////// Package //
 package fgl.kartaocen;
 
-import java.util.Date;
+// ////////////////////////////////////////////////////////////////// Imports //
+// =================================================================== FGL == //
+import fgl.product.Game;
+import fgl.userPanel.User;
 
+// //////////////////////////////////////////////////////////// Class: Review //
 public class Review {
-    private String comment;
-    private int rating;
-    private String authorsReply;
-    private Date date;
-    private Long game;
-    private Long user;
 
-    public Review(String comment, int rating, String authorsReply, Date date, Long game, Long user) {
-        this.comment = comment;
-        this.rating = rating;
-        this.authorsReply = authorsReply;
-        this.date = date;
+    // ============================================================== Data == //
+    private Long id;
+    private Game game;
+    private User user;
+    private int  rating; // TODO: Add new class for rating
+
+    // ========================================================= Behaviour == //
+    public Review(Game game, User user, int rating) {
+        this.id = 0L;
         this.game = game;
         this.user = user;
+        this.rating = rating;
     }
 
-    public String getComment() {
-        return comment;
+    public Review(Long id, Game game, User user, int rating) {
+        this.id = id;
+        this.game = game;
+        this.user = user;
+        this.rating = rating;
     }
 
-    public void setComment(String comment) {
-        this.comment = comment;
+    public Game getGame() {
+        return game;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public int getRating() {
@@ -35,35 +54,14 @@ public class Review {
         this.rating = rating;
     }
 
-    public String getAuthorsReply() {
-        return authorsReply;
-    }
-
-    public void setAuthorsReply(String authorsReply) {
-        this.authorsReply = authorsReply;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public Long getGame() {
-        return game;
-    }
-
-    public void setGame(Long game) {
-        this.game = game;
-    }
-
-    public Long getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(Long user) {
+    public void setUser(User user) {
         this.user = user;
     }
 }
+
+// ////////////////////////////////////////////////////////////////////////// //
+
