@@ -17,24 +17,15 @@ public class AdministrationPanel extends ModerationPanel {
   }
 
   @Override
-  public boolean loadAllUsersFromDB() {
-    try {
-      users = userDAO.getAll();
-    } catch ( SQLException e ) {
-      e.printStackTrace();
-      return false;
-    }
-
+  protected void makeUsersListView() {
     List<UserBox> list = new ArrayList<>();
 
-    for ( User user: users ) {
+    for ( User user : users ) {
       list.add( new UserBox( user, true ) );
     }
 
     ObservableList<UserBox> myObservableList = FXCollections.observableList( list );
     usersListView.setItems( myObservableList );
-
-    return true;
   }
 
   @Override

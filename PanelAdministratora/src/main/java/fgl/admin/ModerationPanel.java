@@ -50,10 +50,14 @@ public class ModerationPanel {
   }
 
   public void refresh() {
-    if ( !loadAllUsersFromDB() ) {
+    if ( loadAllUsersFromDB() ) {
+      makeUsersListView();
+    } else {
       System.out.println( "Users data was not loaded." );
     }
-    if ( !loadReportedGamesFromDB() ) {
+    if ( loadReportedGamesFromDB() ) {
+      makeReportedGamesListView();
+    } else {
       System.out.println( "Reported games data was not loaded." );
     }
   }
@@ -70,7 +74,10 @@ public class ModerationPanel {
       e.printStackTrace();
       return false;
     }
+    return true;
+  }
 
+  protected void makeUsersListView() {
     List<UserBox> list = new ArrayList<>();
 
     for ( User user : users ) {
@@ -79,8 +86,6 @@ public class ModerationPanel {
 
     ObservableList<UserBox> myObservableList = FXCollections.observableList( list );
     usersListView.setItems( myObservableList );
-
-    return true;
   }
 
   /**
@@ -91,7 +96,6 @@ public class ModerationPanel {
   public boolean loadReportedGamesFromDB() {
     try {
       reportedGames = new ArrayList<>();
-
       List<Game> allGames = gameDAO.getAll();
       reportedGames = new ArrayList<>();
       for ( Game g : allGames ) {
@@ -104,13 +108,10 @@ public class ModerationPanel {
       e.printStackTrace();
       return false;
     }
-
-    makeReportedGamesListView();
-
     return true;
   }
 
-  private void makeReportedGamesListView() {
+  protected void makeReportedGamesListView() {
     List<ReportedGameBox> list = new ArrayList<>();
     reportedGamesListView.setItems( null );
 
@@ -146,12 +147,10 @@ public class ModerationPanel {
     try {
       game.setDeleted( true );
       gameDAO.update( game );
-
       for ( GameReport gr : reports ) {
         gr.setStatus( true );
         reportDAO.update( gr );
       }
-
       reportedGames.remove( game );
       makeReportedGamesListView();
     } catch ( SQLException e ) {

@@ -35,7 +35,6 @@ public class ReportedGameBox extends HBox {
         mp.discardReport( game, finalReports );
       }
     } );
-
     Button delete = new Button( "Usuń grę z biblioteki" );
     delete.setOnAction( new EventHandler<ActionEvent>() {
       @Override
@@ -43,8 +42,9 @@ public class ReportedGameBox extends HBox {
         mp.deleteGame( game, finalReports );
         try {
           User author = mp.getUserDAO().get( game.getUserId() );
-          MailHandler.sendMailWithGame( author.getUsername(), author.getEmail(), "game_delete", game );
-        } catch (SQLException e) {
+          MailHandler.sendMailWithGame(
+                  author.getUsername(), author.getEmail(), "game_delete", game );
+        } catch ( SQLException e ) {
           e.printStackTrace();
         }
       }
@@ -56,8 +56,7 @@ public class ReportedGameBox extends HBox {
       public void handle( ActionEvent event ) {
         try {
           FXMLLoader fxmlLoader = new FXMLLoader(
-                  getClass().getResource( "/ProductCard.fxml" )
-          );
+                  getClass().getResource( "/ProductCard.fxml" ) );
           Parent root = fxmlLoader.load();
           Stage stage = new Stage();
           stage.setTitle( "Karta zgłoszonej gry" );
@@ -65,9 +64,7 @@ public class ReportedGameBox extends HBox {
           stage.show();
           GameManager gm = fxmlLoader.getController();
           gm.ShowProductCard( game );
-        } catch ( IOException e ) {
-          e.printStackTrace();
-        } catch ( SQLException e ) {
+        } catch ( IOException | SQLException e ) {
           e.printStackTrace();
         }
       }

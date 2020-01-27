@@ -37,7 +37,8 @@ public final class MailHandler {
             } );
   }
 
-  public static void sendMailWithCode( String to, String email, String type, String confirmCode ) {
+  public static boolean sendMailWithCode(
+          String to, String email, String type, String confirmCode ) {
     Session session = makeSession();
     try {
       Message message = new MimeMessage( session );
@@ -55,11 +56,14 @@ public final class MailHandler {
       }
       Transport.send( message );
     } catch ( MessagingException e ) {
-      throw new RuntimeException( e );
+      e.printStackTrace();
+      return false;
     }
+    return true;
   }
 
-  public static void sendMailWithGame( String to, String email, String type, Game game ) {
+  public static boolean sendMailWithGame(
+          String to, String email, String type, Game game ) {
     Session session = makeSession();
     try {
       Message message = new MimeMessage( session );
@@ -73,13 +77,14 @@ public final class MailHandler {
         throw new MessagingException( "Message type not found" );
       }
       Transport.send( message );
-      System.out.println( message );
     } catch ( MessagingException e ) {
       e.printStackTrace();
+      return false;
     }
+    return true;
   }
 
-  public static void sendMail( String to, String email, String type ) {
+  public static boolean sendMail( String to, String email, String type ) {
     Session session = makeSession();
     try {
       Message message = new MimeMessage( session );
@@ -96,10 +101,11 @@ public final class MailHandler {
         throw new MessagingException( "Message type not found" );
       }
       Transport.send( message );
-      System.out.println( message );
     } catch ( MessagingException e ) {
       e.printStackTrace();
+      return false;
     }
+    return true;
   }
 
   private static String blockText( String to ) {
@@ -128,7 +134,7 @@ public final class MailHandler {
             FOOTER;
   }
 
-  private static String deleteGameText(String to, Game game) {
+  private static String deleteGameText( String to, Game game ) {
     return "Witaj " + to + "," +
             "\n\n Twoja gra " + game.getTitle() +
             " została usunięta z naszej biblioteki gier." +
