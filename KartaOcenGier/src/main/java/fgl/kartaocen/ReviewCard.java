@@ -403,11 +403,8 @@ public class ReviewCard {
     }
 
 
-    @FXML
-    public void initialize() throws SQLException {
+    public void init() throws SQLException {
         //--------------------------------------------------
-        // todo: remove this
-        setLoggedUser(93L);
 //        loggedUser = (new UserDAO()).get(2L);
 //        game = (new GameDAO()).get(4L);
 
@@ -612,7 +609,8 @@ public class ReviewCard {
     private void notifyAuthor() throws SQLException {
         UserDAO userDAO = new UserDAO();
         User user = userDAO.get(game.getUserId());
-        MailHandler.sendMail(user.getUsername(), user.getEmail(), "review added");
+        //todo bring it back when integrating
+//        MailHandler.sendMail(user.getUsername(), user.getEmail(), "review added");
     }
 
 

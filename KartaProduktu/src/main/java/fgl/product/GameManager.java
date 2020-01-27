@@ -164,12 +164,14 @@ public class GameManager {
         }
     }
 
-    public void ShowReviews() throws IOException {
+    public void ShowReviews() throws IOException, SQLException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/RatingsCard.fxml"));
 
         root.getChildren().clear();
         root.getChildren().add(loader.load());
         ((ReviewCard)loader.getController()).setGame(currentGame.getId());
+        ((ReviewCard)loader.getController()).setLoggedUser(UserSession.getUserSession().getCurrentUser().getId());
+        ((ReviewCard)loader.getController()).init();
     }
 
     public void RemoveProductCard(String title) throws SQLException {
