@@ -5,13 +5,9 @@ import fgl.userPanel.User;
 import fgl.userPanel.UserType;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class AdministrationPanel extends ModerationPanel {
 
@@ -44,30 +40,16 @@ public class AdministrationPanel extends ModerationPanel {
   }
 
   public static boolean changePermissions( User user, UserType userType ) {
-
-    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-    alert.setTitle("Potwierdzenie");
-    alert.setHeaderText(null);
-    alert.setContentText("Jesteś pewien że chcesz zmienić uprawnienia użytkownikowi " +
-            user.getUsername() + " ?");
-
-    Optional<ButtonType> result = alert.showAndWait();
-    if (result.get() == ButtonType.OK){
-
-      try {
-        user.setType( userType );
-        userDAO.update( user );
-      } catch ( SQLException e ) {
-        e.printStackTrace();
-        return false;
-      }
-
-      MailHandler.sendMailWithNewUserType(user.getUsername(), user.getEmail(), userType.toString());
-
-      return true;
-    } else {
+    try {
+      user.setType( userType );
+      userDAO.update( user );
+    } catch ( SQLException e ) {
+      e.printStackTrace();
       return false;
     }
+    MailHandler.sendMailWithNewUserType(
+            user.getUsername(), user.getEmail(), userType.toString() );
+    return true;
   }
 
 }

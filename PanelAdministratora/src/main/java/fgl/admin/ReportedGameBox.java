@@ -43,7 +43,7 @@ public class ReportedGameBox extends HBox {
         try {
           User author = mp.getUserDAO().get( game.getUserId() );
           MailHandler.sendMailWithGame(
-                  author.getUsername(), author.getEmail(), "game_delete", game.getTitle() );
+            author.getUsername(), author.getEmail(), "game_delete", game.getTitle() );
         } catch ( SQLException e ) {
           e.printStackTrace();
         }
