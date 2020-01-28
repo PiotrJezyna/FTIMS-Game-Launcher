@@ -93,7 +93,7 @@ public final class MailHandler {
               InternetAddress.parse( email ) );
 
       message.setSubject( "Twoje uprawnienia zostały zmodyfikowane" );
-      message.setText( usetTypeText( to, userType ) );
+      message.setText( userTypeText( to, userType ) );
 
       Transport.send( message );
     } catch ( MessagingException e ) {
@@ -160,7 +160,7 @@ public final class MailHandler {
             FOOTER;
   }
 
-  private static String usetTypeText( String to, String userType ) {
+  private static String userTypeText(String to, String userType ) {
     return "Witaj " + to + "," +
             "\n\n Twojemu kontu został przypisany nowy poziom uprawnień: " +
             userType + "." +
