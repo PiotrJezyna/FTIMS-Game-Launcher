@@ -52,28 +52,30 @@ public class UserBox extends HBox {
       @Override
       public void handle( ActionEvent event ) {
         if ( user.isBlocked() ) {
-          ModerationPanel.unblockUser( user );
-          button.setText( "Zablokuj użytkownika" );
-          choiceBox.setDisable( false );
-          if ( MailHandler.sendMail( user.getUsername(), user.getEmail(), "unblock" ) ) {
-            Alert alert =  new Alert( Alert.AlertType.WARNING );
-            alert.setTitle( "Nie udało się wysłać maila" );
-            alert.setContentText( "Do użytkownika o nicku: " + user.getUsername() +
-                    " i adresie email: " + user.getEmail() +
-                    " nie udało się wysłać maila z informacją o odblokowaniu konta." );
-            alert.showAndWait();
+          if ( ModerationPanel.unblockUser( user ) ) {
+            button.setText( "Zablokuj użytkownika" );
+            choiceBox.setDisable( false );
+            if ( !MailHandler.sendMail( user.getUsername(), user.getEmail(), "unblock" ) ) {
+              Alert alert =  new Alert( Alert.AlertType.WARNING );
+              alert.setTitle( "Nie udało się wysłać maila" );
+              alert.setContentText( "Do użytkownika o nicku: " + user.getUsername() +
+                      " i adresie email: " + user.getEmail() +
+                      " nie udało się wysłać maila z informacją o odblokowaniu konta." );
+              alert.showAndWait();
+            }
           }
         } else {
-          ModerationPanel.blockUser( user );
-          button.setText( "Odblokuj użytkownika" );
-          choiceBox.setDisable( true );
-          if ( MailHandler.sendMail( user.getUsername(), user.getEmail(), "block" ) ) {
-            Alert alert =  new Alert( Alert.AlertType.WARNING );
-            alert.setTitle( "Nie udało się wysłać maila" );
-            alert.setContentText( "Do użytkownika o nicku: " + user.getUsername() +
-                    " oraz adresie email: " + user.getEmail() +
-                    " nie udało się wysłać maila z informacją o zablokowaniu konta." );
-            alert.showAndWait();
+          if ( ModerationPanel.blockUser( user ) ) {
+            button.setText( "Odblokuj użytkownika" );
+            choiceBox.setDisable( true );
+            if ( MailHandler.sendMail( user.getUsername(), user.getEmail(), "block" ) ) {
+              Alert alert =  new Alert( Alert.AlertType.WARNING );
+              alert.setTitle( "Nie udało się wysłać maila" );
+              alert.setContentText( "Do użytkownika o nicku: " + user.getUsername() +
+                      " oraz adresie email: " + user.getEmail() +
+                      " nie udało się wysłać maila z informacją o zablokowaniu konta." );
+              alert.showAndWait();
+            }
           }
         }
       }

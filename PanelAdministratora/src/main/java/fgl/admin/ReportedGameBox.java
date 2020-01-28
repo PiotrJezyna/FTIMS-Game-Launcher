@@ -39,13 +39,14 @@ public class ReportedGameBox extends HBox {
     delete.setOnAction( new EventHandler<ActionEvent>() {
       @Override
       public void handle( ActionEvent event ) {
-        mp.deleteGame( game, finalReports );
-        try {
-          User author = mp.getUserDAO().get( game.getUserId() );
-          MailHandler.sendMailWithGame(
-            author.getUsername(), author.getEmail(), "game_delete", game.getTitle() );
-        } catch ( SQLException e ) {
-          e.printStackTrace();
+        if ( mp.deleteGame( game, finalReports ) ) {
+          try {
+            User author = mp.getUserDAO().get( game.getUserId() );
+            MailHandler.sendMailWithGame(
+                    author.getUsername(), author.getEmail(), "game_delete", game.getTitle() );
+          } catch ( SQLException e ) {
+            e.printStackTrace();
+          }
         }
       }
     } );
